@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Urungano — an immersive, multilingual sexual and reproductive health education platform for young people in Rwanda and beyond.">
+  <meta name="keywords" content="reproductive health, menstrual health, Rwanda, education, urungano, SRH">
+  <meta name="theme-color" content="#E8A4B8">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Urungano — Immersive Health Education">
+  <meta property="og:description" content="Learn about reproductive and sexual health through interactive 3D lessons, narrated in Kinyarwanda, English, and French.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://urungano-e4fb8.web.app">
+  <meta property="og:image" content="icons/Icon-512.png">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Urungano">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Urungano — Immersive Health Education</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Firebase Analytics -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBPsLJXE0p7NoxkYfm4YT-KuyqCkcgtvII",
+      authDomain: "urungano-60a69.firebaseapp.com",
+      projectId: "urungano-60a69",
+      storageBucket: "urungano-60a69.firebasestorage.app",
+      messagingSenderId: "854517066514",
+      appId: "1:854517066514:web:e4b7028f7f84411abb21cb",
+      measurementId: "G-SQ85EZW7L7"
+    };
+    const app = initializeApp(firebaseConfig);
+    getAnalytics(app);
+  </script>
+</head>
+<body>
+  <!-- Splash loader shown before Flutter boots -->
+  <style>
+    body { margin: 0; background: #FFF0F4; }
+    #splash {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #FFF0F4 0%, #FDF4EC 100%);
+      font-family: sans-serif; z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+    #splash .logo {
+      width: 80px; height: 80px;
+      background: #E8A4B8;
+      border-radius: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(232,164,184,0.4);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #splash .logo span { font-size: 36px; }
+    #splash h1 { color: #5C2D5E; font-size: 22px; font-weight: 600; margin: 0 0 6px; }
+    #splash p  { color: #9a7a9a; font-size: 13px; margin: 0; }
+    #splash .bar {
+      width: 120px; height: 3px;
+      background: #E8A4B8; border-radius: 2px;
+      margin-top: 24px;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+  </style>
+  <div id="splash">
+    <div class="logo"><span>🌸</span></div>
+    <h1>Urungano</h1>
+    <p>Immersive Health Education</p>
+    <div class="bar"></div>
+  </div>
+
+  <script>
+    window.addEventListener('flutter-first-frame', () => {
+      const splash = document.getElementById('splash');
+      if (splash) { splash.style.opacity = '0'; setTimeout(() => splash.remove(), 400); }
+    });
+  </script>
+
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

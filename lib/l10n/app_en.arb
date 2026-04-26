@@ -1,0 +1,624 @@
+{
+  "@@locale": "en",
+  "appTitle": "Urungano",
+  "@appTitle": {
+    "description": "App name"
+  },
+  "langCode": "en",
+  "@langCode": {
+    "description": "Current language code"
+  },
+  "greeting": "Hello",
+  "@greeting": {
+    "description": "Language greeting used on language screen"
+  },
+  "greetingGoodMorning": "GOOD MORNING",
+  "@greetingGoodMorning": {
+    "description": "Time-based greeting"
+  },
+  "greetingGoodAfternoon": "GOOD AFTERNOON",
+  "greetingGoodEvening": "GOOD EVENING",
+  "continue_": "Continue",
+  "@continue_": {
+    "description": "Continue button label"
+  },
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip button label"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button label"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next button label"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button label"
+  },
+  "submit": "Submit",
+  "@submit": {
+    "description": "Submit button label"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button label"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button label"
+  },
+  "done": "Done",
+  "@done": {
+    "description": "Done button label"
+  },
+  "loading": "Loading…",
+  "@loading": {
+    "description": "Generic loading text"
+  },
+  "errorConnection": "Could not connect. Check your internet.",
+  "@errorConnection": {
+    "description": "Generic connection error"
+  },
+  "chooseLang": "Choose your language",
+  "@chooseLang": {
+    "description": "Language selection screen title"
+  },
+  "langKinyarwanda": "Kinyarwanda",
+  "langEnglish": "English",
+  "langFrench": "Français",
+  "a11yTitle": "How do you learn best?",
+  "@a11yTitle": {
+    "description": "Accessibility setup screen title"
+  },
+  "a11ySubtitle": "Pick one or more. You can change this anytime.",
+  "@a11ySubtitle": {
+    "description": "Accessibility setup screen subtitle"
+  },
+  "a11yVoice": "Voice narration",
+  "@a11yVoice": {
+    "description": "Accessibility toggle label"
+  },
+  "a11yVoiceSub": "Audio descriptions read aloud",
+  "a11yCaptions": "Captions",
+  "a11yCaptionsSub": "Text subtitles on all narration",
+  "a11ySign": "Sign language",
+  "a11ySignSub": "ISL overlay on lessons",
+  "a11yGesture": "Hand gesture control",
+  "a11yGestureSub": "Navigate lessons with your hand",
+  "a11yContrast": "High contrast",
+  "a11yContrastSub": "Stronger colours for easier reading",
+  "a11yLargerText": "Larger text",
+  "a11yLargerTextSub": "Increase text size across the app",
+  "consentTitle": "Your privacy matters",
+  "@consentTitle": {
+    "description": "Privacy consent screen title"
+  },
+  "consentBody": "Urungano is designed to be a safe space for your health journey.",
+  "@consentBody": {
+    "description": "Privacy consent body text"
+  },
+  "consentAgree": "I understand and agree to the privacy policy.",
+  "@consentAgree": {
+    "description": "Privacy consent agree button"
+  },
+  "consentPoint1Title": "Your data stays on your device",
+  "consentPoint1Body": "All progress and settings are stored locally. Nothing is shared without your permission.",
+  "consentPoint2Title": "Private mode available",
+  "consentPoint2Body": "Enable Private Mode so the app shows a neutral screen if someone glances at your phone.",
+  "consentPoint3Title": "No account required",
+  "consentPoint3Body": "You start anonymously. An optional username helps track your learning streak.",
+  "consentPoint4Title": "Delete anytime",
+  "consentPoint4Body": "Uninstalling the app removes all stored data permanently.",
+  "pinTitle": "Add an app lock",
+  "@pinTitle": {
+    "description": "PIN setup screen title"
+  },
+  "pinSubtitle": "Set a 4-digit PIN to keep your progress private.",
+  "pinSkip": "Skip for now",
+  "pinSave": "Save PIN & continue",
+  "pinEnter": "Enter PIN",
+  "pinConfirm": "Confirm PIN",
+  "pinMismatch": "PINs do not match. Try again.",
+  "pinVerifyTitle": "Enter your PIN",
+  "pinVerifySubtitle": "Enter your 4-digit PIN to unlock the app.",
+  "pinVerifySubtitleFull": "Unlock URUNGANO to continue",
+  "pinVerifyAttemptsLeft": "Incorrect PIN. {count} attempt(s) left.",
+  "@pinVerifyAttemptsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pinVerifyTooManyAttempts": "Too many attempts. Please restart the app.",
+  "pinForgot": "Forgot PIN? Reset app",
+  "homeReady": "Ready for today's lesson",
+  "@homeReady": {
+    "description": "Home screen subtitle"
+  },
+  "homeContinue": "CONTINUE LEARNING",
+  "homeResume": "Resume lesson",
+  "homePickLesson": "Pick up a lesson",
+  "homeSeeAll": "See all →",
+  "homeTodayChallenge": "TODAY'S CHALLENGE",
+  "homeQuizDesc": "5 questions on menstrual health",
+  "homeQuizMeta": "≈ 3 min · Earns a badge",
+  "homeGestureTry": "Try gesture control",
+  "homeGestureSub": "Move 3D models with your hand",
+  "homeGestureNew": "NEW",
+  "homeCommunityLabel": "PEER COMMUNITY",
+  "homeCommunityOnline": "{count} peers online now",
+  "@homeCommunityOnline": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeCommunityCircles": "Cycle talk · HIV & testing · Know your body",
+  "homeCommunityJoin": "Join",
+  "libraryTitle": "Library",
+  "librarySubtitle": "all lessons",
+  "libraryFilter": "Filter",
+  "libraryAll": "All topics",
+  "libraryEmpty": "No lessons found.",
+  "lessonChapter": "Chapter {number}",
+  "@lessonChapter": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonHotspots": "Hotspots",
+  "lessonNarration": "Narration",
+  "lessonPrev": "Previous",
+  "lessonNext": "Next",
+  "lessonPlay": "Play",
+  "lessonPause": "Pause",
+  "lessonChapterProgress": "CHAPTER {current} OF {total}",
+  "@lessonChapterProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonInteractive3D": "INTERACTIVE 3D",
+  "lesson3DModel": "3D Model",
+  "lessonDragHint": "Drag to rotate · Scroll to zoom",
+  "lessonExplorePoints": "EXPLORE {count} POINTS",
+  "@lessonExplorePoints": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonNotFound": "Lesson not found.",
+  "offline": "Offline",
+  "quizTitle": "Quiz",
+  "quizNoQuestions": "No quiz for this lesson yet.",
+  "quizBackHome": "Back to Home",
+  "quizDailyChallenge": "DAILY CHALLENGE",
+  "quizExplanation": "EXPLANATION",
+  "quizReadAloud": "READ ALOUD",
+  "quizSeeResults": "SEE RESULTS",
+  "quizNextQuestion": "NEXT QUESTION",
+  "quizCorrect": "Correct!",
+  "quizQuestion": "Question {current} of {total}",
+  "@quizQuestion": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "quizCheck": "Check answer",
+  "quizFinish": "Finish quiz",
+  "quizResultTitle": "Quiz complete!",
+  "quizResultScore": "{correct} of {total} correct",
+  "@quizResultScore": {
+    "placeholders": {
+      "correct": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "quizResultAccuracy": "{pct}% accuracy",
+  "@quizResultAccuracy": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "quizHeadlinePerfect": "🎉 Perfect score!",
+  "quizHeadlineGreat": "👍 Great work!",
+  "quizHeadlineKeepLearning": "📚 Keep learning!",
+  "quizHeadlineTryAgain": "💪 Try again soon!",
+  "quizRetry": "Try again",
+  "quizGoHome": "Back to home",
+  "gestureTitle": "Gesture control",
+  "gestureSubtitle": "Navigate with your hand — no touch needed.",
+  "gestureCalibration": "ACCESSIBILITY · CALIBRATION",
+  "gestureStatusLive": "MediaPipe live · {fps} FPS",
+  "@gestureStatusLive": {
+    "placeholders": {
+      "fps": {
+        "type": "double"
+      }
+    }
+  },
+  "gestureStatusOff": "Camera off",
+  "gestureMapTitle": "GESTURE MAP",
+  "gesturePrivacyTitle": "Camera stays on your device.",
+  "gesturePrivacyBody": "MediaPipe runs locally — frames never leave your phone or laptop. Turn off any time from Settings.",
+  "gestureRecalibrate": "Recalibrate",
+  "gestureDetected": "Detected gesture: {gesture}",
+  "@gestureDetected": {
+    "placeholders": {
+      "gesture": {
+        "type": "String"
+      }
+    }
+  },
+  "gestureEnableHint": "Enable gesture control to start",
+  "enable": "Enable",
+  "disable": "Disable",
+  "gesturePrivacy": "Your camera feed never leaves this device.",
+  "gestureFps": "FPS",
+  "gestureConfidence": "Confidence",
+  "gestureOpen": "Open hand — rotate model",
+  "gestureOpenSub": "Rotate the 3D model",
+  "gesturePinch": "Pinch — zoom in",
+  "gesturePinchSub": "Zoom into details",
+  "gesturePoint": "Point — select hotspot",
+  "gesturePointSub": "Select a hotspot",
+  "gestureFist": "Fist — pause narration",
+  "gestureFistSub": "Pause the narration",
+  "communityTitle": "Community",
+  "communitySubtitle": "safe space,",
+  "communitySubtitleEnd": "peer community",
+  "communityTabCircles": "Peer circles",
+  "communityTabDebate": "Open debate",
+  "communityTabAsk": "Ask anonymously",
+  "communityModerated": "Moderated",
+  "communityOnline": "{count} online",
+  "@communityOnline": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityMessages": "{count} messages",
+  "@communityMessages": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityModeratedBy": "Moderated by {name}",
+  "@communityModeratedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityVoteYes": "Vote yes",
+  "communityVoteNo": "Vote no",
+  "communityVotes": "{count} votes",
+  "@communityVotes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityAskHint": "Ask anything — no name attached",
+  "communityAskPrivacy": "Anonymous · routed to health educators",
+  "communityAskAnswered": "Answered",
+  "communityAskAwaiting": "Awaiting",
+  "communityAskAwaitingFull": "Awaiting educator response",
+  "communityHealthEducator": "Health educator",
+  "communitySendHint": "Say something…",
+  "communityAlreadyVoted": "You have already voted on this debate.",
+  "communityVoteError": "Vote could not be saved — check your connection.",
+  "communityMsgError": "Message could not be sent — check your connection.",
+  "communityQuestionMin": "Question must be at least 10 characters.",
+  "communitySubmitError": "Could not submit — check your connection.",
+  "communityLoadErrorCircles": "Could not load circles",
+  "communityLoadErrorDebates": "Could not load debates",
+  "communityLoadErrorQuestions": "Could not load questions",
+  "communityVotesDaily": "{count} votes · Daily Debate",
+  "@communityVotesDaily": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVoteYesLabel": "VOTE YES",
+  "communityVoteNoLabel": "VOTE NO",
+  "communityTimeAgoMin": "{count}m ago",
+  "@communityTimeAgoMin": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityTimeAgoHour": "{count}h ago",
+  "@communityTimeAgoHour": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityTimeAgoDay": "{count}d ago",
+  "@communityTimeAgoDay": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityRulesTitle": "Safe space rules",
+  "communityRulesBody": "Be respectful. No names. No bullying.",
+  "communityOnlineNow": "Online now",
+  "communitySelectCircle": "Select a circle to start chatting",
+  "communityPeerName": "Warrior {id}",
+  "@communityPeerName": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVoteYesPct": "{pct}% YES",
+  "@communityVoteYesPct": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVoteNoPct": "{pct}% NO",
+  "@communityVoteNoPct": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "communityThreadHeader": "{count} messages · {moderator}",
+  "@communityThreadHeader": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "moderator": {
+        "type": "String"
+      }
+    }
+  },
+  "profileTitle": "Your journey",
+  "profileAnonymous": "Anonymous warrior",
+  "profileChangeAvatar": "Change avatar",
+  "profileLessons": "Lessons",
+  "profileAccuracy": "Accuracy",
+  "profileBadges": "Badges",
+  "profileEarnedCount": "{earned} of {total} earned",
+  "@profileEarnedCount": {
+    "placeholders": {
+      "earned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "profileJourney": "Journey Timeline",
+  "profileJourneyEmpty": "Start a lesson to see your journey.",
+  "profilePrivate": "Private",
+  "profileBadgeLocked": "Locked",
+  "timeAgoMonths": "{count} months ago",
+  "@timeAgoMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeAgoDays": "{count} days ago",
+  "@timeAgoDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeAgoToday": "today",
+  "timeAgoHours": "{count}h ago",
+  "@timeAgoHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeAgoJustNow": "just now",
+  "journeyCompleted": "Completed",
+  "journeyQuiz": "Quiz {pct}%",
+  "@journeyQuiz": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyStarted": "Started",
+  "journeySetup": "Account created",
+  "settingsTitle": "Settings",
+  "settingsA11y": "Accessibility",
+  "settingsDisplay": "Display",
+  "settingsLanguage": "Language",
+  "settingsPrivacy": "Privacy & safety",
+  "settingsAppLock": "App lock",
+  "settingsAppLockSub": "Require PIN on startup",
+  "settingsPrivateMode": "Private mode",
+  "settingsPrivateModeSub": "Hide app from recent screens",
+  "settingsIncognito": "Incognito lessons",
+  "settingsIncognitoSub": "Skip progress tracking",
+  "settingsHotline": "Need support?",
+  "settingsHotlineSub": "Rwanda health hotline: 114",
+  "settingsCall": "Call 114",
+  "splashTagline": "Reproductive health, explained",
+  "errorNotFound": "Not found",
+  "errorGeneric": "Something went wrong. Please try again.",
+  "categoryMenstrual": "Menstrual health",
+  "categoryHiv": "HIV & STI",
+  "categoryAnatomy": "Reproductive anatomy",
+  "categoryMental": "Mental health",
+  "categoryRelations": "Relationships",
+  "minLeft": "{min} min left",
+  "@minLeft": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "minTotal": "{min} min",
+  "@minTotal": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "dayStreak": "Day streak",
+  "lessonsCompleted": "Lessons done",
+  "quizAccuracy": "Quiz accuracy",
+  "homeStreakDays": "{count} day streak",
+  "@homeStreakDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStreakEncouragement": "Keep it up!",
+  "homeReadyForToday": "Ready for today?",
+  "homeNextChapter": "Next: {title}",
+  "@homeNextChapter": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGestureTryTitle": "Try Gestures",
+  "homeGestureTrySub": "Control with hand movements",
+  "homePrivacyTitle": "Privacy First",
+  "homePrivacyHeadline": "Nothing leaves this device.",
+  "homePrivacyBody": "No tracking, no accounts, just learning. Your journey is yours alone.",
+  "navLearn": "LEARN",
+  "navHome": "Home",
+  "navLibrary": "Library",
+  "navActiveLesson": "Active lesson",
+  "navChapterBadge": "Ch 2",
+  "navChallenges": "Challenges",
+  "navCommunity": "Community",
+  "navGesture": "Gesture",
+  "navProfile": "Profile",
+  "navSettings": "Settings",
+  "navUserStreak": "Anonymous - {count}d streak",
+  "@navUserStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityTyping": "Someone is typing...",
+  "communityRecent": "RECENT",
+  "communitySubmitSuccess": "Question submitted anonymously!",
+  "communityAskDialogTitle": "Ask a question",
+  "communityAskDialogBody": "Your question is completely anonymous and will be routed to our health educators.",
+  "communityAskInputHint": "Type here...",
+  "communityWideSubtitle": "Peer circles, open debates, anonymous questions.",
+  "communityWeeklyCircle": "New circle weekly.",
+  "communityWeeklyCircleNext": "Next: \"Puberty, explained\" - opens Friday.",
+  "communityRuleAnonymous": "Anonymous by default",
+  "communityRuleNoJudgment": "No judgment, no shame",
+  "communityRuleModerated": "Moderated by real health educators",
+  "communityRuleReport": "Report anything that feels off",
+  "communityNeedPrivateChat": "Need to talk 1-on-1?",
+  "communityPrivateChatBody": "Free, confidential chat with a health educator in Kinyarwanda, English, or French.",
+  "communityStartPrivateChat": "Start private chat",
+  "communityNoNamesNoPhotos": "No names. No photos. Only vibes.",
+  "gestureSwipeRight": "Swipe right",
+  "gestureSwipeLeft": "Swipe left",
+  "gestureSwipeUp": "Swipe up",
+  "gestureOpenPalm": "Open palm",
+  "gestureThumbsUp": "Thumbs up",
+  "gesturePinchLabel": "Pinch",
+  "gestureActionNextChapter": "Next chapter",
+  "gestureActionPrevChapter": "Previous chapter",
+  "gestureActionScroll": "Scroll content",
+  "gestureActionPauseNarration": "Pause narration",
+  "gestureActionMarkUnderstood": "Mark understood",
+  "gestureActionZoomModel": "Zoom 3D model",
+  "gestureOverlayModel": "Model",
+  "gestureOverlayLandmarks": "Landmarks",
+  "gestureOverlayHand": "Hand",
+  "gestureOverlayHandRight": "Right",
+  "gestureOverlayLatency": "Latency",
+  "lessonAutoRotateStart": "Start auto-rotate",
+  "lessonAutoRotateStop": "Stop auto-rotate",
+  "lessonZoomIn": "Zoom in",
+  "lessonZoomOut": "Zoom out",
+  "lessonResetView": "Reset view",
+  "pinWeakError": "PIN cannot be sequential (e.g. 1234) or repeated (e.g. 1111).",
+  "pinSyncFailed": "Failed to sync PIN with server. Please try a different PIN.",
+  "pinUsernameHint": "Enter your username (optional)",
+  "sttListening": "Listening…",
+  "sttTapToSpeak": "Tap to speak",
+  "sttSpeakNow": "Speak now",
+  "sttNotAvailable": "Voice input is not available on this device",
+  "sttNoPermission": "Microphone permission denied",
+  "sttKinyarwandaNote": "Kinyarwanda voice is limited — the app will do its best",
+  "sttVoiceInput": "Voice input",
+  "sttVoiceSearch": "Voice search",
+  "sttTryAgain": "Try again",
+  "homeStreakTitle": "Your streak",
+  "homeStreakDaysLabel": "{days} day streak",
+  "@homeStreakDaysLabel": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOfflineQueued": "Message queued — will send when online",
+  "communityVoteOffline": "You’re offline — vote when reconnected",
+  "communityQuestionQueued": "Question queued — will send when online"
+}
