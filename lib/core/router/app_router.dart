@@ -39,15 +39,44 @@ class RouterRefreshNotifier extends ChangeNotifier {
 final routerProvider = Provider<GoRouter>((ref) {
   final refreshNotifier = RouterRefreshNotifier(ref);
   
-  // Handle session expiration (401) globally
-  ApiClient.instance.onUnauthorized = () {
+  // Handle session expiration (401) globally.
+  //
+  // Uses isRegistration: true so that if the user was deleted from the DB
+  // (e.g. after running a seed with synchronize:true that wiped the users
+  // table), the account is automatically re-created with the same username
+  // instead of silently failing with 404 and leaving the app token-less.
+  ApiClient.instance.onUnauthorized = () async {
     final progress = HiveStorage.loadProgress();
+
     if (progress?.hasPIN == true) {
-      // Force PIN verification
+      // App lock is active → redirect to PIN screen.
       ref.read(sessionUnlockedProvider.notifier).state = false;
-    } else if (progress != null) {
-      // No PIN, try to re-login anonymously automatically
-      ref.read(progressProvider.notifier).signIn(progress.username);
+      ApiClient.instance.resetUnauthorizedFlag();
+      return;
+    }
+
+    if (progress == null) {
+      // No session at all → nothing to recover, release the guard.
+      ApiClient.instance.resetUnauthorizedFlag();
+      return;
+    }
+
+    // Re-authenticate. isRegistration:true means:
+    //   • user exists in DB  → authenticates normally (no conflict)
+    //   • user was deleted   → re-creates the account transparently
+    final result = await ref.read(progressProvider.notifier).signIn(
+      progress.username,
+      isRegistration: true,
+    );
+
+    // Release the guard so future 401s (after successful re-auth) are handled.
+    ApiClient.instance.resetUnauthorizedFlag();
+
+    if (result.error != null) {
+      // Re-auth failed entirely (server down, bad network, etc.).
+      // Force the user back to onboarding so they can retry manually.
+      debugPrint('onUnauthorized: re-auth failed: ${result.error}');
+      ref.read(settingsProvider.notifier).resetOnboarding();
     }
   };
 

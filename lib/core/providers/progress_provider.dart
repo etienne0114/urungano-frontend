@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user_progress.dart';
 import '../models/badge_definition.dart';
@@ -52,11 +53,13 @@ class ProgressNotifier extends StateNotifier<UserProgress?> {
     }
     await _persist();
 
-    // 2. Perform a full data sync (Lessons, Quizzes, Progress)
-    await SyncService.performFullSync();
-    
-    final hydrated = HiveStorage.loadProgress();
-    if (hydrated != null) state = hydrated;
+    // 2. Fire sync in the background — do NOT await here.
+    //    Awaiting sync inside signIn caused a race condition: if the /sync
+    //    endpoint returned 401 (e.g. due to a brief server hiccup), the 401
+    //    interceptor would clear the token we just saved, effectively logging
+    //    the user out 2-3 seconds after a successful sign-in.
+    unawaited(SyncService.performFullSync());
+
     return (error: null, isNotFound: false);
   }
 

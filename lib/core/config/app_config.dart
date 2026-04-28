@@ -39,7 +39,7 @@ class AppConfig {
 
   /// Production configuration
   static const AppConfig production = AppConfig(
-    apiBaseUrl: 'https://api.urungano.app/api/v1',
+    apiBaseUrl: 'https://urungano-backend.vercel.app/api/v1',
     apiTimeoutSeconds: 15,
     enableLogging: false,
     isTestEnvironment: false,

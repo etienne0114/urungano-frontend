@@ -10,8 +10,17 @@ class ApiClient implements ApiClientInterface {
   String _baseUrl;
   bool _isOfflineMode = false;
 
-  /// Callback triggered when a 401 Unauthorized response is received
+  /// Prevents re-entrant 401 handling when multiple requests fail simultaneously.
+  bool _isHandlingUnauth = false;
+
+  /// Callback triggered when a 401 Unauthorized response is received.
+  /// Only fires once per auth-failure event; re-entrant calls are suppressed
+  /// until [resetUnauthorizedFlag] is called.
   void Function()? onUnauthorized;
+
+  /// Call this from the [onUnauthorized] handler once re-auth is complete
+  /// (success or failure) so future 401s can be handled again.
+  void resetUnauthorizedFlag() => _isHandlingUnauth = false;
 
   /// Singleton instance for easy access in services
   static final ApiClient instance = ApiClient();
@@ -95,11 +104,15 @@ class ApiClient implements ApiClientInterface {
               return;
             }
 
-            debugPrint('ApiClient: 401 Unauthorized on ${err.requestOptions.path} (isPinVerify: $isPinVerify)');
-            
-            if (!isPinVerify) {
+            debugPrint('ApiClient: 401 Unauthorized on ${err.requestOptions.path} (isPinVerify: $isPinVerify, handlingUnauth: $_isHandlingUnauth)');
+
+            if (!isPinVerify && !_isHandlingUnauth) {
+              _isHandlingUnauth = true;
               HiveStorage.clearAuth();
               onUnauthorized?.call();
+              // Auto-reset after 15 s so future 401s are handled if re-auth never
+              // completed (e.g. network went fully offline mid-handler).
+              Future.delayed(const Duration(seconds: 15), () => _isHandlingUnauth = false);
             }
           }
           handler.next(err);

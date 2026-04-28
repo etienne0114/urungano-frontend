@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "urungano-60a69"
-  }
+    "default": "urungano-60a69",
+    "urungano": "urungano-60a69"
+  },
+  "targets": {},
+  "etags": {}
 }

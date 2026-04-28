@@ -8,6 +8,8 @@ import 'l10n/rw_cupertino_localizations.dart';
 
 import 'core/router/app_router.dart';
 import 'core/services/storage/hive_storage.dart';
+import 'core/services/api/api_client.dart';
+import 'core/config/app_config.dart';
 import 'core/theme/app_theme.dart';
 import 'core/providers/settings_provider.dart';
 import 'core/providers/sync_provider.dart';
@@ -24,6 +26,11 @@ void main() async {
 
   await Hive.initFlutter();
   await HiveStorage.openBoxes();
+
+  // Initialize ApiClient instance with correct environment URL
+  final config = AppConfig.current;
+  ApiClient.instance.updateBaseUrl(config.apiBaseUrl);
+  debugPrint('🚀 App started in ${config.apiBaseUrl} mode');
 
   runApp(const ProviderScope(child: UrunganoApp()));
 }

@@ -23,6 +23,11 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
 
   Future<void> completeOnboarding() =>
       _persist(state.copyWith(onboardingComplete: true));
+
+  /// Clears the onboarding flag so the router redirects back to /language.
+  /// Used when re-authentication fails completely and the user must restart.
+  Future<void> resetOnboarding() =>
+      _persist(state.copyWith(onboardingComplete: false));
 }
 
 final settingsProvider =

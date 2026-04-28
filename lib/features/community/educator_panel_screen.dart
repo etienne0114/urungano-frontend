@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:urungano/l10n/app_localizations.dart';
 import 'package:urungano/core/providers/community_provider.dart';
+import 'package:urungano/core/services/api/community_service.dart';
 import 'package:urungano/core/theme/app_colors.dart';
 import 'package:urungano/core/theme/app_text_styles.dart';
 
