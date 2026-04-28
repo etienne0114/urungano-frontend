@@ -17,6 +17,7 @@ import '../../features/profile/profile_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/community/community_screen.dart';
 import '../../features/community/community_thread_screen.dart';
+import '../services/api/api_client.dart';
 import '../services/storage/hive_storage.dart';
 import '../widgets/adaptive_scaffold.dart';
 import '../providers/progress_provider.dart';
@@ -37,6 +38,18 @@ class RouterRefreshNotifier extends ChangeNotifier {
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refreshNotifier = RouterRefreshNotifier(ref);
+  
+  // Handle session expiration (401) globally
+  ApiClient.instance.onUnauthorized = () {
+    final progress = HiveStorage.loadProgress();
+    if (progress?.hasPIN == true) {
+      // Force PIN verification
+      ref.read(sessionUnlockedProvider.notifier).state = false;
+    } else if (progress != null) {
+      // No PIN, try to re-login anonymously automatically
+      ref.read(progressProvider.notifier).signIn(progress.username);
+    }
+  };
 
   return GoRouter(
     initialLocation: '/',

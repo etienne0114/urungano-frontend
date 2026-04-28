@@ -16,16 +16,22 @@ class AuthService {
   ///
   /// ONLINE:  calls backend → stores token + userId in Hive → returns result
   /// OFFLINE: returns null → caller uses existing Hive session
-  static Future<({String userId, String username, bool isNewUser})?> signInAnonymous(
-    String username,
-  ) async {
+  static Future<({String userId, String username, bool isNewUser, bool isNotFound, String? error})?> signInAnonymous(
+    String username, {
+    String? pin,
+    bool isRegistration = false,
+  }) async {
     final online = await ConnectivityService.check();
     if (!online) return null;
 
     try {
       final res = await ApiClient.instance.post<Map<String, dynamic>>(
         '/auth/anonymous',
-        data: {'username': username},
+        data: {
+          'username': username,
+          'pin': pin,
+          'isRegistration': isRegistration,
+        },
       );
       final data = ApiClient.staticUnwrap<Map<String, dynamic>>(res);
       final saved = await HiveStorage.saveAuth(
@@ -33,15 +39,21 @@ class AuthService {
         data['userId']      as String,
       );
       
-      if (!saved) return null;
+      if (!saved) return (userId: '', username: '', isNewUser: false, isNotFound: false, error: 'Storage error');
       
       return (
         userId:    data['userId']   as String,
         username:  data['username'] as String,
         isNewUser: data['isNewUser'] as bool,
+        isNotFound: false,
+        error:     null,
       );
+    } on DioException catch (e) {
+      final isNotFound = e.response?.statusCode == 404;
+      final msg = e.response?.data?['message']?.toString() ?? e.message;
+      return (userId: '', username: '', isNewUser: false, isNotFound: isNotFound, error: msg);
     } catch (e) {
-      return null;
+      return (userId: '', username: '', isNewUser: false, isNotFound: false, error: e.toString());
     }
   }
 

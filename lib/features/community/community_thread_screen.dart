@@ -99,63 +99,76 @@ class _CommunityThreadScreenState extends ConsumerState<CommunityThreadScreen> {
           messageCount: 0),
     );
 
-    final content = Column(
-      children: [
-        _ThreadHeader(
-          circle: circle,
-          isEmbedded: widget.isEmbedded,
-          scale: scale,
-          onlineCount: chatState.onlineCount,
-        ),
-        const Divider(height: 1, color: AppColors.divider),
-        Expanded(
-          child: Stack(
-            children: [
-              ListView.builder(
-                controller: _scrollController,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                itemCount: chatState.messages.length,
-                itemBuilder: (context, i) => _MessageBubble(
-                  message: chatState.messages[i],
-                  scale: scale,
+    return Container(
+      color: Colors.transparent,
+      child: Column(
+        children: [
+          _ThreadHeader(
+            circle: circle,
+            isEmbedded: widget.isEmbedded,
+            scale: scale,
+            onlineCount: chatState.onlineCount,
+          ),
+          const Divider(height: 1, color: AppColors.divider),
+          Expanded(
+            child: chatState.messages.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: const BoxDecoration(
+                            color: AppColors.surface,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.chat_bubble_outline_rounded,
+                              size: 32, color: AppColors.ink40),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(l.communityEmptyChat,
+                            style: AppTextStyles.body(scaleFactor: scale)
+                                .copyWith(color: AppColors.ink60)),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    controller: _scrollController,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    itemCount: chatState.messages.length,
+                    itemBuilder: (context, i) => _MessageBubble(
+                      message: chatState.messages[i],
+                      scale: scale,
+                    ),
+                  ),
+          ),
+          if (chatState.isTyping)
+            Padding(
+              padding: const EdgeInsets.only(left: 20, bottom: 8),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(l.communityTyping,
+                      style: AppTextStyles.caption(scaleFactor: scale)
+                          .copyWith(fontStyle: FontStyle.italic)),
                 ),
               ),
-              if (chatState.isTyping)
-                Positioned(
-                  bottom: 8,
-                  left: 20,
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(l.communityTyping,
-                        style: AppTextStyles.caption(scaleFactor: scale)
-                            .copyWith(fontStyle: FontStyle.italic)),
-                  ).animate().fadeIn().slideY(begin: 0.5, end: 0),
-                ),
-            ],
+            ).animate().fadeIn().slideY(begin: 0.5, end: 0),
+          _InputBar(
+            controller: _controller,
+            onSend: _send,
+            scale: scale,
+            languageCode: ref.read(settingsProvider).language,
           ),
-        ),
-        _InputBar(
-          controller: _controller,
-          onSend: _send,
-          scale: scale,
-          languageCode: ref.read(settingsProvider).language,
-        ),
-      ],
-    );
-
-    if (widget.isEmbedded) {
-      return content;
-    }
-
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: SafeArea(child: content),
+        ],
+      ),
     );
   }
 }
@@ -177,11 +190,10 @@ class _ThreadHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-      decoration: const BoxDecoration(
-        color: AppColors.white,
-        border:
-            Border(bottom: BorderSide(color: AppColors.divider, width: 0.5)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border(bottom: BorderSide(color: AppColors.divider, width: 1.0)),
       ),
       child: Row(
         children: [
@@ -193,29 +205,30 @@ class _ThreadHeader extends StatelessWidget {
             const SizedBox(width: 4),
           ],
           Container(
-            width: 48,
-            height: 48,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
               color: AppColors.background,
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Center(
                 child: Text(circle?.emoji ?? '💬',
-                    style: const TextStyle(fontSize: 24))),
+                    style: const TextStyle(fontSize: 22))),
           ),
-          const SizedBox(width: 16),
-          Flexible(
+          const SizedBox(width: 14),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(circle?.name ?? '',
+                Text(circle?.name ?? circle?.slug ?? 'Chat',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.headline(scaleFactor: scale)
-                        .copyWith(fontSize: 20, fontWeight: FontWeight.w800)),
+                    style: AppTextStyles.title(scaleFactor: scale)
+                        .copyWith(fontSize: 16, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 2),
                 Text(
-                    '${circle?.topic ?? ''} · ${l.communityModeratedBy(circle?.moderator ?? '')}',
+                    '${circle?.topic ?? ""} · ${onlineCount} online',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.caption(scaleFactor: scale).copyWith(
@@ -223,29 +236,38 @@ class _ThreadHeader extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.sageSoft.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                    width: 4,
-                    height: 4,
-                    decoration: const BoxDecoration(
-                        color: AppColors.sage, shape: BoxShape.circle)),
-                const SizedBox(width: 6),
-                Text(
-                    l.communityOnline(onlineCount > 0
-                        ? onlineCount
-                        : (circle?.onlineCount ?? 1)),
-                    style: AppTextStyles.label(scaleFactor: scale)
-                        .copyWith(fontSize: 9, color: AppColors.sage)),
-              ],
+          Flexible(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppColors.sageSoft.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                      width: 4,
+                      height: 4,
+                      decoration: const BoxDecoration(
+                          color: AppColors.sage, shape: BoxShape.circle)),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      l.communityOnline(onlineCount > 0
+                          ? onlineCount
+                          : (circle?.onlineCount ?? 1)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.label(scaleFactor: scale).copyWith(
+                          fontSize: 9,
+                          color: AppColors.sage,
+                          fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -386,11 +408,14 @@ class _MessageBubble extends StatelessWidget {
 /// The mic button transcribes speech directly into the text field in the
 /// user's current language (EN / FR / RW).
 class _InputBar extends ConsumerStatefulWidget {
-  const _InputBar(
-      {required this.controller,
-      required this.onSend,
-      required this.scale,
-      required this.languageCode});
+  const _InputBar({
+    required this.controller,
+    required this.onSend,
+    required this.scale,
+    required this.languageCode,
+    super.key,
+  });
+
   final TextEditingController controller;
   final VoidCallback onSend;
   final double scale;
@@ -401,13 +426,9 @@ class _InputBar extends ConsumerStatefulWidget {
 }
 
 class _InputBarState extends ConsumerState<_InputBar> {
-  String _liveTranscript = '';
-
   void _onVoiceResult(String text, bool isFinal) {
-    setState(() => _liveTranscript = isFinal ? '' : text);
     widget.controller.text = text;
-    widget.controller.selection =
-        TextSelection.collapsed(offset: text.length);
+    widget.controller.selection = TextSelection.collapsed(offset: text.length);
     if (isFinal && text.trim().isNotEmpty) {
       widget.onSend();
     }
@@ -418,94 +439,49 @@ class _InputBarState extends ConsumerState<_InputBar> {
     final l = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.white,
-        border: Border(top: BorderSide(color: AppColors.divider, width: 0.5)),
+        border: const Border(top: BorderSide(color: AppColors.divider, width: 1.0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -4),
+          ),
+        ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
         children: [
-          // Live STT partial-result preview
-          if (_liveTranscript.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                children: [
-                  const Icon(Icons.mic_rounded,
-                      size: 12, color: AppColors.primary),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      _liveTranscript,
-                      style: AppTextStyles.bodySmall().copyWith(
-                        color: AppColors.primary,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 12,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+          VoiceMicButton(
+            languageCode: widget.languageCode,
+            onResult: _onVoiceResult,
+            size: 44,
+            iconSize: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: TextField(
+                controller: widget.controller,
+                style: AppTextStyles.body(scaleFactor: widget.scale).copyWith(fontSize: 14),
+                decoration: InputDecoration(
+                  hintText: l.communitySendHint,
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                onSubmitted: (_) => widget.onSend(),
               ),
             ),
-          Row(
-            children: [
-              // Voice mic button (replaces static icon)
-              VoiceMicButton(
-                languageCode: widget.languageCode,
-                onResult: _onVoiceResult,
-                size: 44,
-                iconSize: 20,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: AppColors.background,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: TextField(
-                    controller: widget.controller,
-                    style: AppTextStyles.body(scaleFactor: widget.scale)
-                        .copyWith(fontSize: 14),
-                    decoration: InputDecoration(
-                      hintText: l.communitySendHint,
-                      hintStyle: AppTextStyles.body(scaleFactor: widget.scale)
-                          .copyWith(color: AppColors.ink40, fontSize: 14),
-                      border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    onSubmitted: (_) => widget.onSend(),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              ElevatedButton(
-                onPressed: widget.onSend,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 14),
-                ),
-                child: Row(
-                  children: [
-                    Text(l.submit,
-                        style: AppTextStyles.button(scaleFactor: widget.scale)
-                            .copyWith(
-                                fontSize: 14, fontWeight: FontWeight.w700)),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.send_rounded, size: 16),
-                  ],
-                ),
-              ),
-            ],
+          ),
+          const SizedBox(width: 12),
+          IconButton(
+            onPressed: widget.onSend,
+            icon: const Icon(Icons.send_rounded, color: AppColors.primary),
           ),
         ],
       ),

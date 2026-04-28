@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../storage/hive_storage.dart';
@@ -8,6 +9,9 @@ class ApiClient implements ApiClientInterface {
   late Dio _dio;
   String _baseUrl;
   bool _isOfflineMode = false;
+
+  /// Callback triggered when a 401 Unauthorized response is received
+  void Function()? onUnauthorized;
 
   /// Singleton instance for easy access in services
   static final ApiClient instance = ApiClient();
@@ -68,15 +72,35 @@ class ApiClient implements ApiClientInterface {
           final token = HiveStorage.accessToken;
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
+            // Store the token used for this request to check on error
+            options.extra['used_token'] = token;
+            debugPrint('ApiClient: Request ${options.path} with token: ${token.substring(0, 10)}...');
+          } else {
+            debugPrint('ApiClient: Request ${options.path} with NO token');
           }
           handler.next(options);
         },
         onError: (err, handler) {
           // 401 → clear auth; let caller handle navigation
-          // Do NOT clear auth if the failure is from the PIN verification endpoint itself
-          if (err.response?.statusCode == 401 && 
-              !err.requestOptions.path.contains('auth/pin/verify')) {
-            HiveStorage.clearAuth();
+          if (err.response?.statusCode == 401) {
+            final isPinVerify = err.requestOptions.path.contains('auth/pin/verify');
+            
+            // Check if this was an old request with a different token
+            final usedToken = err.requestOptions.extra['used_token'] as String?;
+            final currentToken = HiveStorage.accessToken;
+            
+            if (usedToken != null && currentToken != null && usedToken != currentToken) {
+              debugPrint('ApiClient: Ignoring 401 from stale request (token mismatch)');
+              handler.next(err);
+              return;
+            }
+
+            debugPrint('ApiClient: 401 Unauthorized on ${err.requestOptions.path} (isPinVerify: $isPinVerify)');
+            
+            if (!isPinVerify) {
+              HiveStorage.clearAuth();
+              onUnauthorized?.call();
+            }
           }
           handler.next(err);
         },

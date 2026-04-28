@@ -202,6 +202,26 @@ class AppLocalizationsRw extends AppLocalizations {
   String get homeReady => 'Witeguye isomo rya none';
 
   @override
+  String get homeWelcomeTitle => 'Murakaza neza mu Rungano';
+
+  @override
+  String get homeWelcomeSubtitle => 'Ahantu hizewe ku buzima bwo kubyara.';
+
+  @override
+  String homeWelcomeBack(String name) {
+    return 'Muraho nanone, $name!';
+  }
+
+  @override
+  String get homeStartJourney => 'TANGIRA URUGENDO RWAWE';
+
+  @override
+  String get homeExploreLessons => 'Sura Amasomo';
+
+  @override
+  String get homeRecentProgress => 'IBYOUMAZE KUGERAHO';
+
+  @override
   String get homeContinue => 'KOMEZA KWIGA';
 
   @override
@@ -884,6 +904,9 @@ class AppLocalizationsRw extends AppLocalizations {
   String get communityNeedPrivateChat => 'Ukeneye kuganira mwembi gusa?';
 
   @override
+  String get communityPrivateChat => 'Ikiganiro cy\'ibanga';
+
+  @override
   String get communityPrivateChatBody =>
       'Ikiganiro cy\'ibanga kandi cy\'ubuntu n\'umwigisha w\'ubuzima mu Kinyarwanda, Icyongereza cyangwa Igifaransa.';
 
@@ -969,7 +992,10 @@ class AppLocalizationsRw extends AppLocalizations {
       'Ntibyashobotse guhuza PIN na seriveri. Gerageza indi PIN.';
 
   @override
-  String get pinUsernameHint => 'Andika izina ukoresha (si ngombwa)';
+  String get pinUsernameHint => 'Andika izina ukoresha';
+
+  @override
+  String get profileNameRequired => 'Andika izina kugira ngo ukomeze';
 
   @override
   String get sttListening => 'Ndumva…';
@@ -1018,4 +1044,8 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get communityQuestionQueued =>
       'Ikibazo kiragumye — kizajya iyo ufite interineti';
+
+  @override
+  String get communityEmptyChat =>
+      'Nta butumwa burimo. Ba uwa mbere mu kugira icyo uvuga!';
 }

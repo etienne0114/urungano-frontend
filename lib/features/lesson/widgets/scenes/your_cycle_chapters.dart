@@ -390,8 +390,8 @@ class UterusPainter extends CustomPainter {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CH 0 — What is menstruation?
-// Large centered uterus. Phase info as BOTTOM STRIP — no card over the figure.
+// CH 0 — What is menstruation?  (Interactive 3D viewer)
+// Drag to rotate · Pinch to zoom · Double-tap to reset · Tap phase to jump
 // ═══════════════════════════════════════════════════════════════════════════════
 class Ch0WhatIsMenstruation extends StatefulWidget {
   const Ch0WhatIsMenstruation({super.key});
@@ -403,15 +403,23 @@ class _Ch0State extends State<Ch0WhatIsMenstruation>
   late final AnimationController _ctrl;
   int _selPhase = 0;
   bool _panels = false;
+  bool _showLabels = false;
+
+  // ── 3-D view state ──────────────────────────────────────────
+  double _rotX = 0.0, _rotY = 0.18;
+  double _zoom = 1.0;
+  Offset? _focalStart;
+  double _rotXStart = 0, _rotYStart = 0, _zoomStart = 1.0;
+  bool _hasInteracted = false;
 
   static const _phases = [
-    _PD('Menstrual',   'Days 1–5',   kRose,      3.0, 0.8,
+    _PD('Menstrual',  'Days 1–5',   kRose,      3.0, 0.8,
         'The endometrial lining sheds. Prostaglandins cause uterine contractions. Hormone levels are at their lowest point in the cycle.'),
-    _PD('Follicular',  'Days 6–13',  kAmber,    10.0, 0.0,
+    _PD('Follicular', 'Days 6–13',  kAmber,    10.0, 0.0,
         'FSH stimulates follicle growth. Rising oestrogen rebuilds the endometrium. Energy and mood often peak in this phase.'),
-    _PD('Ovulation',   'Day 14',     kSage,     14.0, 0.0,
+    _PD('Ovulation',  'Day 14',     kSage,     14.0, 0.0,
         'LH surge triggers egg release from the dominant follicle. Peak fertility. Cervical mucus becomes clear and stretchy.'),
-    _PD('Luteal',      'Days 15–28', kRoseDark, 22.0, 0.0,
+    _PD('Luteal',     'Days 15–28', kRoseDark, 22.0, 0.0,
         'Corpus luteum secretes progesterone, maintaining the thickened endometrium. If no fertilisation, progesterone drops and menstruation begins.'),
   ];
 
@@ -422,11 +430,23 @@ class _Ch0State extends State<Ch0WhatIsMenstruation>
     if (d < 14) return 2; return 3;
   }
 
+  // subtle "breathing" pulse layered on top of user zoom
+  double get _breathScale => 1.0 + math.sin(_ctrl.value * math.pi * 2) * 0.012;
+
+  Matrix4 get _viewMatrix => Matrix4.identity()
+    ..setEntry(3, 2, 0.0007)   // perspective depth
+    ..rotateX(_rotX)
+    ..rotateY(_rotY)
+    ..scaleByDouble(_zoom * _breathScale, _zoom * _breathScale, _zoom * _breathScale, 1.0);
+
+  void _resetView() => setState(() { _rotX = 0; _rotY = 0.18; _zoom = 1.0; });
+
   @override
   void initState() {
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: const Duration(seconds: 18))
-      ..addListener(() => setState(() {}))..repeat();
+      ..addListener(() => setState(() {}))
+      ..repeat();
   }
 
   @override void dispose() { _ctrl.dispose(); super.dispose(); }
@@ -436,173 +456,395 @@ class _Ch0State extends State<Ch0WhatIsMenstruation>
     final phase = _selPhase >= 0 ? _selPhase : _autoPhase;
     final pd = _phases[phase];
 
-    return _stage(Stack(children: [
-      // Background
-      Container(decoration: BoxDecoration(gradient: LinearGradient(
-        begin: Alignment.topLeft, end: Alignment.bottomRight,
-        colors: [_bgCream, pd.color.withValues(alpha: 0.07)],
-      ))),
+    return _stage(Stack(clipBehavior: Clip.hardEdge, children: [
+      // ── 1. Animated background ───────────────────────────────
+      AnimatedContainer(
+        duration: const Duration(milliseconds: 600),
+        decoration: BoxDecoration(gradient: RadialGradient(
+          center: const Alignment(0, -0.3), radius: 1.4,
+          colors: [pd.color.withValues(alpha: 0.10), _bgCream],
+        )),
+      ),
 
       if (!_panels) ...[
-        // ── FULL-WIDTH centered uterus ──────────────────────────
-        Positioned.fill(
-          bottom: 120,
-          child: CustomPaint(
-            painter: UterusPainter(
-              cx: _cW / 2, cy: _cH * 0.44,
-              endoThickness: pd.endoThick, phase: phase,
-              t: _ctrl.value, bleed: pd.bleed * (phase == 0 ? 1.0 : 0.0),
-              scale: 1.0,
+        // ── 2. Interactive 3-D uterus ────────────────────────
+        Positioned.fill(bottom: 118,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onScaleStart: (d) {
+              _focalStart = d.focalPoint;
+              _rotXStart = _rotX; _rotYStart = _rotY; _zoomStart = _zoom;
+            },
+            onScaleUpdate: (d) => setState(() {
+              // single-finger pan → rotation; multi-finger → zoom
+              if (d.pointerCount <= 1 && _focalStart != null) {
+                final delta = d.focalPoint - _focalStart!;
+                _rotY = (_rotYStart + delta.dx * 0.007).clamp(-1.4, 1.4);
+                _rotX = (_rotXStart - delta.dy * 0.007).clamp(-0.6, 0.6);
+              } else {
+                _zoom = (_zoomStart * d.scale).clamp(0.45, 3.0);
+              }
+              if (!_hasInteracted) _hasInteracted = true;
+            }),
+            onDoubleTap: _resetView,
+            child: ClipRect(
+              child: Transform(
+                transform: _viewMatrix,
+                alignment: Alignment.center,
+                child: CustomPaint(
+                  painter: UterusPainter(
+                    cx: _cW / 2, cy: (_cH - 118) * 0.50,
+                    endoThickness: pd.endoThick, phase: phase,
+                    t: _ctrl.value,
+                    bleed: pd.bleed * (phase == 0 ? 1.0 : 0.0),
+                    scale: 1.05,
+                    showLabels: _showLabels,
+                  ),
+                  size: const Size(_cW, _cH - 118),
+                ),
+              ),
             ),
           ),
         ),
 
-        // Day badge top-left
-        Positioned(top: 16, left: 18,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
-            decoration: BoxDecoration(
-              color: pd.color.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(100),
-              border: Border.all(color: pd.color, width: 1.5),
-            ),
-            child: Row(mainAxisSize: MainAxisSize.min, children: [
-              Container(width: 8, height: 8, decoration: BoxDecoration(
-                  color: pd.color, shape: BoxShape.circle)),
-              const SizedBox(width: 7),
-              Text('Day ${_day.floor()} · ${pd.name}',
-                  style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700,
-                      color: pd.color)),
-            ]),
+        // ── 3. "Drag to rotate" hint (auto-hides on first touch)
+        if (!_hasInteracted)
+          const Positioned.fill(
+            bottom: 118,
+            child: IgnorePointer(child: _RotateHint()),
           ),
+
+        // ── 4. Top-left: day badge
+        Positioned(top: 14, left: 16,
+          child: _DayBadge(day: _day, pd: pd),
         ),
 
-        // Day timeline top-right
-        Positioned(top: 20, right: 120, left: 180,
+        // ── 5. Top-center: day timeline
+        Positioned(top: 20, left: 210, right: 190,
           child: _DayTimeline(day: _day),
         ),
 
-        // Phase panels toggle top-right
-        Positioned(top: 14, right: 16,
-          child: GestureDetector(
-            onTap: () => setState(() => _panels = true),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.9),
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 6)],
+        // ── 6. Top-right: control pills
+        Positioned(top: 10, right: 14,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _CtrlPill(
+                icon: Icons.grid_view_rounded,
+                label: 'Phases',
+                onTap: () => setState(() => _panels = true),
               ),
-              child: const Row(mainAxisSize: MainAxisSize.min, children: [
-                Icon(Icons.grid_view_rounded, size: 13, color: kPlum),
-                SizedBox(width: 5),
-                Text('Phases', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: kPlum)),
-              ]),
-            ),
+              const SizedBox(height: 5),
+              _CtrlPill(
+                icon: _showLabels
+                    ? Icons.label_off_outlined
+                    : Icons.label_outline_rounded,
+                label: _showLabels ? 'Hide labels' : 'Labels',
+                active: _showLabels,
+                onTap: () => setState(() => _showLabels = !_showLabels),
+              ),
+            ],
           ),
         ),
 
-        // ── BOTTOM INFO STRIP ─────────────────────────────────
-        Positioned(bottom: 0, left: 0, right: 0,
-          child: Container(
-            height: 115,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.93),
-              border: Border(top: BorderSide(color: pd.color.withValues(alpha: 0.25), width: 1.5)),
-            ),
-            padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
-            child: Row(children: [
-              // Description
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(children: [
-                    Container(width: 9, height: 9, decoration: BoxDecoration(
-                        color: pd.color, shape: BoxShape.circle)),
-                    const SizedBox(width: 7),
-                    Text(pd.name, style: TextStyle(fontFamily: 'Fraunces', fontSize: 14,
-                        fontWeight: FontWeight.w700, color: pd.color)),
-                    const SizedBox(width: 6),
-                    Text(pd.days, style: const TextStyle(fontSize: 10, color: kInk60)),
-                  ]),
-                  const SizedBox(height: 4),
-                  Text(pd.description, maxLines: 2, overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 11.5, color: kPlum, height: 1.4)),
-                ],
-              )),
-              const SizedBox(width: 16),
-              // Hormone mini chart
-              SizedBox(width: 170, height: 65,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Hormones', style: TextStyle(fontSize: 9,
-                        letterSpacing: 0.8, color: kInk60, fontWeight: FontWeight.w600)),
-                    Expanded(child: CustomPaint(
-                        painter: _HormoneChart(day: _day, t: _ctrl.value))),
-                    Row(children: const [
-                      _Leg(kRose, 'Oestrogen'), SizedBox(width: 8),
-                      _Leg(kSage, 'Prog.'), SizedBox(width: 8),
-                      _Leg(kAmber, 'LH'),
-                    ]),
-                  ],
-                ),
+        // ── 7. Right edge: zoom controls
+        Positioned(right: 14, top: 0, bottom: 128,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _ZoomBtn(icon: Icons.add_rounded,
+                  onTap: () => setState(() => _zoom = (_zoom * 1.25).clamp(0.45, 3.0))),
+              const SizedBox(height: 4),
+              Container(
+                width: 32, height: 26,
+                alignment: Alignment.center,
+                child: Text('${(_zoom * 100).round()}%',
+                    style: const TextStyle(fontSize: 8,
+                        color: kInk60, fontWeight: FontWeight.w600)),
               ),
-              const SizedBox(width: 14),
-              // Phase selector
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(4, (i) => GestureDetector(
-                  onTap: () => setState(() => _selPhase = i),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 150),
-                    margin: const EdgeInsets.symmetric(vertical: 3),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: phase == i ? _phases[i].color : _phases[i].color.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Text(_phases[i].name, style: TextStyle(fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: phase == i ? Colors.white : _phases[i].color)),
-                  ),
-                )),
-              ),
-            ]),
+              const SizedBox(height: 4),
+              _ZoomBtn(icon: Icons.remove_rounded,
+                  onTap: () => setState(() => _zoom = (_zoom / 1.25).clamp(0.45, 3.0))),
+              const SizedBox(height: 8),
+              _ZoomBtn(icon: Icons.refresh_rounded, onTap: _resetView, small: true),
+            ],
           ),
         ),
+
+        // ── 8. Bottom info strip
+        _Ch0PhaseStrip(
+          phase: phase, pd: pd,
+          day: _day, t: _ctrl.value,
+          phases: _phases, selPhase: _selPhase,
+          onPhaseSelect: (i) => setState(() => _selPhase = i),
+        ),
+
       ] else ...[
-        // ── 4-PANEL PHASE GRID ────────────────────────────────
+        // ── 4-panel phase overview grid
         Positioned(top: 12, right: 16,
-          child: GestureDetector(
+          child: _CtrlPill(
+            icon: Icons.close_rounded, label: 'Close',
+            activeColor: kPlum, active: true,
             onTap: () => setState(() => _panels = false),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-              decoration: BoxDecoration(
-                color: kPlum, borderRadius: BorderRadius.circular(100),
-              ),
-              child: const Row(mainAxisSize: MainAxisSize.min, children: [
-                Icon(Icons.close_rounded, size: 13, color: Colors.white),
-                SizedBox(width: 5),
-                Text('Close', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.white)),
-              ]),
-            ),
           ),
         ),
         Positioned.fill(top: 50,
-          child: Row(
-            children: List.generate(4, (i) => Expanded(
-              child: _MiniPhasePanel(
-                pd: _phases[i], idx: i, t: _ctrl.value,
-                onTap: () => setState(() { _selPhase = i; _panels = false; }),
-              ),
-            )),
-          ),
+          child: Row(children: List.generate(4, (i) => Expanded(
+            child: _MiniPhasePanel(
+              pd: _phases[i], idx: i, t: _ctrl.value,
+              onTap: () => setState(() { _selPhase = i; _panels = false; }),
+            ),
+          ))),
         ),
       ],
     ]));
   }
+}
+
+// ── Reusable: day badge pill ─────────────────────────────────────────────────
+class _DayBadge extends StatelessWidget {
+  const _DayBadge({required this.day, required this.pd});
+  final double day; final _PD pd;
+  @override
+  Widget build(BuildContext context) => AnimatedContainer(
+    duration: const Duration(milliseconds: 400),
+    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
+    decoration: BoxDecoration(
+      color: pd.color.withValues(alpha: 0.12),
+      borderRadius: BorderRadius.circular(100),
+      border: Border.all(color: pd.color, width: 1.5),
+    ),
+    child: Row(mainAxisSize: MainAxisSize.min, children: [
+      AnimatedContainer(
+        duration: const Duration(milliseconds: 400),
+        width: 8, height: 8,
+        decoration: BoxDecoration(color: pd.color, shape: BoxShape.circle),
+      ),
+      const SizedBox(width: 7),
+      Text('Day ${day.floor()} · ${pd.name}',
+          style: TextStyle(fontSize: 11.5,
+              fontWeight: FontWeight.w700, color: pd.color)),
+    ]),
+  );
+}
+
+// ── Reusable: labelled icon pill button ──────────────────────────────────────
+class _CtrlPill extends StatelessWidget {
+  const _CtrlPill({
+    required this.icon, required this.label, required this.onTap,
+    this.active = false, this.activeColor,
+  });
+  final IconData icon; final String label;
+  final VoidCallback onTap; final bool active; final Color? activeColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final col = activeColor ?? kPlum;
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+        decoration: BoxDecoration(
+          color: active ? col : Colors.white.withValues(alpha: 0.92),
+          borderRadius: BorderRadius.circular(100),
+          boxShadow: [BoxShadow(
+              color: Colors.black.withValues(alpha: 0.09), blurRadius: 6)],
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Icon(icon, size: 13, color: active ? Colors.white : col),
+          const SizedBox(width: 5),
+          Text(label, style: TextStyle(fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: active ? Colors.white : col)),
+        ]),
+      ),
+    );
+  }
+}
+
+// ── Reusable: circular zoom / action button ───────────────────────────────────
+class _ZoomBtn extends StatelessWidget {
+  const _ZoomBtn({required this.icon, required this.onTap, this.small = false});
+  final IconData icon; final VoidCallback onTap; final bool small;
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: small ? 28 : 32, height: small ? 28 : 32,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.92),
+        shape: BoxShape.circle,
+        boxShadow: [BoxShadow(
+            color: Colors.black.withValues(alpha: 0.09), blurRadius: 5)],
+      ),
+      child: Icon(icon, size: small ? 14 : 17, color: kPlum),
+    ),
+  );
+}
+
+// ── Animated "drag to rotate" hint pill ──────────────────────────────────────
+class _RotateHint extends StatefulWidget {
+  const _RotateHint();
+  @override State<_RotateHint> createState() => _RotateHintState();
+}
+
+class _RotateHintState extends State<_RotateHint>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c;
+  late final Animation<double> _fade, _drift;
+
+  @override
+  void initState() {
+    super.initState();
+    _c = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1800))
+      ..repeat(reverse: true);
+    _fade = Tween(begin: 0.55, end: 1.0)
+        .animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut));
+    _drift = Tween(begin: -7.0, end: 7.0)
+        .animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut));
+  }
+
+  @override void dispose() { _c.dispose(); super.dispose(); }
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: _c,
+    builder: (_, __) => Align(
+      alignment: const Alignment(0, 0.72),
+      child: Opacity(
+        opacity: _fade.value,
+        child: Transform.translate(
+          offset: Offset(_drift.value, 0),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 9),
+            decoration: BoxDecoration(
+              color: kPlum.withValues(alpha: 0.78),
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: [BoxShadow(
+                  color: kPlum.withValues(alpha: 0.25), blurRadius: 12)],
+            ),
+            child: const Row(mainAxisSize: MainAxisSize.min, children: [
+              Icon(Icons.swipe_rounded, color: Colors.white, size: 15),
+              SizedBox(width: 8),
+              Text('Drag to rotate · Pinch to zoom · Double-tap to reset',
+                  style: TextStyle(color: Colors.white,
+                      fontSize: 11, fontWeight: FontWeight.w500)),
+            ]),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+// ── Bottom phase info strip ───────────────────────────────────────────────────
+class _Ch0PhaseStrip extends StatelessWidget {
+  const _Ch0PhaseStrip({
+    required this.phase, required this.pd,
+    required this.day, required this.t,
+    required this.phases, required this.selPhase,
+    required this.onPhaseSelect,
+  });
+  final int phase, selPhase; final _PD pd;
+  final double day, t;
+  final List<_PD> phases;
+  final ValueChanged<int> onPhaseSelect;
+
+  @override
+  Widget build(BuildContext context) => Positioned(
+    bottom: 0, left: 0, right: 0,
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 400),
+      height: 118,
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.95),
+        border: Border(top: BorderSide(
+            color: pd.color.withValues(alpha: 0.28), width: 1.5)),
+        boxShadow: [BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10, offset: const Offset(0, -2))],
+      ),
+      padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
+      child: Row(children: [
+        // Phase name + description
+        Expanded(child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 400),
+                width: 9, height: 9,
+                decoration: BoxDecoration(
+                    color: pd.color, shape: BoxShape.circle),
+              ),
+              const SizedBox(width: 7),
+              AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 300),
+                style: TextStyle(fontFamily: 'Fraunces', fontSize: 14,
+                    fontWeight: FontWeight.w700, color: pd.color),
+                child: Text(pd.name),
+              ),
+              const SizedBox(width: 6),
+              Text(pd.days,
+                  style: const TextStyle(fontSize: 10, color: kInk60)),
+            ]),
+            const SizedBox(height: 4),
+            Text(pd.description,
+                maxLines: 2, overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontSize: 11.5, color: kPlum, height: 1.4)),
+          ],
+        )),
+        const SizedBox(width: 16),
+        // Hormone mini chart
+        SizedBox(width: 158, height: 65,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Hormones', style: TextStyle(
+                  fontSize: 9, letterSpacing: 0.8,
+                  color: kInk60, fontWeight: FontWeight.w600)),
+              Expanded(child: CustomPaint(
+                  painter: _HormoneChart(day: day, t: t))),
+              const Row(children: [
+                _Leg(kRose, 'Oestrogen'), SizedBox(width: 8),
+                _Leg(kSage, 'Prog.'), SizedBox(width: 8),
+                _Leg(kAmber, 'LH'),
+              ]),
+            ],
+          ),
+        ),
+        const SizedBox(width: 12),
+        // Phase selector chips
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(4, (i) => GestureDetector(
+            onTap: () => onPhaseSelect(i),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              margin: const EdgeInsets.symmetric(vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+              decoration: BoxDecoration(
+                color: phase == i
+                    ? phases[i].color
+                    : phases[i].color.withValues(alpha: 0.10),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Text(phases[i].name,
+                  style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w700,
+                      color: phase == i ? Colors.white : phases[i].color)),
+            ),
+          )),
+        ),
+      ]),
+    ),
+  );
 }
 
 class _PD {
@@ -780,7 +1022,7 @@ class _Ch1State extends State<Ch1UterusAndOvaries>
     final autoY = math.sin(_ctrl.value * math.pi * 2) * 12;
     final totalY = _rotY + autoY;
 
-    return _stage(Stack(children: [
+    return _stage(Stack(clipBehavior: Clip.hardEdge, children: [
       Container(decoration: const BoxDecoration(gradient: LinearGradient(
         begin: Alignment.topLeft, end: Alignment.bottomRight,
         colors: [_bgCream, Color(0xFFF8EAE0)],
@@ -953,7 +1195,7 @@ class _Ch2State extends State<Ch2TheFourPhases>
   Widget build(BuildContext context) {
     final ph = _phases[_sel];
     final tilt = math.sin(_ctrl.value * math.pi * 2) * 0.04;
-    return _stage(Stack(children: [
+    return _stage(Stack(clipBehavior: Clip.hardEdge, children: [
       // Aurora phase-tinted background
       AnimatedContainer(
         duration: const Duration(milliseconds: 550),

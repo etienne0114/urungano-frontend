@@ -12,6 +12,7 @@ import 'package:urungano/features/community/widgets/circles_tab.dart';
 import 'package:urungano/features/community/widgets/debate_tab.dart';
 import 'package:urungano/features/community/widgets/ask_anon_tab.dart';
 import 'package:urungano/features/community/community_thread_screen.dart';
+import 'package:urungano/features/community/private_chat_screen.dart';
 
 class CommunityScreen extends ConsumerStatefulWidget {
   const CommunityScreen({super.key});
@@ -154,18 +155,18 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Flexible(
                       child: Text(
                           '${l.appTitle.toUpperCase()} · ${l.communityTitle.toUpperCase()}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.label(scaleFactor: scale)
-                              .copyWith(
-                                  letterSpacing: 1.2,
-                                  fontSize: 9,
-                                  color:
-                                      AppColors.ink60.withValues(alpha: 0.6))),
+                          style: AppTextStyles.label(scaleFactor: scale).copyWith(
+                              letterSpacing: 1.2,
+                              fontSize: 9,
+                              color:
+                                  AppColors.ink60.withValues(alpha: 0.6))),
                     ),
                     const SizedBox(width: 12),
                     Container(
@@ -221,65 +222,78 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
               children: [
                 // Middle-Left column
                 if (_tab.index == 0)
-                  Container(
+                  SizedBox(
                     width: 320,
-                    decoration: const BoxDecoration(
-                      border:
-                          Border(right: BorderSide(color: AppColors.divider)),
-                    ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: CirclesTab(
-                            onCircleSelected: (id) =>
-                                setState(() => _selectedCircleId = id),
-                            selectedCircleId: _selectedCircleId,
-                            isSidePanel: true,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border:
+                            Border(right: BorderSide(color: AppColors.divider)),
+                      ),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: CirclesTab(
+                              onCircleSelected: (id) {
+                                debugPrint('Selected circle: $id');
+                                setState(() => _selectedCircleId = id);
+                              },
+                              selectedCircleId: _selectedCircleId,
+                              isSidePanel: true,
+                            ),
                           ),
-                        ),
-                        // Weekly Banner
-                        Container(
-                          margin: const EdgeInsets.all(20),
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: AppColors.peachSoft.withValues(alpha: 0.5),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.auto_awesome,
-                                  color: AppColors.primary, size: 20),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: RichText(
-                                  text: TextSpan(
-                                    style: AppTextStyles.bodySmall(
-                                            scaleFactor: scale)
-                                        .copyWith(
-                                            color: AppColors.textPrimary,
-                                            height: 1.4),
+                          // Weekly Banner
+                          Consumer(
+                            builder: (context, ref, child) {
+                              final weekly = ref.watch(weeklyCircleProvider);
+                              return weekly.when(
+                                data: (circle) => Container(
+                                  margin: const EdgeInsets.all(20),
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.peachSoft.withValues(alpha: 0.5),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Row(
                                     children: [
-                                      TextSpan(
-                                          text: '${l.communityWeeklyCircle} ',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w800)),
-                                      TextSpan(
-                                          text: l.communityWeeklyCircleNext),
+                                      const Icon(Icons.auto_awesome, color: AppColors.primary, size: 20),
+                                      const SizedBox(width: 12),
+                                      Flexible(
+                                        child: InkWell(
+                                          onTap: () => setState(() => _selectedCircleId = circle.slug),
+                                          child: RichText(
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              style: AppTextStyles.bodySmall(scaleFactor: scale)
+                                                  .copyWith(color: AppColors.textPrimary, height: 1.4),
+                                              children: [
+                                                TextSpan(
+                                                    text: '${l.communityWeeklyCircle} ',
+                                                    style: const TextStyle(fontWeight: FontWeight.w800)),
+                                                TextSpan(text: circle.name),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
-                              ),
-                            ],
+                                loading: () => const SizedBox.shrink(),
+                                error: (_, __) => const SizedBox.shrink(),
+                              );
+                            },
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
 
                 // Main Column
                 Expanded(
-                  child: Container(
-                    color: AppColors.white,
+                  child: Material(
+                    color: AppColors.background,
+                    clipBehavior: Clip.antiAlias,
                     child: _tab.index == 0
                         ? (_selectedCircleId != null
                             ? CommunityThreadScreen(
@@ -353,7 +367,17 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                               height: 1.4)),
                               const SizedBox(height: 20),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => PrivateChatScreen(
+                                        otherUserId: 'educator-1', // Mocking for now, will fetch educator ID
+                                        otherUserName: 'Nurse Aline',
+                                      ),
+                                    ),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.darkSurface,
                                   foregroundColor: Colors.white,
@@ -366,10 +390,14 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(l.communityStartPrivateChat,
-                                        style: AppTextStyles.button(
-                                                scaleFactor: scale)
-                                            .copyWith(fontSize: 13)),
+                                    Flexible(
+                                      child: Text(l.communityStartPrivateChat,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: AppTextStyles.button(
+                                                  scaleFactor: scale)
+                                              .copyWith(fontSize: 13)),
+                                    ),
                                     const SizedBox(width: 8),
                                     const Icon(Icons.arrow_forward, size: 14),
                                   ],
@@ -396,23 +424,43 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 100,
-            height: 100,
+            width: 120,
+            height: 120,
             decoration: BoxDecoration(
               color: AppColors.background,
               shape: BoxShape.circle,
             ),
-            child:
-                const Center(child: Text('💬', style: TextStyle(fontSize: 42))),
+            child: const Center(
+              child: Icon(Icons.forum_outlined,
+                  size: 56, color: AppColors.divider2),
+            ),
+          ).animate(onPlay: (c) => c.repeat(reverse: true)).scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.05, 1.05),
+                duration: 2.seconds,
+                curve: Curves.easeInOut,
+              ),
+          const SizedBox(height: 40),
+          Text(
+            l.communityTabCircles,
+            style: AppTextStyles.display(scaleFactor: scale).copyWith(
+              fontSize: 28,
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w800,
+            ),
           ),
-          const SizedBox(height: 32),
-          Text(l.communitySubtitleEnd,
-              style: AppTextStyles.headline(scaleFactor: scale)
-                  .copyWith(color: AppColors.textPrimary)),
           const SizedBox(height: 12),
-          Text(l.communitySelectCircle,
-              style: AppTextStyles.body(scaleFactor: scale)
-                  .copyWith(color: AppColors.textMuted)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 48),
+            child: Text(
+              l.communitySelectCircle,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium(scaleFactor: scale).copyWith(
+                color: AppColors.ink40,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
         ],
       ),
     ).animate().fadeIn(duration: 400.ms);
@@ -436,15 +484,20 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (icon != null) ...[
                 Icon(icon, size: 18, color: AppColors.sage),
                 const SizedBox(width: 10),
               ],
               if (title != null)
-                Text(title,
-                    style: AppTextStyles.title(scaleFactor: scale)
-                        .copyWith(fontSize: 14, fontWeight: FontWeight.w800)),
+                Flexible(
+                  child: Text(title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.title(scaleFactor: scale)
+                          .copyWith(fontSize: 14, fontWeight: FontWeight.w800)),
+                ),
             ],
           ),
           const SizedBox(height: 16),
@@ -452,6 +505,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
             ...children.map((item) => Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
@@ -461,7 +515,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                           decoration: const BoxDecoration(
                               color: AppColors.ink40, shape: BoxShape.circle)),
                       const SizedBox(width: 10),
-                      Expanded(
+                      Flexible(
                         child: Text(item,
                             style: AppTextStyles.bodySmall(scaleFactor: scale)
                                 .copyWith(
@@ -478,53 +532,46 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
   }
 
   Widget _buildOnlineAvatarGrid() {
-    final l = AppLocalizations.of(context);
-    final emojis = [
-      '🌺',
-      '🌱',
-      '🌻',
-      '🌿',
-      '🌼',
-      '💚',
-      '🌷',
-      '🌾',
-      '🦋',
-      '🏵️',
-      '🐝',
-      '🌊'
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
+    return Consumer(
+      builder: (context, ref, child) {
+        // If a circle is selected, show its online users
+        final chat = _selectedCircleId != null 
+            ? ref.watch(chatProvider(_selectedCircleId!)) 
+            : null;
+        
+        final onlineCount = chat?.onlineCount ?? 0;
+
+        if (onlineCount == 0) {
+          return Text('No one online right now', style: AppTextStyles.caption());
+        }
+
+        return Wrap(
           spacing: 12,
           runSpacing: 12,
-          children: emojis
-              .map((e) => Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                        color: AppColors.background, shape: BoxShape.circle),
-                    child: Center(
-                        child: Text(e, style: const TextStyle(fontSize: 16))),
-                  ))
-              .toList(),
-        ),
-        const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-              color: AppColors.surface, borderRadius: BorderRadius.circular(8)),
-          child: Text('+115',
-              style: AppTextStyles.label()
-                  .copyWith(fontSize: 10, color: AppColors.ink60)),
-        ),
-        const SizedBox(height: 16),
-        Text(l.communityNoNamesNoPhotos,
-            style: AppTextStyles.caption()
-                .copyWith(fontSize: 11, fontStyle: FontStyle.italic)),
-      ],
+          children: List.generate(
+            onlineCount.clamp(0, 8),
+            (i) => _buildAvatar('peer_$i'),
+          ),
+        );
+      },
     );
+  }
+
+  Widget _buildAvatar(String seed) {
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(color: AppColors.background, shape: BoxShape.circle),
+      child: Center(
+        child: Text(_emojiFromSeed(seed), style: const TextStyle(fontSize: 16)),
+      ),
+    );
+  }
+
+  String _emojiFromSeed(String seed) {
+    final emojis = ['🌺', '🌱', '🌻', '🌿', '🌼', '💚', '🌷', '🌾', '🦋', '🏵️', '🐝', '🌊'];
+    final idx = int.tryParse(seed) ?? 0;
+    return emojis[idx % emojis.length];
   }
 }
 
@@ -570,34 +617,33 @@ class _PillTabBarState extends State<_PillTabBar> {
       child: Row(
         children: List.generate(widget.labels.length, (i) {
           final active = widget.controller.index == i;
-          return Expanded(
+          return Flexible(
             child: GestureDetector(
               onTap: () => widget.controller.animateTo(i),
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding:
-                    EdgeInsets.symmetric(vertical: widget.compact ? 8 : 12),
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                margin: const EdgeInsets.all(2),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 decoration: BoxDecoration(
-                  color: active ? AppColors.darkSurface : Colors.transparent,
+                  color: active ? AppColors.white : Colors.transparent,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     if (active)
                       BoxShadow(
-                        color: AppColors.darkSurface.withValues(alpha: 0.15),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
                       ),
                   ],
                 ),
                 child: Center(
                   child: Text(
                     widget.labels[i],
-                    style:
-                        AppTextStyles.label(scaleFactor: widget.scale).copyWith(
-                      color: active ? Colors.white : AppColors.textSecondary,
-                      letterSpacing: 0.8,
-                      fontSize: 11,
+                    style: AppTextStyles.label(scaleFactor: widget.scale).copyWith(
+                      color: active ? AppColors.textPrimary : AppColors.ink60,
                       fontWeight: active ? FontWeight.w800 : FontWeight.w600,
+                      fontSize: 12,
                     ),
                   ),
                 ),

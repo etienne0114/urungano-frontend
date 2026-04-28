@@ -20,6 +20,14 @@ class CirclesNotifier extends AsyncNotifier<List<CircleDto>> {
   }
 }
 
+/// Fetches the featured weekly circle.
+final weeklyCircleProvider = AsyncNotifierProvider<WeeklyCircleNotifier, CircleDto>(WeeklyCircleNotifier.new);
+
+class WeeklyCircleNotifier extends AsyncNotifier<CircleDto> {
+  @override
+  Future<CircleDto> build() => CommunityService.getWeeklyCircle();
+}
+
 /// Fetches all active debates and user votes.
 final debatesProvider = AsyncNotifierProvider<DebatesNotifier, List<DebateDto>>(DebatesNotifier.new);
 
@@ -43,6 +51,16 @@ class DebatesNotifier extends AsyncNotifier<List<DebateDto>> {
 
   Future<void> refresh() async {
     state = await AsyncValue.guard(() => CommunityService.getDebates());
+  }
+
+  void updateVote(String debateId, int yes, int no, int total) {
+    final previous = state.value;
+    if (previous == null) return;
+    state = AsyncValue.data(
+      previous.map((d) => d.id == debateId 
+        ? d.copyWith(yesPercent: yes, noPercent: no, totalVotes: total) 
+        : d).toList(),
+    );
   }
 }
 
@@ -97,16 +115,49 @@ class ChatState {
       );
 }
 
+// ── DIRECT MESSAGES ──────────────────────────────────────────────────────────
+
+final directMessagesProvider = StateNotifierProvider.family<DMNotifier, List<DirectMessageDto>, String>(
+  (ref, otherUserId) => DMNotifier(otherUserId),
+);
+
+class DMNotifier extends StateNotifier<List<DirectMessageDto>> {
+  DMNotifier(this.otherUserId) : super([]) {
+    _load();
+  }
+
+  final String otherUserId;
+
+  Future<void> _load() async {
+    try {
+      final messages = await CommunityService.getDirectMessages(otherUserId);
+      state = messages;
+    } catch (_) {}
+  }
+
+  void addMessage(DirectMessageDto msg) {
+    state = [...state, msg];
+  }
+
+  Future<void> send(String text, String lang) async {
+    try {
+      final msg = await CommunityService.sendDirectMessage(otherUserId, text, lang: lang);
+      state = [...state, msg];
+    } catch (_) {}
+  }
+}
+
 final chatProvider = StateNotifierProvider.family<ChatNotifier, ChatState, String>(
-  (ref, circleSlug) => ChatNotifier(circleSlug),
+  (ref, circleSlug) => ChatNotifier(circleSlug, ref),
 );
 
 class ChatNotifier extends StateNotifier<ChatState> {
-  ChatNotifier(this.circleSlug) : super(const ChatState()) {
+  ChatNotifier(this.circleSlug, this.ref) : super(const ChatState()) {
     _init();
   }
 
   final String circleSlug;
+  final Ref ref;
   io.Socket? _socket;
 
   void _init() {
@@ -150,6 +201,23 @@ class ChatNotifier extends StateNotifier<ChatState> {
     _socket!.on('userTyping', (data) {
       // Simplified: if any user is typing, show indicator
       state = state.copyWith(isTyping: data['isTyping'] as bool);
+    });
+
+    // Global listeners (could be in a separate provider, but ChatNotifier holds the socket)
+    _socket!.on('voteUpdate', (data) {
+      final debateId = data['debateId'] as String;
+      final yes = (data['yesPercent'] as num).toInt();
+      final no = (data['noPercent'] as num).toInt();
+      final total = (data['totalVotes'] as num).toInt();
+      
+      ref.read(debatesProvider.notifier).updateVote(debateId, yes, no, total);
+    });
+
+    _socket!.on('newDirectMessage', (data) {
+      final msgJson = data['message'] as Map<String, dynamic>;
+      final msg = DirectMessageDto.fromJson(msgJson);
+      
+      ref.read(directMessagesProvider(msg.senderId).notifier).addMessage(msg);
     });
   }
 

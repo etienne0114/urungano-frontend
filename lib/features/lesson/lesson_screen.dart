@@ -11,9 +11,9 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../core/widgets/constrained_screen_wrapper.dart';
 import 'widgets/lesson_model_viewer.dart';
-import 'widgets/lesson_animation_stage.dart';
 import 'widgets/narration_player_bar.dart';
 import 'widgets/scenes/your_cycle_chapters.dart';
+import 'widgets/scenes/hiv_chapters.dart';
 
 class LessonScreen extends ConsumerStatefulWidget {
   const LessonScreen({
@@ -183,20 +183,8 @@ class _LessonScreenState extends ConsumerState<LessonScreen>
                   ],
                 ),
               ),
-              // 3D animated overview stage — removed for your_cycle (chapters handle it)
-              if (lesson.slug != 'your_cycle' &&
-                  kAnimatedLessons.any((a) => a.id == lesson.slug))
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1A1013),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-                    child: LessonAnimationPlayer(lessonId: lesson.slug),
-                  ),
-                ),
+              // Chapter-specific animations handle all visual content inline —
+              // the old overview player is no longer used.
               Padding(
                 padding: const EdgeInsets.only(top: 4, bottom: 8),
                 child: TabBar(
@@ -297,16 +285,23 @@ class _WideChapterView extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(24, 12, 12, 24),
             child: Container(
               decoration: BoxDecoration(
-                color: lesson.category.tileColor.withValues(alpha: 0.7),
+                color: lesson.slug == 'hiv_prevention'
+                    ? const Color(0xFF0D1F1A)
+                    : lesson.category.tileColor.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(32),
               ),
-              // Animated chapter scene for your_cycle; GLB model for all others
+              // Chapter-specific interactive animations per lesson slug
               child: lesson.slug == 'your_cycle'
                   ? SizedBox.expand(
                       child: YourCycleChapterAnimation(
                           chapterIndex: chapter.orderIndex),
                     )
-                  : Stack(
+                  : lesson.slug == 'hiv_prevention'
+                      ? SizedBox.expand(
+                          child: HivChapterAnimation(
+                              chapterIndex: chapter.orderIndex),
+                        )
+                      : Stack(
                       fit: StackFit.expand,
                       children: [
                         LessonModelViewer(
@@ -499,23 +494,31 @@ class _NarrowChapterView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: lesson.slug == 'your_cycle' ? 420 : 280,
+            height: (lesson.slug == 'your_cycle' ||
+                    lesson.slug == 'hiv_prevention')
+                ? 420
+                : 280,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24),
               child: Container(
                 decoration: BoxDecoration(
-                  color: lesson.category.tileColor.withValues(alpha: 0.7),
+                  color: lesson.slug == 'hiv_prevention'
+                      ? const Color(0xFF0D1F1A)
+                      : lesson.category.tileColor.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: lesson.slug == 'your_cycle'
                     ? YourCycleChapterAnimation(
                         chapterIndex: chapter.orderIndex)
-                    : LessonModelViewer(
-                        chapter: chapter,
-                        category: lesson.category,
-                        activeHotspot: activeHotspotIdx,
-                        onHotspotTap: onHotspotTap,
-                      ),
+                    : lesson.slug == 'hiv_prevention'
+                        ? HivChapterAnimation(
+                            chapterIndex: chapter.orderIndex)
+                        : LessonModelViewer(
+                            chapter: chapter,
+                            category: lesson.category,
+                            activeHotspot: activeHotspotIdx,
+                            onHotspotTap: onHotspotTap,
+                          ),
               ),
             ),
           ),

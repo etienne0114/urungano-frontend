@@ -136,9 +136,19 @@
   "pinVerifyTooManyAttempts": "Too many attempts. Please restart the app.",
   "pinForgot": "Forgot PIN? Reset app",
   "homeReady": "Ready for today's lesson",
-  "@homeReady": {
-    "description": "Home screen subtitle"
+  "homeWelcomeTitle": "Welcome to Urungano",
+  "homeWelcomeSubtitle": "Your safe space for reproductive health.",
+  "homeWelcomeBack": "Welcome back, {name}!",
+  "@homeWelcomeBack": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
+  "homeStartJourney": "START YOUR JOURNEY",
+  "homeExploreLessons": "Explore Lessons",
+  "homeRecentProgress": "YOUR RECENT PROGRESS",
   "homeContinue": "CONTINUE LEARNING",
   "homeResume": "Resume lesson",
   "homePickLesson": "Pick up a lesson",
@@ -572,6 +582,7 @@
   "communityRuleModerated": "Moderated by real health educators",
   "communityRuleReport": "Report anything that feels off",
   "communityNeedPrivateChat": "Need to talk 1-on-1?",
+  "communityPrivateChat": "Private chat",
   "communityPrivateChatBody": "Free, confidential chat with a health educator in Kinyarwanda, English, or French.",
   "communityStartPrivateChat": "Start private chat",
   "communityNoNamesNoPhotos": "No names. No photos. Only vibes.",
@@ -599,7 +610,8 @@
   "lessonResetView": "Reset view",
   "pinWeakError": "PIN cannot be sequential (e.g. 1234) or repeated (e.g. 1111).",
   "pinSyncFailed": "Failed to sync PIN with server. Please try a different PIN.",
-  "pinUsernameHint": "Enter your username (optional)",
+  "pinUsernameHint": "Enter your username",
+  "profileNameRequired": "Please enter a username to continue",
   "sttListening": "Listening…",
   "sttTapToSpeak": "Tap to speak",
   "sttSpeakNow": "Speak now",
@@ -620,5 +632,9 @@
   },
   "communityOfflineQueued": "Message queued — will send when online",
   "communityVoteOffline": "You’re offline — vote when reconnected",
-  "communityQuestionQueued": "Question queued — will send when online"
+  "communityQuestionQueued": "Question queued — will send when online",
+  "communityEmptyChat": "No messages yet. Be the first to say something!",
+  "@communityEmptyChat": {
+    "description": "Text shown when a community chat thread is empty"
+  }
 }

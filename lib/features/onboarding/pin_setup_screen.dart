@@ -57,33 +57,8 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
   }
 
   void _onComplete() {
-    if (!_confirming) {
-      final pin = _digits.join();
-      if (_isWeakPin(pin)) {
-        final l = AppLocalizations.of(context);
-        setState(() {
-          _digits.clear();
-          _error = l.pinWeakError;
-        });
-        return;
-      }
-      setState(() {
-        _firstEntry = List.from(_digits);
-        _digits.clear();
-        _confirming = true;
-      });
-    } else {
-      if (_digits.join() == _firstEntry!.join()) {
-        _savePin(_digits.join());
-      } else {
-        setState(() {
-          _digits.clear();
-          _firstEntry = null;
-          _confirming = false;
-          _error = AppLocalizations.of(context).pinMismatch;
-        });
-      }
-    }
+    if (_isLoading || _digits.length != _pinLength) return;
+    _savePin(_digits.join());
   }
 
   bool _isWeakPin(String pin) {
@@ -127,30 +102,91 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
   Future<void> _savePin(String pin) async {
     setState(() => _isLoading = true);
 
-    final username = _usernameController.text.trim().isNotEmpty
-        ? _usernameController.text.trim()
-        : AppLocalizations.of(context).profileAnonymous;
-    await ref.read(progressProvider.notifier).signIn(username);
+    final username = _usernameController.text.trim();
+    if (username.isEmpty) {
+      final l = AppLocalizations.of(context);
+      setState(() {
+        _isLoading = false;
+        _error = l.profileNameRequired;
+        _digits.clear();
+        _firstEntry = null;
+        _confirming = false;
+      });
+      return;
+    }
 
-    final hash = sha256.convert(utf8.encode(pin)).toString();
-    await HiveStorage.savePinHash(hash);
-
-    final success = await AuthService.setPin(pin);
-
-    if (!success) {
-      final online = await ConnectivityService.check();
-      if (online) {
+    if (!_confirming) {
+      // Security check for new users (we'll only enforce it if they end up being new, 
+      // but checking now is cleaner)
+      if (_isWeakPin(pin)) {
         final l = AppLocalizations.of(context);
         setState(() {
           _isLoading = false;
-          _error = l.pinSyncFailed;
           _digits.clear();
-          _firstEntry = null;
-          _confirming = false;
+          _error = l.pinWeakError;
         });
         return;
       }
+
+      // PHASE 1: Try to login (isRegistration: false)
+      final result = await ref.read(progressProvider.notifier).signIn(username, pin: pin, isRegistration: false);
+      
+      if (result.error == null) {
+        // MATCH! Existing user logged in successfully.
+        await _finalizeAuth(pin);
+        return;
+      }
+
+      if (result.isNotFound) {
+        // NOT FOUND! This is a new user, proceed to confirmation.
+        setState(() {
+          _isLoading = false;
+          _firstEntry = List.from(_digits);
+          _digits.clear();
+          _confirming = true;
+          _error = null;
+        });
+        return;
+      }
+
+      // OTHER ERROR (e.g. 401 Incorrect PIN)
+      setState(() {
+        _isLoading = false;
+        _error = result.error;
+        _digits.clear();
+      });
+    } else {
+      // PHASE 2: Confirmation matches, register now
+      if (_digits.join() == _firstEntry!.join()) {
+        final result = await ref.read(progressProvider.notifier).signIn(username, pin: pin, isRegistration: true);
+        
+        if (result.error == null) {
+          await _finalizeAuth(pin);
+        } else {
+          setState(() {
+            _isLoading = false;
+            _error = result.error;
+            _digits.clear();
+            _firstEntry = null;
+            _confirming = false;
+          });
+        }
+      } else {
+        setState(() {
+          _digits.clear();
+          _firstEntry = null;
+          _confirming = false;
+          _isLoading = false;
+          _error = AppLocalizations.of(context).pinMismatch;
+        });
+      }
     }
+  }
+
+  Future<void> _finalizeAuth(String pin) async {
+    // Local storage of PIN hash for offline unlock
+    final hash = sha256.convert(utf8.encode(pin)).toString();
+    await HiveStorage.savePinHash(hash);
 
     await ref.read(progressProvider.notifier).setHasPIN(true);
     await ref.read(settingsProvider.notifier).setAppLock(true);
@@ -165,10 +201,27 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
   Future<void> _skip() async {
     setState(() => _isLoading = true);
 
-    final username = _usernameController.text.trim().isNotEmpty
-        ? _usernameController.text.trim()
-        : AppLocalizations.of(context).profileAnonymous;
-    await ref.read(progressProvider.notifier).signIn(username);
+    final username = _usernameController.text.trim();
+    if (username.isEmpty) {
+      if (!mounted) return;
+      final l = AppLocalizations.of(context);
+      setState(() {
+        _isLoading = false;
+        _error = l.profileNameRequired;
+      });
+      return;
+    }
+
+    final result = await ref.read(progressProvider.notifier).signIn(username, isRegistration: true);
+    if (result.error != null) {
+      setState(() {
+        _isLoading = false;
+        _error = result.error;
+      });
+      return;
+    }
+
+    if (!mounted) return;
     await ref.read(settingsProvider.notifier).completeOnboarding();
 
     if (mounted) context.go('/home');

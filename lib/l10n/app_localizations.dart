@@ -454,11 +454,47 @@ abstract class AppLocalizations {
   /// **'Forgot PIN? Reset app'**
   String get pinForgot;
 
-  /// Home screen subtitle
+  /// No description provided for @homeReady.
   ///
   /// In en, this message translates to:
   /// **'Ready for today\'s lesson'**
   String get homeReady;
+
+  /// No description provided for @homeWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Urungano'**
+  String get homeWelcomeTitle;
+
+  /// No description provided for @homeWelcomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your safe space for reproductive health.'**
+  String get homeWelcomeSubtitle;
+
+  /// No description provided for @homeWelcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back, {name}!'**
+  String homeWelcomeBack(String name);
+
+  /// No description provided for @homeStartJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'START YOUR JOURNEY'**
+  String get homeStartJourney;
+
+  /// No description provided for @homeExploreLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Lessons'**
+  String get homeExploreLessons;
+
+  /// No description provided for @homeRecentProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'YOUR RECENT PROGRESS'**
+  String get homeRecentProgress;
 
   /// No description provided for @homeContinue.
   ///
@@ -1666,6 +1702,12 @@ abstract class AppLocalizations {
   /// **'Need to talk 1-on-1?'**
   String get communityNeedPrivateChat;
 
+  /// No description provided for @communityPrivateChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Private chat'**
+  String get communityPrivateChat;
+
   /// No description provided for @communityPrivateChatBody.
   ///
   /// In en, this message translates to:
@@ -1831,8 +1873,14 @@ abstract class AppLocalizations {
   /// No description provided for @pinUsernameHint.
   ///
   /// In en, this message translates to:
-  /// **'Enter your username (optional)'**
+  /// **'Enter your username'**
   String get pinUsernameHint;
+
+  /// No description provided for @profileNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a username to continue'**
+  String get profileNameRequired;
 
   /// No description provided for @sttListening.
   ///
@@ -1917,6 +1965,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Question queued — will send when online'**
   String get communityQuestionQueued;
+
+  /// Text shown when a community chat thread is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet. Be the first to say something!'**
+  String get communityEmptyChat;
 }
 
 class _AppLocalizationsDelegate

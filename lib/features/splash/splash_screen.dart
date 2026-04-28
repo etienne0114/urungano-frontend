@@ -36,9 +36,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       return;
     }
 
-    // Recover progress if onboarding is complete but progress is somehow null
+    // If onboarding is complete but no session exists, redirect back to start
     if (progress == null) {
-      await ref.read(progressProvider.notifier).signIn('Anonymous');
+      context.go('/language');
+      return;
     }
 
     // If PIN lock is enabled and user has a PIN, require verification

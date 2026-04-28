@@ -47,6 +47,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final progress = ref.watch(progressProvider);
     final isWide = MediaQuery.sizeOf(context).width >= 900;
 
+    // Logic: Is this a first-time visitor (no account yet)?
+    final bool isFirstTime = progress == null || 
+        progress.username == l.profileAnonymous || 
+        progress.username.isEmpty;
+
     final continueLesson = _lessons.firstWhere(
       (lsn) =>
           (progress?.lessonProgress[lsn.id] ?? 0) > 0 &&
@@ -67,7 +72,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              // ── Top Bar ─────────────────────────────────────
+              // ── Header ─────────────────────────────────────
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
@@ -92,7 +97,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
-                              child: Text(l.homeReadyForToday,
+                              child: Text(
+                                  isFirstTime
+                                      ? l.homeWelcomeTitle
+                                      : l.homeReadyForToday,
                                   style: AppTextStyles.headline().copyWith(
                                       fontSize: 32,
                                       fontWeight: FontWeight.w800)),
@@ -107,7 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
 
-              // ── Hero Section ────────────────────────────────
+              // ── Hero Section (Adaptive) ──────────────────────
               SliverToBoxAdapter(
                 child: Padding(
                   padding:
@@ -118,11 +126,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           children: [
                             Expanded(
                               flex: 5,
-                              child: _ContinueLearningCard(
-                                lesson: continueLesson,
-                                progress: continuePct,
-                                chapter: continueChapter,
-                              ),
+                              child: isFirstTime
+                                  ? const _WelcomeHero()
+                                  : _ContinueLearningCard(
+                                      lesson: continueLesson,
+                                      progress: continuePct,
+                                      chapter: continueChapter,
+                                    ),
                             ),
                             const SizedBox(width: 24),
                             Expanded(
@@ -140,11 +150,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         )
                       : Column(
                           children: [
-                            _ContinueLearningCard(
-                              lesson: continueLesson,
-                              progress: continuePct,
-                              chapter: continueChapter,
-                            ),
+                            isFirstTime
+                                ? const _WelcomeHero()
+                                : _ContinueLearningCard(
+                                    lesson: continueLesson,
+                                    progress: continuePct,
+                                    chapter: continueChapter,
+                                  ),
                             const SizedBox(height: 24),
                             _TodaysChallengeCard(lessonId: continueLesson.id),
                           ],
@@ -164,7 +176,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(l.homePickLesson,
+                      Text(isFirstTime ? l.homeExploreLessons : l.homePickLesson,
                           style: AppTextStyles.headline().copyWith(
                               fontSize: 24, fontWeight: FontWeight.w800)),
                       GestureDetector(
@@ -233,6 +245,98 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _WelcomeHero extends StatelessWidget {
+  const _WelcomeHero();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return Container(
+      width: double.infinity,
+      height: 240,
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF6B4EE6), Color(0xFF4A32B3)],
+        ),
+        borderRadius: BorderRadius.circular(32),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF4A32B3).withValues(alpha: 0.3),
+            blurRadius: 25,
+            offset: const Offset(0, 12),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            right: -20,
+            bottom: -20,
+            child: Opacity(
+              opacity: 0.2,
+              child: const Icon(Icons.auto_awesome, size: 160, color: Colors.white),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  l.homeGestureNew,
+                  style: AppTextStyles.label().copyWith(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                l.homeWelcomeSubtitle,
+                style: AppTextStyles.display(italic: true).copyWith(
+                  color: AppColors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w800,
+                  height: 1.1,
+                ),
+              ),
+              const Spacer(),
+              ElevatedButton(
+                onPressed: () => context.go('/library'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.white,
+                  foregroundColor: const Color(0xFF4A32B3),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  elevation: 0,
+                ),
+                child: Text(
+                  l.homeStartJourney,
+                  style: AppTextStyles.label().copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 13,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

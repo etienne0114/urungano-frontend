@@ -148,6 +148,42 @@ class AnonQuestionDto {
       );
 }
 
+class DirectMessageDto {
+  const DirectMessageDto({
+    required this.id,
+    required this.senderId,
+    required this.senderName,
+    required this.receiverId,
+    required this.receiverName,
+    required this.text,
+    required this.lang,
+    required this.isRead,
+    required this.createdAt,
+  });
+
+  final String id;
+  final String senderId;
+  final String senderName;
+  final String receiverId;
+  final String receiverName;
+  final String text;
+  final String lang;
+  final bool isRead;
+  final DateTime createdAt;
+
+  factory DirectMessageDto.fromJson(Map<String, dynamic> j) => DirectMessageDto(
+        id:           j['id'] as String,
+        senderId:     j['senderId'] as String,
+        senderName:   j['senderName'] as String,
+        receiverId:   j['receiverId'] as String,
+        receiverName: j['receiverName'] as String,
+        text:         j['text'] as String,
+        lang:         (j['lang'] as String?) ?? 'rw',
+        isRead:       (j['isRead'] as bool?) ?? false,
+        createdAt:    DateTime.parse(j['createdAt'] as String),
+      );
+}
+
 /// All community endpoints, wired to the real NestJS backend.
 /// Falls back to Hive cache when offline.
 class CommunityService {
@@ -356,5 +392,45 @@ class CommunityService {
         createdAt: DateTime.now(),
       );
     }
+  }
+
+  static Future<AnonQuestionDto> answerQuestion(
+      String questionId, String reply) async {
+    final res = await ApiClient.instance.patch<Map<String, dynamic>>(
+      '$_base/questions/$questionId/answer',
+      data: {'reply': reply},
+    );
+    return AnonQuestionDto.fromJson(
+        ApiClient.staticUnwrap<Map<String, dynamic>>(res));
+  }
+
+  // ── Direct messages ────────────────────────────────────────────────────────
+
+  static Future<List<DirectMessageDto>> getDirectMessages(
+      String otherUserId) async {
+    final res = await ApiClient.instance
+        .get<Map<String, dynamic>>('$_base/direct/$otherUserId');
+    final list = (ApiClient.staticUnwrap<List<dynamic>>(res))
+        .cast<Map<String, dynamic>>();
+    return list.map(DirectMessageDto.fromJson).toList();
+  }
+
+  static Future<DirectMessageDto> sendDirectMessage(
+      String receiverId, String text,
+      {String? lang}) async {
+    final res = await ApiClient.instance.post<Map<String, dynamic>>(
+      '$_base/direct',
+      data: {'receiverId': receiverId, 'text': text, 'lang': lang},
+    );
+    return DirectMessageDto.fromJson(
+        ApiClient.staticUnwrap<Map<String, dynamic>>(res));
+  }
+
+  // ── Featured ──────────────────────────────────────────────────────────────
+
+  static Future<CircleDto> getWeeklyCircle() async {
+    final res =
+        await ApiClient.instance.get<Map<String, dynamic>>('$_base/weekly-circle');
+    return CircleDto.fromJson(ApiClient.staticUnwrap<Map<String, dynamic>>(res));
   }
 }

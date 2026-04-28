@@ -105,27 +105,37 @@ class _PollCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: Row(
                 children: [
-                  Expanded(
-                    flex: debate.yesPercent.toInt(),
-                    child: Container(
-                      color: color,
-                      alignment: Alignment.center,
-                      child: Text(l.communityVoteYesPct(debate.yesPercent),
-                          style: AppTextStyles.label(scaleFactor: scale)
-                              .copyWith(color: Colors.white, fontSize: 11)),
+                  if (debate.yesPercent > 0)
+                    Expanded(
+                      flex: debate.yesPercent.toInt(),
+                      child: Container(
+                        color: color,
+                        alignment: Alignment.center,
+                        child: Text(l.communityVoteYesPct(debate.yesPercent),
+                            style: AppTextStyles.label(scaleFactor: scale)
+                                .copyWith(color: Colors.white, fontSize: 11)),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: debate.noPercent.toInt(),
-                    child: Container(
-                      color: Colors.transparent,
-                      alignment: Alignment.center,
-                      child: Text(l.communityVoteNoPct(debate.noPercent),
-                          style: AppTextStyles.label(scaleFactor: scale)
-                              .copyWith(
-                                  color: AppColors.textPrimary, fontSize: 11)),
+                  if (debate.noPercent > 0)
+                    Expanded(
+                      flex: debate.noPercent.toInt(),
+                      child: Container(
+                        color: Colors.transparent,
+                        alignment: Alignment.center,
+                        child: Text(l.communityVoteNoPct(debate.noPercent),
+                            style: AppTextStyles.label(scaleFactor: scale)
+                                .copyWith(
+                                    color: AppColors.textPrimary, fontSize: 11)),
+                      ),
                     ),
-                  ),
+                  if (debate.yesPercent == 0 && debate.noPercent == 0)
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text('Be the first to vote', 
+                          style: AppTextStyles.caption(scaleFactor: scale)),
+                      ),
+                    ),
                 ],
               ),
             ),

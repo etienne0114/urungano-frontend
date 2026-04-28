@@ -197,6 +197,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeReady => 'Ready for today\'s lesson';
 
   @override
+  String get homeWelcomeTitle => 'Welcome to Urungano';
+
+  @override
+  String get homeWelcomeSubtitle => 'Your safe space for reproductive health.';
+
+  @override
+  String homeWelcomeBack(String name) {
+    return 'Welcome back, $name!';
+  }
+
+  @override
+  String get homeStartJourney => 'START YOUR JOURNEY';
+
+  @override
+  String get homeExploreLessons => 'Explore Lessons';
+
+  @override
+  String get homeRecentProgress => 'YOUR RECENT PROGRESS';
+
+  @override
   String get homeContinue => 'CONTINUE LEARNING';
 
   @override
@@ -871,6 +891,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get communityNeedPrivateChat => 'Need to talk 1-on-1?';
 
   @override
+  String get communityPrivateChat => 'Private chat';
+
+  @override
   String get communityPrivateChatBody =>
       'Free, confidential chat with a health educator in Kinyarwanda, English, or French.';
 
@@ -955,7 +978,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Failed to sync PIN with server. Please try a different PIN.';
 
   @override
-  String get pinUsernameHint => 'Enter your username (optional)';
+  String get pinUsernameHint => 'Enter your username';
+
+  @override
+  String get profileNameRequired => 'Please enter a username to continue';
 
   @override
   String get sttListening => 'Listening…';
@@ -1002,4 +1028,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get communityQuestionQueued =>
       'Question queued — will send when online';
+
+  @override
+  String get communityEmptyChat =>
+      'No messages yet. Be the first to say something!';
 }

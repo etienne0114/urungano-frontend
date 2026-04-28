@@ -49,6 +49,12 @@
   "pinVerifySubtitle": "Saisissez votre code PIN à 4 chiffres pour déverrouiller.",
   "pinForgot": "PIN oublié ? Réinitialiser l'appli",
   "homeReady": "Prêt pour la leçon du jour",
+  "homeWelcomeTitle": "Bienvenue sur Urungano",
+  "homeWelcomeSubtitle": "Votre espace sécurisé pour la santé reproductive.",
+  "homeWelcomeBack": "Bon retour, {name} !",
+  "homeStartJourney": "COMMENCEZ VOTRE PARCOURS",
+  "homeExploreLessons": "Explorer les leçons",
+  "homeRecentProgress": "VOTRE PROGRESSION RÉCENTE",
   "homeContinue": "CONTINUER L'APPRENTISSAGE",
   "homeResume": "Reprendre la leçon",
   "homePickLesson": "Choisir une leçon",
@@ -188,6 +194,7 @@
   "communityRuleModerated": "Modéré par de vrais éducateurs de santé",
   "communityRuleReport": "Signalez tout ce qui semble inapproprié",
   "communityNeedPrivateChat": "Besoin de parler en privé ?",
+  "communityPrivateChat": "Chat privé",
   "communityPrivateChatBody": "Discussion gratuite et confidentielle avec un éducateur de santé en kinyarwanda, anglais ou français.",
   "communityStartPrivateChat": "Démarrer un chat privé",
   "communityNoNamesNoPhotos": "Pas de noms. Pas de photos. Juste l'essentiel.",
@@ -215,7 +222,8 @@
   "lessonResetView": "Réinitialiser la vue",
   "pinWeakError": "Le PIN ne doit pas être séquentiel (ex. 1234) ni répété (ex. 1111).",
   "pinSyncFailed": "Échec de synchronisation du PIN avec le serveur. Veuillez essayer un autre PIN.",
-  "pinUsernameHint": "Entrez votre nom d'utilisateur (facultatif)",
+  "pinUsernameHint": "Entrez votre nom d'utilisateur",
+  "profileNameRequired": "Veuillez entrer un nom d'utilisateur pour continuer",
   "offline": "Hors ligne",
   "enable": "Activer",
   "disable": "Désactiver",
@@ -310,5 +318,6 @@
   },
   "communityOfflineQueued": "Message en attente — sera envoyé dès la reconnexion",
   "communityVoteOffline": "Hors ligne — votez dès la reconnexion",
-  "communityQuestionQueued": "Question en attente — sera envoyée dès la reconnexion"
+  "communityQuestionQueued": "Question en attente — sera envoyée dès la reconnexion",
+  "communityEmptyChat": "Pas encore de messages. Soyez le premier à dire quelque chose !"
 }

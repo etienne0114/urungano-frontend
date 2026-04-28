@@ -202,6 +202,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeReady => 'Prêt pour la leçon du jour';
 
   @override
+  String get homeWelcomeTitle => 'Bienvenue sur Urungano';
+
+  @override
+  String get homeWelcomeSubtitle =>
+      'Votre espace sécurisé pour la santé reproductive.';
+
+  @override
+  String homeWelcomeBack(String name) {
+    return 'Bon retour, $name !';
+  }
+
+  @override
+  String get homeStartJourney => 'COMMENCEZ VOTRE PARCOURS';
+
+  @override
+  String get homeExploreLessons => 'Explorer les leçons';
+
+  @override
+  String get homeRecentProgress => 'VOTRE PROGRESSION RÉCENTE';
+
+  @override
   String get homeContinue => 'CONTINUER L\'APPRENTISSAGE';
 
   @override
@@ -889,6 +910,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get communityNeedPrivateChat => 'Besoin de parler en privé ?';
 
   @override
+  String get communityPrivateChat => 'Chat privé';
+
+  @override
   String get communityPrivateChatBody =>
       'Discussion gratuite et confidentielle avec un éducateur de santé en kinyarwanda, anglais ou français.';
 
@@ -974,7 +998,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Échec de synchronisation du PIN avec le serveur. Veuillez essayer un autre PIN.';
 
   @override
-  String get pinUsernameHint => 'Entrez votre nom d\'utilisateur (facultatif)';
+  String get pinUsernameHint => 'Entrez votre nom d\'utilisateur';
+
+  @override
+  String get profileNameRequired =>
+      'Veuillez entrer un nom d\'utilisateur pour continuer';
 
   @override
   String get sttListening => 'Écoute en cours…';
@@ -1023,4 +1051,8 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get communityQuestionQueued =>
       'Question en attente — sera envoyée dès la reconnexion';
+
+  @override
+  String get communityEmptyChat =>
+      'Pas encore de messages. Soyez le premier à dire quelque chose !';
 }

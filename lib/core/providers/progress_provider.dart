@@ -23,8 +23,8 @@ class ProgressNotifier extends StateNotifier<UserProgress?> {
   /// ONLINE:  calls backend → stores token → hydrates progress from server
   ///          → flushes any queued offline updates
   /// OFFLINE: uses existing Hive session (no network call)
-  Future<void> signIn(String username) async {
-    final result = await AuthService.signInAnonymous(username);
+  Future<({String? error, bool isNotFound})> signIn(String username, {String? pin, bool isRegistration = false}) async {
+    final result = await AuthService.signInAnonymous(username, pin: pin, isRegistration: isRegistration);
 
     if (result == null) {
       // Offline — use or create local session
@@ -32,7 +32,11 @@ class ProgressNotifier extends StateNotifier<UserProgress?> {
         state = UserProgress.initial(username);
         await _persist();
       }
-      return;
+      return (error: null, isNotFound: false);
+    }
+
+    if (result.error != null) {
+      return (error: result.error, isNotFound: result.isNotFound);
     }
 
     // Online — update state with server identity
@@ -53,6 +57,7 @@ class ProgressNotifier extends StateNotifier<UserProgress?> {
     
     final hydrated = HiveStorage.loadProgress();
     if (hydrated != null) state = hydrated;
+    return (error: null, isNotFound: false);
   }
 
   Future<void> initUser(String userId, String username) async {

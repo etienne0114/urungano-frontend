@@ -60,6 +60,12 @@
   "pinVerifyTooManyAttempts": "Wagerageje inshuro nyinshi cyane. Ongera ufungure porogaramu.",
   "pinForgot": "Wibagiwe PIN? Subiranya gikoresho",
   "homeReady": "Witeguye isomo rya none",
+  "homeWelcomeTitle": "Murakaza neza mu Rungano",
+  "homeWelcomeSubtitle": "Ahantu hizewe ku buzima bwo kubyara.",
+  "homeWelcomeBack": "Muraho nanone, {name}!",
+  "homeStartJourney": "TANGIRA URUGENDO RWAWE",
+  "homeExploreLessons": "Sura Amasomo",
+  "homeRecentProgress": "IBYOUMAZE KUGERAHO",
   "homeContinue": "KOMEZA KWIGA",
   "homeResume": "Subiramo isomo",
   "homePickLesson": "Hitamo isomo",
@@ -261,6 +267,7 @@
   "communityRuleModerated": "Bikurikiranwa n'abigisha b'ubuzima nyabo",
   "communityRuleReport": "Menyesha ikintu cyose kitakunejeje",
   "communityNeedPrivateChat": "Ukeneye kuganira mwembi gusa?",
+  "communityPrivateChat": "Ikiganiro cy'ibanga",
   "communityPrivateChatBody": "Ikiganiro cy'ibanga kandi cy'ubuntu n'umwigisha w'ubuzima mu Kinyarwanda, Icyongereza cyangwa Igifaransa.",
   "communityStartPrivateChat": "Tangira ikiganiro cy'ibanga",
   "communityNoNamesNoPhotos": "Nta mazina. Nta mafoto. Ikiganiro kirahagije.",
@@ -288,7 +295,8 @@
   "lessonResetView": "Subiza uko byari biri",
   "pinWeakError": "PIN ntigomba kuba ikurikirana (urugero 1234) cyangwa isa yose (urugero 1111).",
   "pinSyncFailed": "Ntibyashobotse guhuza PIN na seriveri. Gerageza indi PIN.",
-  "pinUsernameHint": "Andika izina ukoresha (si ngombwa)",
+  "pinUsernameHint": "Andika izina ukoresha",
+  "profileNameRequired": "Andika izina kugira ngo ukomeze",
   "sttListening": "Ndumva…",
   "sttTapToSpeak": "Kanda uvuge",
   "sttSpeakNow": "Vuga ubu",
@@ -309,5 +317,6 @@
   },
   "communityOfflineQueued": "Ubutumwa buragumye — buzajya iyo ufite interineti",
   "communityVoteOffline": "Nta interineti — tora iyo wasubiye kumurongo",
-  "communityQuestionQueued": "Ikibazo kiragumye — kizajya iyo ufite interineti"
+  "communityQuestionQueued": "Ikibazo kiragumye — kizajya iyo ufite interineti",
+  "communityEmptyChat": "Nta butumwa burimo. Ba uwa mbere mu kugira icyo uvuga!"
 }
