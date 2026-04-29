@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:just_audio/just_audio.dart';
@@ -49,6 +50,8 @@ class NarrationService {
 
   // ── Callbacks ──────────────────────────────────────────────────────────────
   static void Function()? _onCompleteCallback;
+  // Keeps a single subscription so we never accumulate listeners.
+  static StreamSubscription<PlayerState>? _playerStateSub;
 
   // ── Initialization ─────────────────────────────────────────────────────────
 
@@ -99,20 +102,36 @@ class NarrationService {
     final lang = languageCode;
     final speakText = text;
 
+    debugPrint('[NarrationService] Speaking: lang=$lang, audioUrl=$audioUrl');
+    debugPrint('[NarrationService] Text preview: ${text.substring(0, text.length > 50 ? 50 : text.length)}...');
+
     // 1. Pre-generated audio URL (fastest path)
     if (audioUrl != null && audioUrl.isNotEmpty) {
-      final ok = await _playNetworkAudio(_resolveUrl(audioUrl));
-      if (ok) return;
+      final resolvedUrl = _resolveUrl(audioUrl);
+      debugPrint('[NarrationService] Attempting pre-generated audio: $resolvedUrl');
+      final ok = await _playNetworkAudio(resolvedUrl);
+      if (ok) {
+        debugPrint('[NarrationService] Successfully playing pre-generated audio');
+        return;
+      }
+      debugPrint('[NarrationService] Pre-generated audio failed, falling back...');
     }
 
     // 2. Backend on-demand synthesis (Piper neural TTS)
     final backendUrl = await _fetchBackendAudioUrl(speakText, lang);
     if (backendUrl != null) {
-      final ok = await _playNetworkAudio(_resolveUrl(backendUrl));
-      if (ok) return;
+      final resolvedUrl = _resolveUrl(backendUrl);
+      debugPrint('[NarrationService] Attempting backend synthesis: $resolvedUrl');
+      final ok = await _playNetworkAudio(resolvedUrl);
+      if (ok) {
+        debugPrint('[NarrationService] Successfully playing backend synthesis');
+        return;
+      }
+      debugPrint('[NarrationService] Backend synthesis failed, falling back...');
     }
 
     // 3. On-device TTS (platform fallback)
+    debugPrint('[NarrationService] Using on-device TTS');
     await _speakOnDevice(speakText, lang);
   }
 
@@ -147,13 +166,16 @@ class NarrationService {
   }
 
   /// Register callback fired when the current narration completes.
+  /// Cancels any previous player-stream subscription so listeners don't pile up
+  /// across chapter changes (each new NarrationPlayerBar calls this in initState).
   static void onComplete(void Function() cb) {
     _onCompleteCallback = cb;
     _tts.setCompletionHandler(() {
       _playerActive = false;
       cb();
     });
-    _player.playerStateStream.listen((state) {
+    _playerStateSub?.cancel();
+    _playerStateSub = _player.playerStateStream.listen((state) {
       if (state.processingState == ProcessingState.completed && _playerActive) {
         _playerActive = false;
         cb();
@@ -197,7 +219,15 @@ class NarrationService {
   /// Play audio from a network or file URL via just_audio.
   static Future<bool> _playNetworkAudio(String url) async {
     try {
+      // Stop any current playback and clear the audio source completely
+      await _player.stop();
+      
+      // Add a small delay to ensure the player is fully stopped
+      await Future.delayed(const Duration(milliseconds: 50));
+      
+      // Set the new URL - this forces a fresh load from the network
       await _player.setUrl(url);
+      
       _playerActive = true;
       await _player.play();
       return true;
@@ -227,22 +257,28 @@ class NarrationService {
   /// Wrap text in SSML for better prosody on platform TTS engines.
   /// Android (Google TTS ≥ 3.x) and iOS support most SSML 1.1 tags.
   static String _wrapSsml(String text, String lang) {
-    // Split on sentence boundaries, add natural pauses
+    // Sentence-boundary pauses — work across EN, FR, RW
     final sentenced = text
-        .replaceAllMapped(
-            RegExp(r'\.(\s+)'), (m) => '.<break time="450ms"/>${m[1]}')
-        .replaceAllMapped(
-            RegExp(r',(\s+)'), (m) => ',<break time="200ms"/>${m[1]}')
-        .replaceAllMapped(
-            RegExp(r';(\s+)'), (m) => ';<break time="300ms"/>${m[1]}')
-        .replaceAllMapped(
-            RegExp(r'\?(\s+)'), (m) => '?<break time="400ms"/>${m[1]}')
-        .replaceAllMapped(
-            RegExp(r'!(\s+)'), (m) => '!<break time="400ms"/>${m[1]}');
+        .replaceAllMapped(RegExp(r'\.(\s+)'),  (m) => '.<break time="420ms"/>${m[1]}')
+        .replaceAllMapped(RegExp(r',(\s+)'),   (m) => ',<break time="180ms"/>${m[1]}')
+        .replaceAllMapped(RegExp(r';(\s+)'),   (m) => ';<break time="280ms"/>${m[1]}')
+        .replaceAllMapped(RegExp(r'\?(\s+)'),  (m) => '?<break time="380ms"/>${m[1]}')
+        .replaceAllMapped(RegExp(r'!(\s+)'),   (m) => '!<break time="380ms"/>${m[1]}')
+        // French guillemets / em-dashes deserve a slight pause
+        .replaceAllMapped(RegExp(r'—(\s*)'),   (m) => '<break time="200ms"/>—${m[1]}');
 
-    // Slightly slower rate + warm pitch for educational, empathetic tone
+    // Language-tuned prosody:
+    //  EN: slightly slower (0.90) + gentle downward pitch — warm, educational
+    //  FR: native-rate (0.92) + neutral pitch — French TTS sounds better at natural rate
+    //  RW: slow (0.85) for clarity — learner-facing
+    final (rate, pitch) = switch (lang) {
+      'fr' => ('92%',  '0st'),
+      'rw' => ('85%', '-1st'),
+      _    => ('90%', '-1st'),  // en default
+    };
+
     return '<speak>'
-        '<prosody rate="90%" pitch="-1st" volume="loud">'
+        '<prosody rate="$rate" pitch="$pitch" volume="loud">'
         '$sentenced'
         '</prosody>'
         '</speak>';
@@ -250,11 +286,10 @@ class NarrationService {
 
   static String _resolveLocale(String code) {
     switch (code) {
-      case 'fr':
-        return 'fr-FR';
+      case 'fr': return 'fr-FR';
+      case 'rw': return 'rw';   // Kinyarwanda — supported on some Android builds
       case 'en':
-      default:
-        return 'en-US';
+      default:   return 'en-US';
     }
   }
 

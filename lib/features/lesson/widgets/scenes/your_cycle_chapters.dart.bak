@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../lesson_animation_primitives.dart';
-import 'package:urungano/l10n/app_localizations.dart';
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // DISPATCHER
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -413,7 +413,7 @@ class Ch0WhatIsMenstruation extends StatefulWidget {
 class _Ch0State extends State<Ch0WhatIsMenstruation>
     with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
-  
+  int _selPhase = 0;
   bool _panels = false;
   bool _showLabels = false;
 
@@ -424,11 +424,15 @@ class _Ch0State extends State<Ch0WhatIsMenstruation>
   double _rotXStart = 0, _rotYStart = 0, _zoomStart = 1.0;
   bool _hasInteracted = false;
 
-  static List<_PD> _getPhases(AppLocalizations l) => [
-    _PD(l.cyclePhaseMenstrual, l.cyclePhaseMenstrualDays, kRose, 3.0, 0.8, l.cyclePhaseMenstrualDesc),
-    _PD(l.cyclePhaseFollicular, l.cyclePhaseFollicularDays, kAmber, 10.0, 0.0, l.cyclePhaseFollicularDesc),
-    _PD(l.cyclePhaseOvulation, l.cyclePhaseOvulationDay, kSage, 14.0, 0.0, l.cyclePhaseOvulationDesc),
-    _PD(l.cyclePhaseLuteal, l.cyclePhaseLutealDays, kRoseDark, 22.0, 0.0, l.cyclePhaseLutealDesc),
+  static const _phases = [
+    _PD('Menstrual',  'Days 1–5',   kRose,      3.0, 0.8,
+        'The endometrial lining sheds. Prostaglandins cause uterine contractions. Hormone levels are at their lowest point in the cycle.'),
+    _PD('Follicular', 'Days 6–13',  kAmber,    10.0, 0.0,
+        'FSH stimulates follicle growth. Rising oestrogen rebuilds the endometrium. Energy and mood often peak in this phase.'),
+    _PD('Ovulation',  'Day 14',     kSage,     14.0, 0.0,
+        'LH surge triggers egg release from the dominant follicle. Peak fertility. Cervical mucus becomes clear and stretchy.'),
+    _PD('Luteal',     'Days 15–28', kRoseDark, 22.0, 0.0,
+        'Corpus luteum secretes progesterone, maintaining the thickened endometrium. If no fertilisation, progesterone drops and menstruation begins.'),
   ];
 
   double get _day => _ctrl.value * 28;
@@ -449,25 +453,20 @@ class _Ch0State extends State<Ch0WhatIsMenstruation>
 
   void _resetView() => setState(() { _rotX = 0; _rotY = 0.18; _zoom = 1.0; });
 
-
   @override
   void initState() {
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: const Duration(seconds: 18))
-      ..addListener(() {
-        setState(() {});
-        ch0Shared.update(_autoPhase, _day, _ctrl.value);
-      })
+      ..addListener(() => setState(() {}))
       ..repeat();
   }
-
 
   @override void dispose() { _ctrl.dispose(); super.dispose(); }
 
   @override
   Widget build(BuildContext context) {
-    final phase = ch0Shared.selPhase >= 0 ? ch0Shared.selPhase : _autoPhase;
-    final pd = _getPhases(AppLocalizations.of(context)!)[phase];
+    final phase = _selPhase >= 0 ? _selPhase : _autoPhase;
+    final pd = _phases[phase];
 
     return _stage(Stack(clipBehavior: Clip.hardEdge, children: [
       // ── 1. Animated background ───────────────────────────────
@@ -545,7 +544,7 @@ class _Ch0State extends State<Ch0WhatIsMenstruation>
             children: [
               _CtrlPill(
                 icon: Icons.grid_view_rounded,
-                label: AppLocalizations.of(context)!.cyclePhasesBtn,
+                label: 'Phases',
                 onTap: () => setState(() => _panels = true),
               ),
               const SizedBox(height: 5),
@@ -553,7 +552,7 @@ class _Ch0State extends State<Ch0WhatIsMenstruation>
                 icon: _showLabels
                     ? Icons.label_off_outlined
                     : Icons.label_outline_rounded,
-                label: _showLabels ? AppLocalizations.of(context)!.cycleHideLabels : AppLocalizations.of(context)!.cycleShowLabels,
+                label: _showLabels ? 'Hide labels' : 'Labels',
                 active: _showLabels,
                 onTap: () => setState(() => _showLabels = !_showLabels),
               ),
@@ -585,11 +584,19 @@ class _Ch0State extends State<Ch0WhatIsMenstruation>
           ),
         ),
 
+        // ── 8. Bottom info strip
+        _Ch0PhaseStrip(
+          phase: phase, pd: pd,
+          day: _day, t: _ctrl.value,
+          phases: _phases, selPhase: _selPhase,
+          onPhaseSelect: (i) => setState(() => _selPhase = i),
+        ),
+
       ] else ...[
         // ── 4-panel phase overview grid
         Positioned(top: 12, right: 16,
           child: _CtrlPill(
-            icon: Icons.close_rounded, label: AppLocalizations.of(context)!.cycleCloseBtn,
+            icon: Icons.close_rounded, label: 'Close',
             activeColor: kPlum, active: true,
             onTap: () => setState(() => _panels = false),
           ),
@@ -597,8 +604,8 @@ class _Ch0State extends State<Ch0WhatIsMenstruation>
         Positioned.fill(top: 50,
           child: Row(children: List.generate(4, (i) => Expanded(
             child: _MiniPhasePanel(
-              pd: _getPhases(AppLocalizations.of(context)!)[i], idx: i, t: _ctrl.value,
-              onTap: () => setState(() { ch0Shared.selectPhase(i); _panels = false; }),
+              pd: _phases[i], idx: i, t: _ctrl.value,
+              onTap: () => setState(() { _selPhase = i; _panels = false; }),
             ),
           ))),
         ),
@@ -746,6 +753,112 @@ class _RotateHintState extends State<_RotateHint>
   );
 }
 
+// ── Bottom phase info strip ───────────────────────────────────────────────────
+class _Ch0PhaseStrip extends StatelessWidget {
+  const _Ch0PhaseStrip({
+    required this.phase, required this.pd,
+    required this.day, required this.t,
+    required this.phases, required this.selPhase,
+    required this.onPhaseSelect,
+  });
+  final int phase, selPhase; final _PD pd;
+  final double day, t;
+  final List<_PD> phases;
+  final ValueChanged<int> onPhaseSelect;
+
+  @override
+  Widget build(BuildContext context) => Positioned(
+    bottom: 0, left: 0, right: 0,
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 400),
+      height: 118,
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.95),
+        border: Border(top: BorderSide(
+            color: pd.color.withValues(alpha: 0.28), width: 1.5)),
+        boxShadow: [BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10, offset: const Offset(0, -2))],
+      ),
+      padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
+      child: Row(children: [
+        // Phase name + description
+        Expanded(child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 400),
+                width: 9, height: 9,
+                decoration: BoxDecoration(
+                    color: pd.color, shape: BoxShape.circle),
+              ),
+              const SizedBox(width: 7),
+              AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 300),
+                style: TextStyle(fontFamily: 'Fraunces', fontSize: 14,
+                    fontWeight: FontWeight.w700, color: pd.color),
+                child: Text(pd.name),
+              ),
+              const SizedBox(width: 6),
+              Text(pd.days,
+                  style: const TextStyle(fontSize: 10, color: kInk60)),
+            ]),
+            const SizedBox(height: 4),
+            Text(pd.description,
+                maxLines: 2, overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontSize: 11.5, color: kPlum, height: 1.4)),
+          ],
+        )),
+        const SizedBox(width: 16),
+        // Hormone mini chart
+        SizedBox(width: 158, height: 65,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Hormones', style: TextStyle(
+                  fontSize: 9, letterSpacing: 0.8,
+                  color: kInk60, fontWeight: FontWeight.w600)),
+              Expanded(child: CustomPaint(
+                  painter: _HormoneChart(day: day, t: t))),
+              const Row(children: [
+                _Leg(kRose, 'Oestrogen'), SizedBox(width: 8),
+                _Leg(kSage, 'Prog.'), SizedBox(width: 8),
+                _Leg(kAmber, 'LH'),
+              ]),
+            ],
+          ),
+        ),
+        const SizedBox(width: 12),
+        // Phase selector chips
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(4, (i) => GestureDetector(
+            onTap: () => onPhaseSelect(i),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              margin: const EdgeInsets.symmetric(vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+              decoration: BoxDecoration(
+                color: phase == i
+                    ? phases[i].color
+                    : phases[i].color.withValues(alpha: 0.10),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Text(phases[i].name,
+                  style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w700,
+                      color: phase == i ? Colors.white : phases[i].color)),
+            ),
+          )),
+        ),
+      ]),
+    ),
+  );
+}
+
 class _PD {
   const _PD(this.name, this.days, this.color, this.endoThick, this.bleed, this.description);
   final String name, days, description;
@@ -874,11 +987,15 @@ class _Ch1State extends State<Ch1UterusAndOvaries>
   double _rotY = 0, _dragStart = 0;
   int _glow = -1;
 
-  List<_HS> _getHs(AppLocalizations l) => [
-    _HS(0, l.cycleAnatomyOvary, kAmber, l.cycleCh1HsOvaryDesc),
-    _HS(1, l.cycleAnatomyFallopian, kSage, l.cycleCh1HsFallopianDesc),
-    _HS(2, l.cycleAnatomyEndometrium, kRose, l.cycleCh1HsEndometriumDesc),
-    _HS(3, l.cycleAnatomyCervix, kRoseDark, l.cycleCh1HsCervixDesc),
+  static const _hs = [
+    _HS(0, 'Ovaries', kAmber,
+        'Each ovary is ~3 cm and contains 300,000+ primordial follicles. Each month FSH stimulates several to grow — usually one matures and releases an egg at ovulation.'),
+    _HS(1, 'Fallopian tube', kSage,
+        '~10 cm long with finger-like fimbriae that sweep the released egg inward. Fertilisation by sperm most often occurs in the outer third of the tube.'),
+    _HS(2, 'Endometrium', kRose,
+        'The inner mucosal lining. Thickness ranges from ~2 mm after menstruation to ~12 mm in the luteal phase. Shed as a period if no implantation occurs.'),
+    _HS(3, 'Cervix', kRoseDark,
+        'Lower narrow neck of the uterus. Produces mucus that changes throughout the cycle — clear and stretchy at ovulation, thick and opaque at other times.'),
   ];
 
   @override
@@ -930,7 +1047,7 @@ class _Ch1State extends State<Ch1UterusAndOvaries>
           const SizedBox(width: 6),
           const Text('Drag to rotate', style: TextStyle(fontSize: 10, color: kInk60)),
           const SizedBox(width: 18),
-          ..._getHs(AppLocalizations.of(context)!).map((h) => GestureDetector(
+          ..._hs.map((h) => GestureDetector(
             onTap: () => setState(() => _glow = _glow == h.id ? -1 : h.id),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
@@ -991,22 +1108,22 @@ class _Ch1State extends State<Ch1UterusAndOvaries>
           ? Container(
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.97),
-                border: Border(top: BorderSide(color: _getHs(AppLocalizations.of(context)!)[_glow].color, width: 2)),
+                border: Border(top: BorderSide(color: _hs[_glow].color, width: 2)),
               ),
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
               child: Row(children: [
                 Container(width: 36, height: 36, decoration: BoxDecoration(
-                    color: _getHs(AppLocalizations.of(context)!)[_glow].color, shape: BoxShape.circle),
+                    color: _hs[_glow].color, shape: BoxShape.circle),
                   alignment: Alignment.center,
-                  child: Text('${_getHs(AppLocalizations.of(context)!)[_glow].id + 1}', style: const TextStyle(
+                  child: Text('${_hs[_glow].id + 1}', style: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.w800, color: Colors.white))),
                 const SizedBox(width: 14),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Text(_getHs(AppLocalizations.of(context)!)[_glow].label, style: TextStyle(fontFamily: 'Fraunces',
-                      fontSize: 15, fontWeight: FontWeight.w700, color: _getHs(AppLocalizations.of(context)!)[_glow].color)),
+                  Text(_hs[_glow].label, style: TextStyle(fontFamily: 'Fraunces',
+                      fontSize: 15, fontWeight: FontWeight.w700, color: _hs[_glow].color)),
                   const SizedBox(height: 3),
-                  Text(_getHs(AppLocalizations.of(context)!)[_glow].detail, maxLines: 2, overflow: TextOverflow.ellipsis,
+                  Text(_hs[_glow].detail, maxLines: 2, overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontSize: 11.5, color: kPlum, height: 1.4)),
                 ])),
                 GestureDetector(
@@ -1049,27 +1166,25 @@ class _Ch2State extends State<Ch2TheFourPhases>
   late final AnimationController _ctrl;
   int _sel = 0;
 
-  static List<_P2> _getPhases(AppLocalizations l) => [
-    _P2(l.cyclePhaseMenstrual, l.cyclePhaseMenstrual, l.cyclePhaseMenstrualDays, 5, kRose, l.cycleHormoneMenstrualLevel, 3.0, 0.8, l.cyclePhaseMenstrualDescAlt),
-    _P2(l.cyclePhaseFollicular, l.cyclePhaseFollicular, l.cyclePhaseFollicularDays, 8, kAmber, l.cycleHormoneFollicularLevel, 10.0, 0.0, l.cyclePhaseFollicularDescAlt),
-    _P2(l.cyclePhaseOvulation, l.cyclePhaseOvulation, l.cyclePhaseOvulationDay, 1, kSage, l.cycleHormoneOvulationLevel, 14.0, 0.0, l.cyclePhaseOvulationDescAlt),
-    _P2(l.cyclePhaseLuteal, l.cyclePhaseLuteal, l.cyclePhaseLutealDays, 14, kRoseDark, l.cycleHormoneLutealLevel, 22.0, 0.0, l.cyclePhaseLutealDescAlt),
+  static const _phases = [
+    _P2('Menstrual',  'Iminsi 1–5',  'Days 1–5',  5,  kRose,    'FSH ↓ LH ↓ Oestrogen ↓', 3.0,  0.8,
+        'The endometrium sheds. Prostaglandins cause uterine contractions expelling the lining. Hormone levels reach their lowest point.'),
+    _P2('Follicular', 'Iminsi 6–13', 'Days 6–13', 8,  kAmber,   'FSH ↑ Oestrogen ↑',       10.0, 0.0,
+        'FSH stimulates several follicles. The dominant follicle produces oestrogen, rebuilding the endometrium and suppressing others.'),
+    _P2('Ovulation',  'Ovulation',   'Day 14',    1,  kSage,    'LH surge · Oestrogen peak',14.0, 0.0,
+        'LH surge triggers rupture of the dominant follicle, releasing the egg into the fallopian tube. Peak fertility.'),
+    _P2('Luteal',     'Iminsi 15–28','Days 15–28',14, kRoseDark,'Progesterone ↑ Oestrogen ↑',22.0,0.0,
+        'The corpus luteum produces progesterone, maintaining the endometrium. If no fertilisation, it degrades and the cycle restarts.'),
   ];
 
   double get _day => _ctrl.value * 28;
-
 
   @override
   void initState() {
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: const Duration(seconds: 12))
-      ..addListener(() {
-        setState(() {});
-        ch2Shared.update(_sel, _ctrl.value);
-      })
-      ..repeat();
+      ..addListener(() => setState(() {}))..repeat();
   }
-
   @override void dispose() { _ctrl.dispose(); super.dispose(); }
 
   void _hitTest(Offset pos) {
@@ -1090,7 +1205,7 @@ class _Ch2State extends State<Ch2TheFourPhases>
 
   @override
   Widget build(BuildContext context) {
-    final ph = _getPhases(AppLocalizations.of(context)!)[_sel];
+    final ph = _phases[_sel];
     final tilt = math.sin(_ctrl.value * math.pi * 2) * 0.04;
     return _stage(Stack(clipBehavior: Clip.hardEdge, children: [
       // Aurora phase-tinted background
@@ -1123,13 +1238,17 @@ class _Ch2State extends State<Ch2TheFourPhases>
             child: CustomPaint(
               painter: _Pro3DWheelPainter(
                 day: _day, sel: _sel,
-                phases: _getPhases(AppLocalizations.of(context)!), t: _ctrl.value,
+                phases: _phases, t: _ctrl.value,
               ),
             ),
           ),
         ),
       ),
-
+      // Professional phase strip — right panel
+      Positioned(
+        right: 10, top: 18, bottom: 12, width: 346,
+        child: _ProPhaseStrip(ph: ph, sel: _sel, t: _ctrl.value),
+      ),
       Positioned(
         bottom: 11, left: 18,
         child: Text(
@@ -1662,11 +1781,11 @@ class _Ch3State extends State<Ch3CrampsAndPain>
   late final AnimationController _ctrl;
   final Set<int> _active = {};
 
-  List<({String icon, String label, String detail, Color color})> _getRemedies(AppLocalizations l) => [
-    (icon:'🌡', label:l.cycleCh3Heat, detail:l.cycleCh3HeatDesc, color: const Color(0xFFE8703A)),
-    (icon:'💊', label:l.cycleCh3Ibuprofen, detail:l.cycleCh3IbuprofenDesc, color: kSage),
-    (icon:'🧘', label:l.cycleCh3Exercise, detail:l.cycleCh3ExerciseDesc, color: kAmber),
-    (icon:'💧', label:l.cycleCh3Hydration, detail:l.cycleCh3HydrationDesc, color: const Color(0xFF5B8DC8)),
+  static const _remedies = [
+    (icon:'🌡', label:'Heat', detail:'Relaxes muscle spasm, increases blood flow. Apply 15–20 min.', color: Color(0xFFE8703A)),
+    (icon:'💊', label:'Ibuprofen', detail:'NSAIDs inhibit prostaglandin synthesis. Take 1–2h before peak pain.', color: kSage),
+    (icon:'🧘', label:'Exercise', detail:'Endorphins reduce pain by ~50%. Walk, yoga, or light stretching.', color: kAmber),
+    (icon:'💧', label:'Hydration', detail:'Warm fluids reduce inflammation. Ginger and chamomile teas help.', color: Color(0xFF5B8DC8)),
   ];
 
   double get _pain => math.max(0.0, 1.0 - _active.length * 0.26);
@@ -1707,7 +1826,7 @@ class _Ch3State extends State<Ch3CrampsAndPain>
               style: const TextStyle(fontSize: 18)),
           const SizedBox(width: 8),
           Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-            Text(AppLocalizations.of(context)!.cycleCh3PainIntensity, style: TextStyle(fontSize: 9, color: kInk60, fontWeight: FontWeight.w600)),
+            const Text('Pain intensity', style: TextStyle(fontSize: 9, color: kInk60, fontWeight: FontWeight.w600)),
             const SizedBox(height: 3),
             SizedBox(width: 100, height: 5, child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
@@ -1723,7 +1842,7 @@ class _Ch3State extends State<Ch3CrampsAndPain>
 
     // Title (top-center)
     Positioned(top: 18, left: 0, right: 0,
-      child: Center(child: Text(AppLocalizations.of(context)!.cycleCh3Title,
+      child: Center(child: Text('Cramps & pain',
           style: TextStyle(fontFamily: 'Fraunces', fontSize: 16,
               fontWeight: FontWeight.w700, color: kPlum.withValues(alpha: 0.7)))),
     ),
@@ -1737,7 +1856,7 @@ class _Ch3State extends State<Ch3CrampsAndPain>
           border: const Border(top: BorderSide(color: Color(0x1A2A1A1F), width: 1)),
         ),
         child: Row(
-          children: _getRemedies(AppLocalizations.of(context)!).indexed.map((e) {
+          children: _remedies.indexed.map((e) {
             final (i, r) = e;
             final on = _active.contains(i);
             return Expanded(child: GestureDetector(
@@ -1899,12 +2018,12 @@ class _Ch4State extends State<Ch4TrackingYourCycle> {
     // Calendar — left 60%
     Positioned(left: 14, top: 14, right: 340, bottom: 14,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(AppLocalizations.of(context)!.cycleCh4Title, style: TextStyle(fontFamily: 'Fraunces',
+        const Text('Your cycle calendar', style: TextStyle(fontFamily: 'Fraunces',
             fontSize: 18, fontWeight: FontWeight.w700, color: kPlum)),
-        Text(AppLocalizations.of(context)!.cycleCh4Subtitle,
+        const Text('Tap any day to log your period',
             style: TextStyle(fontSize: 11, color: kInk60)),
         const SizedBox(height: 8),
-        Row(children: [AppLocalizations.of(context)!.cycleCh4DayM,AppLocalizations.of(context)!.cycleCh4DayT,AppLocalizations.of(context)!.cycleCh4DayW,AppLocalizations.of(context)!.cycleCh4DayTh,AppLocalizations.of(context)!.cycleCh4DayF,AppLocalizations.of(context)!.cycleCh4DayS,AppLocalizations.of(context)!.cycleCh4DaySu].map((d) => Expanded(
+        Row(children: ['M','T','W','T','F','S','S'].map((d) => Expanded(
           child: Center(child: Text(d, style: const TextStyle(
               fontSize: 10, fontWeight: FontWeight.w700, color: kInk60))),
         )).toList()),
@@ -1958,12 +2077,12 @@ class _Ch4State extends State<Ch4TrackingYourCycle> {
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(AppLocalizations.of(context)!.cycleCh4NextPeriod,
+            const Text('Next period predicted',
                 style: TextStyle(fontSize: 11, color: Colors.white70)),
             const SizedBox(height: 4),
-            Text(AppLocalizations.of(context)!.cycleDayBadge('${_len + 1}'), style: const TextStyle(fontFamily: 'Fraunces',
+            Text('Day ${_len + 1}', style: const TextStyle(fontFamily: 'Fraunces',
                 fontSize: 28, fontWeight: FontWeight.w700, color: Colors.white)),
-            Text(AppLocalizations.of(context)!.cycleCh4InXDays('${_len - (_period.isNotEmpty ? _period.reduce(math.max) : 5)}'),
+            Text('in ${_len - (_period.isNotEmpty ? _period.reduce(math.max) : 5)} days',
                 style: const TextStyle(fontSize: 12, color: Colors.white70)),
           ]),
         ),
@@ -1973,21 +2092,21 @@ class _Ch4State extends State<Ch4TrackingYourCycle> {
               borderRadius: BorderRadius.circular(13),
               border: Border.all(color: Colors.black.withValues(alpha: 0.06))),
           child: Column(children: [
-            _s(AppLocalizations.of(context)!.cycleCh4CycleLen, AppLocalizations.of(context)!.cycleCh4DaysX('$_len'), AppLocalizations.of(context)!.cycleCh4CycleLenNorm),
-            _s(AppLocalizations.of(context)!.cycleCh4PeriodLen, AppLocalizations.of(context)!.cycleCh4DaysX('${_period.length}'), AppLocalizations.of(context)!.cycleCh4PeriodLenNorm),
-            _s(AppLocalizations.of(context)!.cycleCh4OvulationLabel, AppLocalizations.of(context)!.cycleDayBadge('$_ov'), AppLocalizations.of(context)!.cycleCh4OvulationNorm),
-            _s(AppLocalizations.of(context)!.cycleCh4FertileWindow, AppLocalizations.of(context)!.cycleCh4DaysRange, AppLocalizations.of(context)!.cycleCh4FertileNorm),
+            _s('Cycle length', '$_len days', '21–35 normal'),
+            _s('Period length', '${_period.length} days', '3–7 normal'),
+            _s('Ovulation', 'Day $_ov', '±2 days'),
+            _s('Fertile window', 'Days 11–16', 'Sperm survives 5d'),
           ]),
         ),
         const SizedBox(height: 10),
         Container(padding: const EdgeInsets.all(11),
           decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(12)),
-          child: Column(children: [
-            _LR('🩸', AppLocalizations.of(context)!.cycleCh4LegendPeriod),
-            _LR('🥚', AppLocalizations.of(context)!.cycleCh4LegendOvulation),
-            _LR('🌱', AppLocalizations.of(context)!.cycleCh4LegendFertile),
-            _LR('🔮', AppLocalizations.of(context)!.cycleCh4LegendPredicted),
+          child: const Column(children: [
+            _LR('🩸', 'Period · tap to log/remove'),
+            _LR('🥚', 'Ovulation day (Day 14)'),
+            _LR('🌱', 'Fertile window (Days 11–16)'),
+            _LR('🔮', 'Predicted next period'),
           ]),
         ),
       ]),
@@ -2031,12 +2150,17 @@ class _Ch5State extends State<Ch5CommonMyths> with TickerProviderStateMixin {
   final List<AnimationController> _flips = [];
   final List<bool> _rev = List.filled(5, false);
 
-  List<_MC> _getCards(AppLocalizations l) => [
-    _MC(l.cycleCh5Myth1, l.cycleCh5Fact1, '🏃‍♀️'),
-    _MC(l.cycleCh5Myth2, l.cycleCh5Fact2, '🩸'),
-    _MC(l.cycleCh5Myth3, l.cycleCh5Fact3, '🤔'),
-    _MC(l.cycleCh5Myth4, l.cycleCh5Fact4, '📅'),
-    _MC(l.cycleCh5Myth5, l.cycleCh5Fact5, '💊'),
+  static const _cards = [
+    _MC('You cannot exercise during your period.',
+        'Exercise releases endorphins, increasing blood flow and reducing cramp pain. Walking, yoga, and swimming are all safe and beneficial.', '🏃‍♀️'),
+    _MC('Period blood is dirty or impure.',
+        'Menstrual fluid is a healthy mix of blood, endometrial tissue, mucus, and vaginal secretions — a normal biological process with no toxins.', '🩸'),
+    _MC('You cannot get pregnant during your period.',
+        'Sperm can survive 3–5 days in the reproductive tract. If ovulation follows soon after bleeding ends, pregnancy is possible.', '🤔'),
+    _MC('Irregular periods always signal a health problem.',
+        'Stress, diet changes, travel, and exercise all affect cycle timing. A range of 21–35 days is entirely normal. Only persistent irregularity warrants investigation.', '📅'),
+    _MC('Period pain is just something to endure — nothing helps.',
+        'NSAIDs (ibuprofen/naproxen), heat therapy, and light exercise are clinically proven to significantly reduce dysmenorrhoea.', '💊'),
   ];
 
   int get _busted => _rev.where((r) => r).length;
@@ -2044,7 +2168,7 @@ class _Ch5State extends State<Ch5CommonMyths> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < _cards.length; i++) {
       _flips.add(AnimationController(vsync: this,
           duration: const Duration(milliseconds: 480)));
     }
@@ -2069,10 +2193,10 @@ class _Ch5State extends State<Ch5CommonMyths> with TickerProviderStateMixin {
     // Header
     Positioned(left: 20, top: 16, right: 20,
       child: Row(children: [
-        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(AppLocalizations.of(context)!.cycleCh5Title, style: TextStyle(fontFamily: 'Fraunces',
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
+          Text('Myth busters', style: TextStyle(fontFamily: 'Fraunces',
               fontSize: 22, fontWeight: FontWeight.w700, color: kPlum)),
-          Text(AppLocalizations.of(context)!.cycleCh5Subtitle,
+          Text('Tap a card to reveal the medical fact',
               style: TextStyle(fontSize: 11, color: kInk60)),
         ])),
         AnimatedContainer(
@@ -2085,7 +2209,7 @@ class _Ch5State extends State<Ch5CommonMyths> with TickerProviderStateMixin {
             border: Border.all(color: _busted == 5 ? kSage
                 : _busted > 0 ? kAmber : Colors.black.withValues(alpha: 0.08)),
           ),
-          child: Text(_busted == 5 ? AppLocalizations.of(context)!.cycleCh5AllBusted : AppLocalizations.of(context)!.cycleCh5XBusted('$_busted'),
+          child: Text(_busted == 5 ? '🎉 All busted!' : '$_busted / 5 busted',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700,
                   color: _busted == 5 ? Colors.white : kPlum)),
         ),
@@ -2095,8 +2219,8 @@ class _Ch5State extends State<Ch5CommonMyths> with TickerProviderStateMixin {
     // Cards — wrap grid
     Positioned(left: 12, top: 68, right: 12, bottom: 12,
       child: Wrap(spacing: 10, runSpacing: 10,
-        children: List.generate(_getCards(AppLocalizations.of(context)!).length, (i) => _FC(
-          card: _getCards(AppLocalizations.of(context)!)[i], ctrl: _flips[i], rev: _rev[i], onTap: () => _flip(i),
+        children: List.generate(_cards.length, (i) => _FC(
+          card: _cards[i], ctrl: _flips[i], rev: _rev[i], onTap: () => _flip(i),
         )),
       ),
     ),
@@ -2145,7 +2269,7 @@ class _FC extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: (showFact ? _f : _m).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(100)),
-                child: Text(showFact ? AppLocalizations.of(context)!.cycleCh5FactLabel : AppLocalizations.of(context)!.cycleCh5MythLabel,
+                child: Text(showFact ? 'FACT ✓' : 'MYTH ✗',
                     style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800,
                         letterSpacing: 1, color: showFact ? _f : _m)),
               ),
@@ -2155,7 +2279,7 @@ class _FC extends StatelessWidget {
                 style: const TextStyle(fontSize: 11.5, color: kPlum, height: 1.4),
                 maxLines: 3, overflow: TextOverflow.ellipsis),
             const Spacer(),
-            Text(showFact ? AppLocalizations.of(context)!.cycleCh5TapFact : AppLocalizations.of(context)!.cycleCh5TapMyth,
+            Text(showFact ? 'Tap again to see myth' : 'Tap to reveal fact',
                 style: TextStyle(fontSize: 9,
                     color: (showFact ? _f : _m).withValues(alpha: 0.65),
                     fontWeight: FontWeight.w500)),
@@ -2164,176 +2288,4 @@ class _FC extends StatelessWidget {
       );
     }),
   );
-}
-
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// SIDEBAR PANELS for LessonScreen
-// ═══════════════════════════════════════════════════════════════════════════════
-class Ch0SharedState extends ChangeNotifier {
-  int autoPhase = 0;
-  int selPhase = -1;
-  double day = 0;
-  double t = 0;
-
-  void update(int ap, double d, double time) {
-    if (autoPhase == ap && day == d && t == time) return;
-    autoPhase = ap; day = d; t = time;
-    notifyListeners();
-  }
-
-  void selectPhase(int p) {
-    selPhase = p;
-    notifyListeners();
-  }
-}
-final ch0Shared = Ch0SharedState();
-
-class Ch0SidebarPanel extends StatelessWidget {
-  const Ch0SidebarPanel({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: ch0Shared,
-      builder: (context, _) {
-        final state = ch0Shared;
-        final phaseIdx = state.selPhase >= 0 ? state.selPhase : state.autoPhase;
-        final pd = _Ch0State._getPhases(AppLocalizations.of(context)!)[phaseIdx];
-
-        return Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: pd.color.withValues(alpha: 0.3), width: 2),
-            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))],
-          ),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 12, height: 12,
-                    decoration: BoxDecoration(color: pd.color, shape: BoxShape.circle),
-                  ),
-                  const SizedBox(width: 10),
-                  Flexible(
-                    child: Text(
-                      pd.name,
-                      style: TextStyle(fontFamily: 'Fraunces', fontSize: 20, fontWeight: FontWeight.w800, color: pd.color),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: pd.color.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Text(
-                      pd.days,
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: pd.color),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                pd.description,
-                style: const TextStyle(fontSize: 15, height: 1.6, color: Color(0xFF2A1A1F)),
-              ),
-              const SizedBox(height: 24),
-              // Hormone Chart
-              SizedBox(
-                width: double.infinity, height: 80,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(AppLocalizations.of(context)!.cycleHormonesLabel, style: const TextStyle(fontSize: 10, letterSpacing: 1.2, color: kInk60, fontWeight: FontWeight.w800)),
-                    const SizedBox(height: 8),
-                    Expanded(child: CustomPaint(painter: _HormoneChart(day: state.day, t: state.t))),
-                    const SizedBox(height: 4),
-                    Row(children: [
-                      _Leg(kRose, AppLocalizations.of(context)!.cycleOestrogen), const SizedBox(width: 12),
-                      _Leg(kSage, AppLocalizations.of(context)!.cycleProgesterone), const SizedBox(width: 12),
-                      _Leg(kAmber, AppLocalizations.of(context)!.cycleLH),
-                    ]),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              // Phase selector chips
-              Text(AppLocalizations.of(context)!.cyclePhasesBtn, style: const TextStyle(fontSize: 10, letterSpacing: 1.2, color: kInk60, fontWeight: FontWeight.w800)),
-              const SizedBox(height: 10),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: List.generate(4, (i) {
-                  final active = i == phaseIdx;
-                  final p = _Ch0State._getPhases(AppLocalizations.of(context)!)[i];
-                  return GestureDetector(
-                    onTap: () => ch0Shared.selectPhase(active ? -1 : i),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: active ? p.color : Colors.white,
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(color: active ? p.color : Colors.black12),
-                        boxShadow: active ? [BoxShadow(color: p.color.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 2))] : null,
-                      ),
-                      child: Text(
-                        p.name,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: active ? FontWeight.w700 : FontWeight.w600,
-                          color: active ? Colors.white : kInk60,
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ],
-          ),
-        );
-      }
-    );
-  }
-}
-
-class Ch2SharedState extends ChangeNotifier {
-  int selPhase = 0;
-  double t = 0;
-
-  void update(int sel, double time) {
-    if (selPhase == sel && t == time) return;
-    selPhase = sel; t = time;
-    notifyListeners();
-  }
-
-  void selectPhase(int p) {
-    selPhase = p;
-    notifyListeners();
-  }
-}
-final ch2Shared = Ch2SharedState();
-
-class Ch2SidebarPanel extends StatelessWidget {
-  const Ch2SidebarPanel({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: ch2Shared,
-      builder: (context, _) {
-        final ph = _Ch2State._getPhases(AppLocalizations.of(context)!)[ch2Shared.selPhase];
-        return _ProPhaseStrip(ph: ph, sel: ch2Shared.selPhase, t: ch2Shared.t);
-      }
-    );
-  }
 }

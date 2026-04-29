@@ -3,13 +3,13 @@ import '../models/lesson.dart';
 // Base URL for 3D model assets. In production, update to the deployed API URL.
 const _modelBase = 'http://localhost:4000/static/models';
 
-/// Full lesson content — chapters, narration (EN/FR/RW), hotspots.
+/// Full lesson content   chapters, narration (EN/FR/RW), hotspots.
 ///
 /// Used as an OFFLINE FALLBACK when the API cannot be reached.
 /// The backend seeds identical content so API and bundled data are in sync.
 const Map<String, Lesson> kLessonContent = {
   // ─────────────────────────────────────────────────────────────────────────
-  // Lesson 1 — Your cycle, explained (Menstrual Health)
+  // Lesson 1   Your cycle, explained (Menstrual Health)
   // ─────────────────────────────────────────────────────────────────────────
   'your_cycle': Lesson(
     id: 'your_cycle',
@@ -32,14 +32,14 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Imihango ni iki?',
         },
         narrationText:
-            'The menstrual cycle is a monthly biological process. A cycle lasts 21–35 days on average. Hormones control every phase. The lining of the uterus — the endometrium — builds up and sheds if no pregnancy occurs.',
+            'The menstrual cycle is a monthly biological process. A cycle lasts 21 to 35 days on average. Hormones control every phase. The lining of the uterus (the endometrium) builds up and sheds if no pregnancy occurs.',
         localizedNarration: {
           'en':
-              'The menstrual cycle is a monthly biological process in bodies with a uterus. It prepares the body for a possible pregnancy. A cycle usually lasts 21 to 35 days, with an average of 28 days. The uterus lining — the endometrium — builds up and then sheds if no pregnancy occurs. This shedding is your period. Bleeding typically lasts 3 to 7 days. Hormones — including oestrogen, progesterone, LH, and FSH — control every phase of the cycle.',
+              'The menstrual cycle is a monthly biological process in bodies with a uterus. It prepares the body for a possible pregnancy. A cycle usually lasts 21 to 35 days, with an average of 28 days. The uterus lining (the endometrium) builds up and then sheds if no pregnancy occurs. This shedding is your period. Bleeding typically lasts 3 to 7 days. Hormones (including oestrogen, progesterone, LH, and FSH) control every phase of the cycle.',
           'fr':
-              "Le cycle menstruel est un processus biologique mensuel dans les corps possédant un utérus. Il prépare le corps à une éventuelle grossesse. Un cycle dure généralement de 21 à 35 jours, avec une moyenne de 28 jours. La muqueuse utérine — l'endomètre — s'épaissit puis se déverse si aucune grossesse ne survient. Cette desquamation est vos règles. Les saignements durent généralement 3 à 7 jours.",
+              "Le cycle menstruel est un processus biologique mensuel dans les corps possédant un utérus. Il prépare le corps à une éventuelle grossesse. Un cycle dure généralement de 21 à 35 jours, avec une moyenne de 28 jours. La muqueuse utérine (l'endomètre) s'épaissit puis se déverse si aucune grossesse ne survient. Cette desquamation est vos règles. Les saignements durent généralement 3 à 7 jours.",
           'rw':
-              "Incurane ni imikorere y'umubiri iba buri kwezi ku bantu bafite nyababyeyi. Itegura umubiri kwakira inda. Umuzingo w'incurane ukunze kumara iminsi 21 kugeza kuri 35, impuzandengo ikaba 28. Umwenda wa nyababyeyi (endometri) urabyibuha, hanyuma ugasohoka niba nta gusama kwabaye. Ibyo ni byo twita imihango. Akenshi imihango imara iminsi 3 kugeza kuri 7.",
+              "Incurane ni imikorere ya buri kwezi. Itegura umubiri kwakira inda. Imara iminsi 21-35. Umwenda wa nyababyeyi urasohoka niba nta nda. Imisemburo igenzura byose.",
         },
         modelUrl: '$_modelBase/uterus.glb',
         hotspots: [],
@@ -57,11 +57,11 @@ const Map<String, Lesson> kLessonContent = {
             'The uterus is a pear-shaped muscular organ. Two ovaries produce eggs and hormones. Fallopian tubes connect the ovaries to the uterus. During ovulation, one egg is released.',
         localizedNarration: {
           'en':
-              'The uterus is a pear-shaped muscular organ about the size of your fist. Two ovaries — each about the size of an almond — produce eggs and hormones. Fallopian tubes connect the ovaries to the uterus. During ovulation, one ovary releases a single egg. If sperm fertilises the egg, it implants in the uterine lining and grows into a baby.',
+              'The uterus is a pear-shaped muscular organ about the size of your fist. Two ovaries   each about the size of an almond   produce eggs and hormones. Fallopian tubes connect the ovaries to the uterus. During ovulation, one ovary releases a single egg. If sperm fertilises the egg, it implants in the uterine lining and grows into a baby.',
           'fr':
-              "L'utérus est un organe musculaire en forme de poire, de la taille d'un poing environ. Deux ovaires — chacun de la taille d'une amande — produisent des ovules et des hormones. Les trompes de Fallope relient les ovaires à l'utérus. Lors de l'ovulation, un ovaire libère un seul ovule.",
+              "L'utérus est un organe musculaire en forme de poire, de la taille d'un poing environ. Deux ovaires   chacun de la taille d'une amande   produisent des ovules et des hormones. Les trompes de Fallope relient les ovaires à l'utérus. Lors de l'ovulation, un ovaire libère un seul ovule.",
           'rw':
-              "Nyababyeyi ni urugingo rw'imikaya rufite ishusho isa n'ipera kandi rungana hafi n'igipfunsi. Intangangore ebyiri zitanga intanga ngore n'imisemburo. Imiyoboro ya fallope ihuza intangangore na nyababyeyi. Mu gihe cya ovulation, intangangore imwe irekura intanga ngore imwe.",
+              "Nyababyeyi ni urugingo rw'imikaya. Intangangore ebyiri zitanga intanga n'imisemburo. Imiyoboro ihuza intangangore na nyababyeyi. Mu ovulation, intanga irekurwa. Niba ihuye n'intanga ngabo, ishobora gusama.",
         },
         modelUrl: '$_modelBase/uterus.glb',
         hotspots: [
@@ -91,7 +91,7 @@ const Map<String, Lesson> kLessonContent = {
             number: 4,
             title: 'Cervix',
             description:
-                'Lower, narrow portion of the uterus. Produces mucus that changes texture throughout the cycle — clear and stretchy at ovulation, thick at other times.',
+                'Lower, narrow portion of the uterus. Produces mucus that changes texture throughout the cycle   clear and stretchy at ovulation, thick at other times.',
           ),
         ],
       ),
@@ -105,14 +105,14 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Ibyiciro 4 by’incurane',
         },
         narrationText:
-            'Phase 1: Menstruation — days 1–5. Phase 2: Follicular — FSH stimulates follicle growth. Phase 3: Ovulation — LH surge, egg released. Phase 4: Luteal — progesterone rises.',
+            'Phase 1: Menstruation (days 1-5). Phase 2: Follicular (FSH stimulates follicle growth). Phase 3: Ovulation (LH surge, egg released). Phase 4: Luteal (progesterone rises).',
         localizedNarration: {
           'en':
-              'Phase one: Menstruation — days one to five. The endometrium sheds and hormone levels are at their lowest. Phase two: Follicular — FSH stimulates follicles to grow and produce oestrogen. Phase three: Ovulation — around day fourteen. A surge of LH triggers release of a mature egg. This is the most fertile time. Phase four: Luteal — days fifteen to twenty-eight. The empty follicle produces progesterone. If no fertilisation occurs, progesterone falls and menstruation begins again.',
+              'Phase one: Menstruation (days one to five). The endometrium sheds and hormone levels are at their lowest. Phase two: Follicular (FSH stimulates follicles to grow and produce oestrogen). Phase three: Ovulation (around day fourteen). A surge of LH triggers release of a mature egg. This is the most fertile time. Phase four: Luteal (days fifteen to twenty-eight). The empty follicle produces progesterone. If no fertilisation occurs, progesterone falls and menstruation begins again.',
           'fr':
-              "Phase un : Menstruation — jours 1 à 5. L'endomètre se détache. Phase deux : Folliculaire — FSH stimule la croissance des follicules. Phase trois : Ovulation — vers le 14e jour, la LH déclenche la libération d'un ovule mature. Phase quatre : Lutéale — le follicule vide produit de la progestérone. Sans fécondation, les règles recommencent.",
+              "Phase un : Menstruation (jours 1 à 5). L'endomètre se détache. Phase deux : Folliculaire (FSH stimule la croissance des follicules). Phase trois : Ovulation (vers le 14e jour, la LH déclenche la libération d'un ovule mature). Phase quatre : Lutéale (le follicule vide produit de la progestérone). Sans fécondation, les règles recommencent.",
           'rw':
-              "Icyiciro cya mbere: Imihango — iminsi 1 kugeza kuri 5. Endometri isohoka. Icyiciro cya kabiri: Icyiciro cya follicule — FSH itera udufolikule gukura. Icyiciro cya gatatu: Ovulation — hafi y'umunsi wa 14, LH itera irekurwa ry'intanga ngore. Icyiciro cya kane: Icyiciro luteale — corpus luteum ikora progesterone. Niba nta gusama kwabaye, imihango irongera igatangira.",
+              "Icyiciro 1: Imihango (iminsi 1-5). Umwenda usohoka. Icyiciro 2: Follicule. FSH itera gukura. Icyiciro 3: Ovulation (umunsi 14). Intanga irekurwa. Icyiciro 4: Luteale (iminsi 15-28). Progesterone iragabanyuka.",
         },
         hotspots: [],
       ),
@@ -129,11 +129,11 @@ const Map<String, Lesson> kLessonContent = {
             'Period cramps are caused by prostaglandins. Effective relief: heat therapy, ibuprofen before pain peaks, gentle exercise, and staying hydrated.',
         localizedNarration: {
           'en':
-              'Period cramps — dysmenorrhea — are caused by prostaglandins, chemicals that trigger uterine muscle contractions. Effective relief includes: applying heat to the lower abdomen for 15–20 minutes, taking ibuprofen or naproxen before pain peaks, gentle exercise like walking or yoga, and staying hydrated. If cramps are severe enough to disrupt daily life or do not respond to these measures, see a health worker.',
+              'Period cramps (dysmenorrhea) are caused by prostaglandins, chemicals that trigger uterine muscle contractions. Effective relief includes: applying heat to the lower abdomen for 15-20 minutes, taking ibuprofen or naproxen before pain peaks, gentle exercise like walking or yoga, and staying hydrated. If cramps are severe enough to disrupt daily life or do not respond to these measures, see a health worker.',
           'fr':
-              "Les crampes — dysménorrhée — sont causées par des prostaglandines. Les options de soulagement efficaces comprennent l'application de chaleur sur le bas-ventre, la prise d'ibuprofène avant le pic de douleur, une activité physique douce et une bonne hydratation.",
+              "Les crampes   dysménorrhée   sont causées par des prostaglandines. Les options de soulagement efficaces comprennent l'application de chaleur sur le bas-ventre, la prise d'ibuprofène avant le pic de douleur, une activité physique douce et une bonne hydratation.",
           'rw':
-              "Ububabare bwo mu mihango buterwa na prostaglandins, imisemburo ituma imikaya ya nyababyeyi yikanya. Kugira ngo bugabanuke, shyira ubushyuhe ku nda yo hasi iminota 15–20, fata ibuprofen cyangwa naproxen mbere y’uko ububabare bukomera, ukore siporo yoroshye nko kugenda cyangwa yoga, kandi unywe amazi ahagije.",
+              "Ububabare buterwa na prostaglandins. Uburyo bwo kubugabanya: shyira ubushyuhe ku nda, fata ibuprofen, ukore siporo yoroshye, unywe amazi.",
         },
         hotspots: [],
       ),
@@ -147,14 +147,14 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Gukurikirana ukwezi kwawe',
         },
         narrationText:
-            'Tracking helps predict your next period. Record first day, duration, and symptoms. Patterns emerge over 3–6 months. Normal cycles are 21–35 days.',
+            'Tracking helps predict your next period. Record first day, duration, and symptoms. Patterns emerge over 3 to 6 months. Normal cycles are 21 to 35 days.',
         localizedNarration: {
           'en':
               'Tracking your cycle helps you understand your body and predict when your next period will come. Use a calendar, notebook, or app. Record the first day of each period, how long it lasts, and any symptoms. Over three to six months, patterns emerge showing your typical cycle length and fertile window. Normal cycles range from 21 to 35 days.',
           'fr':
               "Suivre votre cycle vous aide à comprendre votre corps et à prévoir vos prochaines règles. Notez le premier jour, la durée et les symptômes. Au bout de trois à six mois, des schémas apparaissent. Les cycles normaux durent 21 à 35 jours.",
           'rw':
-              "Gukurikirana ukwezi kwawe bigufasha kumenya neza umubiri wawe no guteganya igihe imihango izaza. Andika umunsi wa mbere w’imihango, iminsi imara, n’ibimenyetso wumva. Mu mezi 3 kugeza kuri 6, utangira kubona imiterere isanzwe y’ukwezi kwawe. Ukwezi gusanzwe kumara iminsi 21 kugeza kuri 35.",
+              "Gukurikirana ukwezi bigufasha kumenya umubiri wawe. Andika umunsi wa mbere, iminsi imara, n'ibimenyetso. Mu mezi 3-6, uzabona imiterere. Ukwezi gusanzwe kumara iminsi 21-35.",
         },
         hotspots: [],
       ),
@@ -171,11 +171,11 @@ const Map<String, Lesson> kLessonContent = {
             'Myth: no exercise during period. Fact: exercise reduces cramp pain. Myth: period blood is dirty. Fact: menstrual fluid is a normal mix of blood and endometrial tissue.',
         localizedNarration: {
           'en':
-              'Myth: You cannot swim or exercise during your period. Fact: Exercise increases blood flow and can reduce cramp pain — swimming is safe. Myth: Period blood is dirty. Fact: Menstrual fluid is a normal mix of blood, endometrial tissue, and mucus. Myth: You cannot get pregnant during your period. Fact: Sperm can survive up to 5 days — pregnancy is possible if ovulation follows soon after bleeding.',
+              'Myth: You cannot swim or exercise during your period. Fact: Exercise increases blood flow and can reduce cramp pain. Swimming is safe. Myth: Period blood is dirty. Fact: Menstrual fluid is a normal mix of blood, endometrial tissue, and mucus. Myth: You cannot get pregnant during your period. Fact: Sperm can survive up to 5 days. Pregnancy is possible if ovulation follows soon after bleeding.',
           'fr':
-              "Mythe : pas de sport pendant les règles. Réalité : l'exercice réduit les crampes. Mythe : le sang des règles est impur. Réalité : le flux menstruel est normal. Mythe : pas de grossesse pendant les règles. Réalité : les spermatozoïdes survivent 5 jours.",
+              "Mythe : On ne peut pas nager ni faire d'exercice pendant ses règles. Réalité : l'exercice peut réduire les crampes en augmentant le flux sanguin. La natation est sans danger. Mythe : Le sang des règles est sale ou impur. Réalité : le flux menstruel est un mélange normal de sang, de tissu endométrial et de mucus. Mythe : On ne peut pas tomber enceinte pendant ses règles. Réalité : les spermatozoïdes peuvent survivre jusqu'à 5 jours.",
           'rw':
-              "Imyumvire itari yo: ntukora siporo uri mu mihango. Ukuri: siporo yoroshye ishobora kugabanya ububabare. Imyumvire itari yo: amaraso y’imihango ni umwanda. Ukuri: ni uruvange rusanzwe rw’amaraso, umwenda wa nyababyeyi n’urusenda rw’umubiri. Imyumvire itari yo: ntushobora gusama uri mu mihango. Ukuri: intanga ngabo zishobora kumara iminsi igera kuri 5, bityo gusama birashoboka.",
+              "Imyumvire itari yo: Ntubarwa koga mu mihango. Ukuri: Siporo igabanya ububabare. Imyumvire itari yo: Amaraso y'imihango ni amahambwe. Ukuri: Ni integanyo isanzwe.",
         },
         hotspots: [],
       ),
@@ -183,7 +183,7 @@ const Map<String, Lesson> kLessonContent = {
   ),
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Lesson 2 — How HIV Works & Prevention (HIV & STI)
+  // Lesson 2   How HIV Works & Prevention (HIV & STI)
   // ─────────────────────────────────────────────────────────────────────────
   'hiv_prevention': Lesson(
     id: 'hiv_prevention',
@@ -206,14 +206,14 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'VIH ni iki?',
         },
         narrationText:
-            'HIV (Human Immunodeficiency Virus) attacks CD4 T-cells — white blood cells that lead the immune system. Modern ART keeps viral load undetectable. People on ART live long, healthy lives.',
+            'HIV (Human Immunodeficiency Virus) attacks CD4 T-cells   white blood cells that lead the immune system. Modern ART keeps viral load undetectable. People on ART live long, healthy lives.',
         localizedNarration: {
           'en':
-              'HIV stands for Human Immunodeficiency Virus. It attacks the immune system, specifically CD4 T-cells. Without treatment, HIV slowly destroys these cells, eventually leading to AIDS. Modern antiretroviral therapy — ART — reduces HIV in the blood to an undetectable level. People on effective ART live long, healthy lives and cannot transmit the virus sexually.',
+              'HIV stands for Human Immunodeficiency Virus. It attacks the immune system, specifically CD4 T-cells. Without treatment, HIV slowly destroys these cells, eventually leading to AIDS. Modern antiretroviral therapy   ART   reduces HIV in the blood to an undetectable level. People on effective ART live long, healthy lives and cannot transmit the virus sexually.',
           'fr':
-              "Le VIH signifie Virus de l'Immunodéficience Humaine. Il attaque le système immunitaire, en particulier les cellules CD4. Sans traitement, il conduit à terme au SIDA. Le traitement antirétroviral moderne — ARV — réduit le VIH à un niveau indétectable. Les personnes sous ARV efficace vivent longtemps en bonne santé.",
+              "Le VIH signifie Virus de l'Immunodéficience Humaine. Il attaque le système immunitaire, en particulier les cellules CD4. Sans traitement, il conduit à terme au SIDA. Le traitement antirétroviral moderne   ARV   réduit le VIH à un niveau indétectable. Les personnes sous ARV efficace vivent longtemps en bonne santé.",
           'rw':
-              "VIH ni virusi yangiza ubudahangarwa bw’umubiri. Yibasira by’umwihariko uturemangingo twa CD4 dufasha umubiri kurwanya indwara. Iyo itavuwe, VIH ishobora kugera ku cyiciro cya SIDA. Ariko imiti ya ART igabanya virusi mu maraso kugeza ku rwego rudasanzwe ruboneka, kandi abafata ART neza bashobora kubaho ubuzima burebure kandi buzira umuze.",
+              "VIH ni virusi yangiza ubudahangarwa bw'umubiri. Yibasira uturemangingo twa CD4. Iyo itavuwe, ishobora kugera ku SIDA. Imiti ya ART igabanya virusi mu maraso. Abafata ART neza bashobora kubaho ubuzima burebure.",
         },
         hotspots: [],
       ),
@@ -234,7 +234,7 @@ const Map<String, Lesson> kLessonContent = {
           'fr':
               "Le VIH ne se transmet que par des fluides corporels spécifiques : sang, sperme, sécrétions vaginales et lait maternel. Les voies les plus courantes sont les rapports sexuels non protégés, le partage de seringues et la transmission mère-enfant. Le VIH ne se transmet PAS par la salive, la sueur, le partage de nourriture ou les piqûres d'insectes.",
           'rw':
-              "VIH yandurira gusa mu matembabuzi y’umubiri amwe n’amwe: amaraso, amasohoro, amatembabuzi yo mu myanya ndangagitsina, n’amata yonsa. Ikunze kwandurira mu mibonano idakingiye, gusangira inshinge, cyangwa kuva ku mubyeyi ujya ku mwana. Ntiyandurira mu macandwe, ibyuya, kurya hamwe, guhoberana cyangwa kurumwa n’udukoko.",
+              "VIH yandurira mu matembabuzi y'umubiri: amaraso, amasohoro, amatembabuzi yo mu myanya ndangagitsina, n'amata yonsa. Ikunze kwandurira mu mibonano idakingiye, gusangira inshinge, cyangwa kuva ku mubyeyi ujya ku mwana. Ntiyandurira mu macandwe, ibyuya, kurya hamwe, cyangwa kurumwa n'udukoko.",
         },
         modelUrl: '$_modelBase/cd4-cell.glb',
         hotspots: [
@@ -274,11 +274,11 @@ const Map<String, Lesson> kLessonContent = {
             'Condoms every time (98% effective). PrEP daily pill (99% effective for HIV-negative people). Regular testing. Avoid sharing needles. All free in Rwanda.',
         localizedNarration: {
           'en':
-              'Effective prevention strategies: Use condoms correctly every time — over 98% effective. Know your status through regular HIV testing. If at substantial risk, ask about PrEP — a daily pill that prevents HIV by over 99%. If recently exposed, seek PEP within 72 hours. Avoid sharing needles. All these services are free at Rwanda public health centres.',
+              'Effective prevention strategies: Use condoms correctly every time   over 98% effective. Know your status through regular HIV testing. If at substantial risk, ask about PrEP   a daily pill that prevents HIV by over 99%. If recently exposed, seek PEP within 72 hours. Avoid sharing needles. All these services are free at Rwanda public health centres.',
           'fr':
               "Stratégies de prévention efficaces : utiliser des préservatifs correctement à chaque fois (plus de 98% d'efficacité). Connaître son statut par des tests réguliers. Si à haut risque, se renseigner sur le PrEP (pilule quotidienne, plus de 99% d'efficacité). En cas d'exposition récente, demander le PEP dans les 72 heures.",
           'rw':
-              "Uburyo bw’ingenzi bwo kwirinda VIH ni: gukoresha agakingirizo neza buri gihe, kwipimisha buri gihe ngo umenye uko uhagaze, no gukoresha PrEP ku bantu bafite ibyago byinshi byo kwandura. Niba habayeho ibyago byo kwandura vuba, shakisha PEP mu masaha 72 ya mbere. Kandi ntugasangire inshinge n’abandi.",
+              "Uburyo bwo kwirinda VIH: gukoresha agakingirizo neza buri gihe, kwipimisha kenshi, no gukoresha PrEP ku bantu bafite ibyago. Niba habayeho ibyago vuba, shakisha PEP mu masaha 72. Ntugasangire inshinge n'abandi.",
         },
         hotspots: [],
       ),
@@ -295,11 +295,11 @@ const Map<String, Lesson> kLessonContent = {
             'ART makes viral load undetectable. Undetectable = Untransmittable (U=U). Free ART is available at all Rwanda health centres.',
         localizedNarration: {
           'en':
-              'Antiretroviral therapy — ART — stops HIV from reproducing. Taken daily, ART reduces viral load to undetectable levels. An undetectable viral load means HIV cannot be sexually transmitted — known as U=U: Undetectable equals Untransmittable. In Rwanda, ART is free for all people living with HIV and available at all health centres.',
+              'Antiretroviral therapy   ART   stops HIV from reproducing. Taken daily, ART reduces viral load to undetectable levels. An undetectable viral load means HIV cannot be sexually transmitted   known as U=U: Undetectable equals Untransmittable. In Rwanda, ART is free for all people living with HIV and available at all health centres.',
           'fr':
-              "Le traitement antirétroviral — ARV — empêche le VIH de se reproduire. Pris quotidiennement, il rend la charge virale indétectable. Une charge virale indétectable signifie que le VIH ne peut pas se transmettre sexuellement — principe I=I. Au Rwanda, les ARV sont gratuits dans tous les centres de santé.",
+              "Le traitement antirétroviral   ARV   empêche le VIH de se reproduire. Pris quotidiennement, il rend la charge virale indétectable. Une charge virale indétectable signifie que le VIH ne peut pas se transmettre sexuellement   principe I=I. Au Rwanda, les ARV sont gratuits dans tous les centres de santé.",
           'rw':
-              "ART ni imiti ihagarika kwiyongera kwa VIH mu mubiri. Iyo ifashwe buri munsi kandi neza, virusi ishobora kugera ku rwego rudasanzwe ruboneka. Ibyo bisobanura ko idashobora kwanduza mu mibonano mpuzabitsina (U=U). Mu Rwanda, ART itangirwa ubuntu ku bayikeneye.",
+              "ART ni imiti ihagarika kwiyongera kwa VIH. Iyo ifashwe buri munsi neza, virusi ishobora kugera ku rwego rudasanzwe ruboneka. Ibyo bisobanura ko idashobora kwanduza (U=U). Mu Rwanda, ART itangirwa ubuntu.",
         },
         hotspots: [],
       ),
@@ -313,14 +313,14 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Kwipimisha no kugabanya ivangura',
         },
         narrationText:
-            'HIV testing is free and confidential in Rwanda. Community testing reaches schools and markets. HIV stigma is based on misinformation — HIV is a manageable condition.',
+            'HIV testing is free and confidential in Rwanda. Community testing reaches schools and markets. HIV stigma is based on misinformation   HIV is a manageable condition.',
         localizedNarration: {
           'en':
               'HIV testing is the only way to know your status. In Rwanda, testing is free, confidential, and available at all health centres for everyone. Community testing vans reach schools, markets, and workplaces. HIV-related stigma is based on misinformation. HIV is a manageable medical condition, not a moral failing. Knowing your status empowers you to protect yourself and others.',
           'fr':
-              "Le dépistage du VIH est le seul moyen de connaître son statut. Au Rwanda, il est gratuit et confidentiel dans tous les centres de santé. La stigmatisation liée au VIH est basée sur des informations erronées — le VIH est une maladie gérable, pas un échec moral.",
+              "Le dépistage du VIH est le seul moyen de connaître son statut. Au Rwanda, il est gratuit et confidentiel dans tous les centres de santé. La stigmatisation liée au VIH est basée sur des informations erronées   le VIH est une maladie gérable, pas un échec moral.",
           'rw':
-              "Kwipimisha ni bwo buryo bwonyine bwo kumenya niba ufite VIH cyangwa utayifite. Mu Rwanda, serivisi yo kwipimisha ni ubuntu kandi ikorwa mu ibanga. Ivangura rikomoka ku makuru atari yo; VIH ni indwara ivurwa kandi igenzurwa, si igisebo.",
+              "Kwipimisha ni bwo buryo bwonyine bwo kumenya niba ufite VIH. Mu Rwanda, serivisi yo kwipimisha ni ubuntu kandi ikorwa mu ibanga. Ivangura rikomoka ku makuru atari yo. VIH ni indwara ivurwa kandi igenzurwa.",
         },
         hotspots: [],
       ),
@@ -328,7 +328,7 @@ const Map<String, Lesson> kLessonContent = {
   ),
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Lesson 3 — Reproductive Anatomy 101 (Anatomy)
+  // Lesson 3   Reproductive Anatomy 101 (Anatomy)
   // ─────────────────────────────────────────────────────────────────────────
   'anatomy_101': Lesson(
     id: 'anatomy_101',
@@ -358,7 +358,7 @@ const Map<String, Lesson> kLessonContent = {
           'fr':
               "L'anatomie reproductive désigne les organes impliqués dans la reproduction sexuelle. La comprendre est fondamental pour la littératie en santé sexuelle et aide à prendre des décisions éclairées et à communiquer avec les professionnels de santé.",
           'rw':
-              "Imiterere y’imyanya myibarukiro ni ingingo z’umubiri zigira uruhare mu kororoka. Kuyisobanukirwa bigufasha gufata ibyemezo byiza ku buzima bw’imyororokere, kumenya impinduka zidasanzwe, no kuganira neza n’abaganga.",
+              "Imiterere y'imyanya myibarukiro ni ingingo z'umubiri zigira uruhare mu kororoka. Kuyisobanukirwa bigufasha gufata ibyemezo byiza, kumenya impinduka zidasanzwe, no kuganira neza n'abaganga.",
         },
         hotspots: [],
       ),
@@ -375,9 +375,9 @@ const Map<String, Lesson> kLessonContent = {
             'Ovaries produce eggs and hormones. Fallopian tubes transport eggs. Uterus is where a baby develops. Cervix connects uterus to vagina. External vulva includes labia, clitoris.',
         localizedNarration: {
           'en':
-              'The female reproductive system includes the ovaries — which produce eggs and oestrogen and progesterone. The fallopian tubes transport eggs from the ovaries to the uterus. The uterus is where a baby develops during pregnancy. The cervix is the lower, narrow end of the uterus. The vagina is a muscular canal connecting the uterus to the outside. Externally, the vulva includes the labia, clitoris, and vaginal opening.',
+              'The female reproductive system includes the ovaries   which produce eggs and oestrogen and progesterone. The fallopian tubes transport eggs from the ovaries to the uterus. The uterus is where a baby develops during pregnancy. The cervix is the lower, narrow end of the uterus. The vagina is a muscular canal connecting the uterus to the outside. Externally, the vulva includes the labia, clitoris, and vaginal opening.',
           'fr':
-              "Le système reproducteur féminin comprend les ovaires — qui produisent des ovules, des œstrogènes et de la progestérone. Les trompes de Fallope transportent les ovules vers l'utérus. L'utérus est l'endroit où un bébé se développe. Le col relie l'utérus au vagin. La vulve externe comprend les lèvres, le clitoris et l'ouverture vaginale.",
+              "Le système reproducteur féminin comprend les ovaires   qui produisent des ovules, des œstrogènes et de la progestérone. Les trompes de Fallope transportent les ovules vers l'utérus. L'utérus est l'endroit où un bébé se développe. Le col relie l'utérus au vagin. La vulve externe comprend les lèvres, le clitoris et l'ouverture vaginale.",
           'rw':
               "Imyanya myibarukiro y’umugore irimo intangangore zitanga intanga ngore n’imisemburo nka estrogene na progesiteroni. Imiyoboro y’intanga ngore itwara intanga ijya muri nyababyeyi. Nyababyeyi ni ho umwana akurira igihe cy’inda. Inkondo ya nyababyeyi ihuza nyababyeyi n’igituba. Hanze hari igice cyitwa vulve kirimo iminwa n’agace ka clitoris.",
         },
@@ -388,7 +388,7 @@ const Map<String, Lesson> kLessonContent = {
             number: 1,
             title: 'Ovaries',
             description:
-                'Two almond-sized glands containing all lifetime eggs (~1 million at birth, 300,000–400,000 at puberty). Produce oestrogen and progesterone.',
+                'Two almond-sized glands containing all lifetime eggs (1 million at birth, 300,000 to 400,000 at puberty). Produce oestrogen and progesterone.',
           ),
           Hotspot(
             id: 'hs_fa_uterus',
@@ -402,14 +402,14 @@ const Map<String, Lesson> kLessonContent = {
             number: 3,
             title: 'Cervix',
             description:
-                'Lower narrow passage between uterus and vagina. Produces cycle-varying mucus. Dilates during labour. Pap smear screening every 3–5 years (after age 25) is recommended.',
+                'Lower narrow passage between uterus and vagina. Produces cycle-varying mucus. Dilates during labour. Pap smear screening every 3 - 5 years (after age 25) is recommended.',
           ),
           Hotspot(
             id: 'hs_fa_vagina',
             number: 4,
             title: 'Vagina',
             description:
-                'Flexible 8–12 cm muscular tube. Naturally acidic (pH 3.8–4.5) to prevent infection. Serves as birth canal and menstrual passage.',
+                'Flexible 8 to 12 cm muscular tube. Naturally acidic (pH 3.8 to 4.5) to prevent infection. Serves as birth canal and menstrual passage.',
           ),
         ],
       ),
@@ -439,21 +439,21 @@ const Map<String, Lesson> kLessonContent = {
             number: 1,
             title: 'Testes',
             description:
-                'Two oval glands in the scrotum producing 200–300 million sperm/day and testosterone. Kept 2–3°C cooler than body temperature for optimal sperm production.',
+                'Two oval glands in the scrotum producing 200 - 300 million sperm/day and testosterone. Kept 2 - 3°C cooler than body temperature for optimal sperm production.',
           ),
           Hotspot(
             id: 'hs_ma_epididymis',
             number: 2,
             title: 'Epididymis',
             description:
-                'Coiled tube on the back of each testis. Sperm mature here over 2–3 weeks, gaining mobility. Mature sperm are stored here until ejaculation.',
+                'Coiled tube on the back of each testis. Sperm mature here over 2 - 3 weeks, gaining mobility. Mature sperm are stored here until ejaculation.',
           ),
           Hotspot(
             id: 'hs_ma_prostate',
             number: 3,
             title: 'Prostate gland',
             description:
-                'Walnut-sized organ around the urethra. Produces alkaline fluid (20–30% of semen) that neutralises vaginal acidity. Health checks recommended after age 50.',
+                'Walnut-sized organ around the urethra. Produces alkaline fluid (20 - 30% of semen) that neutralises vaginal acidity. Health checks recommended after age 50.',
           ),
         ],
       ),
@@ -467,14 +467,14 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Gusama n’ikorwa ry’inda',
         },
         narrationText:
-            'One sperm penetrates the egg in the fallopian tube. The zygote divides as it travels to the uterus, implanting 6–10 days later. Implantation triggers hCG — detected by pregnancy tests.',
+            'One sperm penetrates the egg in the fallopian tube. The zygote divides as it travels to the uterus, implanting 6 to 10 days later. Implantation triggers hCG (detected by pregnancy tests).',
         localizedNarration: {
           'en':
-              'Fertilisation occurs when one sperm penetrates and fuses with an egg — usually in the fallopian tube. The fertilised egg — now a zygote — divides as it travels to the uterus. After 6–10 days, it implants into the endometrium. Implantation triggers production of hCG — the hormone detected by pregnancy tests.',
+              'Fertilisation occurs when one sperm penetrates and fuses with an egg (usually in the fallopian tube). The fertilised egg (now a zygote) divides as it travels to the uterus. After 6-10 days, it implants into the endometrium. Implantation triggers production of hCG (the hormone detected by pregnancy tests).',
           'fr':
-              "La fécondation se produit lorsqu'un spermatozoïde pénètre dans un ovule, généralement dans la trompe de Fallope. Le zygote se divise en se déplaçant vers l'utérus. Après 6–10 jours, il s'implante dans l'endomètre. L'implantation déclenche la production d'hCG.",
+              "La fécondation se produit lorsqu'un spermatozoïde pénètre dans un ovule, généralement dans la trompe de Fallope. Le zygote se divise en se déplaçant vers l'utérus. Après 6 à 10 jours, il s'implante dans l'endomètre. L'implantation déclenche la production d'hCG.",
           'rw':
-              "Gusama kuba iyo intanga ngabo imwe yinjiye mu ntanga ngore, akenshi bibera mu muyoboro w’intanga ngore. Intanga yasamwe (zygote) igenda yigabanyamo igana muri nyababyeyi. Nyuma y’iminsi 6–10, yifatanya n’umwenda wa nyababyeyi (endometri). Ibyo bituma hCG itangira kuboneka mu mubiri.",
+              "Gusama kuba iyo intanga ngabo imwe yinjiye mu ntanga ngore, akenshi bibera mu muyoboro w’intanga ngore. Intanga yasamwe (zygote) igenda yigabanyamo igana muri nyababyeyi. Nyuma y’iminsi 6 kugeza kuri 10, yifatanya n’umwenda wa nyababyeyi (endometri). Ibyo bituma hCG itangira kuboneka mu mubiri.",
         },
         hotspots: [],
       ),
@@ -491,7 +491,7 @@ const Map<String, Lesson> kLessonContent = {
             'GnRH from the hypothalamus triggers FSH and LH. In females: oestrogen drives breast development and menarche. In males: testosterone drives testicular growth and voice deepening.',
         localizedNarration: {
           'en':
-              'Puberty is driven by GnRH from the hypothalamus, triggering FSH and LH from the pituitary gland. In bodies with ovaries, oestrogen causes breast development, widening hips, pubic hair, and menarche. In bodies with testes, testosterone causes testicular growth, voice deepening, body hair, and ejaculation ability. Puberty typically starts age 8–13 (females) or 9–14 (males).',
+              'Puberty is driven by GnRH from the hypothalamus, triggering FSH and LH from the pituitary gland. In bodies with ovaries, oestrogen causes breast development, widening hips, pubic hair, and menarche. In bodies with testes, testosterone causes testicular growth, voice deepening, body hair, and ejaculation ability. Puberty typically starts age 8 - 13 (females) or 9 - 14 (males).',
           'fr':
               "La puberté est déclenchée par la GnRH de l'hypothalamus, stimulant FSH et LH de l'hypophyse. Chez les femmes, les œstrogènes provoquent le développement des seins, l'élargissement des hanches et la ménarche. Chez les hommes, la testostérone entraîne la croissance testiculaire et l'approfondissement de la voix.",
           'rw':
@@ -503,7 +503,7 @@ const Map<String, Lesson> kLessonContent = {
   ),
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Lesson 4 — Tracking Cramps & Flow (Menstrual Health)
+  // Lesson 4   Tracking Cramps & Flow (Menstrual Health)
   // ─────────────────────────────────────────────────────────────────────────
   'cramps_flow': Lesson(
     id: 'cramps_flow',
@@ -547,14 +547,14 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Ubwoko bw’umuvuduko w’imihango',
         },
         narrationText:
-            'Light: one pad per day. Moderate: change every 3–4 hours. Heavy: change every 1–2 hours. More than 80 mL per cycle may be heavy menstrual bleeding requiring evaluation.',
+            'Light: one pad per day. Moderate: change every 3 to 4 hours. Heavy: change every 1 to 2 hours. More than 80 mL per cycle may be heavy menstrual bleeding requiring evaluation.',
         localizedNarration: {
           'en':
-              'Menstrual flow varies from person to person. Light flow requires one pad or tampon per day. Moderate flow: change every 3–4 hours. Heavy flow: change every 1–2 hours. Losing more than 80 mL per cycle is considered heavy menstrual bleeding and can cause anaemia. Dark brown blood at the start or end is normal older blood.',
+              'Menstrual flow varies from person to person. Light flow requires one pad or tampon per day. Moderate flow: change every 3 - 4 hours. Heavy flow: change every 1 - 2 hours. Losing more than 80 mL per cycle is considered heavy menstrual bleeding and can cause anaemia. Dark brown blood at the start or end is normal older blood.',
           'fr':
-              "Le flux menstruel varie d'une personne à l'autre. Flux léger : un protège-slip par jour. Modéré : changement toutes les 3–4 heures. Abondant : toutes les 1–2 heures. Plus de 80 ml par cycle est abondant et peut causer une anémie.",
+              "Le flux menstruel varie d'une personne à l'autre. Flux léger : un protège-slip par jour. Modéré : changement toutes les 3 - 4 heures. Abondant : toutes les 1 - 2 heures. Plus de 80 ml par cycle est abondant et peut causer une anémie.",
           'rw':
-              "Imihango itandukana ku muntu n’undi. Uko ari mike: ushobora guhindura pad rimwe ku munsi. Uko ari hagati: guhindura nyuma y’amasaha 3–4. Uko ari nyinshi: guhindura nyuma y’amasaha 1–2. Kurenga mililitiro 80 mu kwezi bishobora kuba imihango myinshi ikwiye gusuzumwa n’umuganga.",
+              "Imihango itandukana ku muntu n’undi. Uko ari mike: ushobora guhindura pad rimwe ku munsi. Uko ari hagati: guhindura nyuma y’amasaha 3 kugeza kuri 4. Uko ari nyinshi: guhindura nyuma y’amasaha 1 kugeza kuri 2. Kurenga mililitiro 80 mu kwezi bishobora kuba imihango myinshi ikwiye gusuzumwa n’umuganga.",
         },
         hotspots: [],
       ),
@@ -568,14 +568,14 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Uko wagabanya ububabare',
         },
         narrationText:
-            'Heat therapy (15–20 min). Ibuprofen or naproxen taken early. Gentle exercise releases endorphins. Magnesium-rich foods may reduce cramping.',
+            'Heat therapy (15 to 20 min). Ibuprofen or naproxen taken early. Gentle exercise releases endorphins. Magnesium-rich foods may reduce cramping.',
         localizedNarration: {
           'en':
-              'Heat therapy is one of the most effective approaches. A hot water bottle applied to the lower abdomen for 15–20 minutes relaxes uterine muscles. Ibuprofen and naproxen reduce prostaglandins — starting before pain peaks is more effective. Gentle exercise releases endorphins. Magnesium-rich foods like leafy greens, nuts, and seeds may also reduce cramping.',
+              'Heat therapy is one of the most effective approaches. A hot water bottle applied to the lower abdomen for 15 - 20 minutes relaxes uterine muscles. Ibuprofen and naproxen reduce prostaglandins   starting before pain peaks is more effective. Gentle exercise releases endorphins. Magnesium-rich foods like leafy greens, nuts, and seeds may also reduce cramping.',
           'fr':
-              "La thermothérapie est très efficace. Une bouillotte pendant 15–20 minutes détend les muscles utérins. L'ibuprofène et le naproxène réduisent les prostaglandines — les prendre avant le pic de douleur est plus efficace. L'exercice doux libère des endorphines.",
+              "La thermothérapie est très efficace. Une bouillotte pendant 15 - 20 minutes détend les muscles utérins. L'ibuprofène et le naproxène réduisent les prostaglandines   les prendre avant le pic de douleur est plus efficace. L'exercice doux libère des endorphines.",
           'rw':
-              "Ubushyuhe ni bumwe mu buryo bwiza bwo kugabanya ububabare: shyira ikintu gishyushye ku nda yo hasi iminota 15–20. Ibuprofen na naproxen bigabanya prostaglandins, kandi bifasha kurushaho iyo bifashwe mbere y’uko ububabare bukomera. Siporo yoroshye irekura endorphins zifasha kugabanya ububabare.",
+              "Ubushyuhe ni bumwe mu buryo bwiza bwo kugabanya ububabare: shyira ikintu gishyushye ku nda yo hasi iminota 15 kugeza kuri 20. Ibuprofen na naproxen bigabanya prostaglandins, kandi bifasha kurushaho iyo bifashwe mbere y’uko ububabare bukomera. Siporo yoroshye irekura endorphins zifasha kugabanya ububabare.",
         },
         hotspots: [],
       ),
@@ -583,7 +583,7 @@ const Map<String, Lesson> kLessonContent = {
   ),
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Lesson 5 — Getting Tested (HIV & STI)
+  // Lesson 5   Getting Tested (HIV & STI)
   // ─────────────────────────────────────────────────────────────────────────
   'getting_tested': Lesson(
     id: 'getting_tested',
@@ -609,7 +609,7 @@ const Map<String, Lesson> kLessonContent = {
             'HIV often has no symptoms for years. Testing is the only reliable way to know your status. In Rwanda, free and confidential testing is at every health centre.',
         localizedNarration: {
           'en':
-              'HIV often has no symptoms for years. Many STIs also show no signs. Testing is the only reliable way to know your status. In Rwanda, HIV testing is free, confidential, and available at every health centre for all people aged 15 and above. Knowing your status — positive or negative — empowers you to protect your health and the health of others.',
+              'HIV often has no symptoms for years. Many STIs also show no signs. Testing is the only reliable way to know your status. In Rwanda, HIV testing is free, confidential, and available at every health centre for all people aged 15 and above. Knowing your status   positive or negative   empowers you to protect your health and the health of others.',
           'fr':
               "Le VIH ne présente souvent aucun symptôme pendant des années. Le dépistage est le seul moyen fiable de connaître son statut. Au Rwanda, le dépistage est gratuit et confidentiel dans tous les centres de santé pour les personnes de 15 ans et plus.",
           'rw':
@@ -630,7 +630,7 @@ const Map<String, Lesson> kLessonContent = {
             'Rwanda HIV testing: pre-test counselling, then a fingertip blood sample gives results in 20 minutes. Post-test counselling explains results and next steps. Under an hour total.',
         localizedNarration: {
           'en':
-              'At a Rwanda health centre, HIV testing follows three steps: pre-test counselling explains the process. The test uses a rapid antigen and antibody test — a fingertip blood sample gives results in about 20 minutes. A second confirmatory test is done if the first is reactive. Post-test counselling explains your result and next steps. The entire process takes less than one hour. No fasting needed.',
+              'At a Rwanda health centre, HIV testing follows three steps: pre-test counselling explains the process. The test uses a rapid antigen and antibody test   a fingertip blood sample gives results in about 20 minutes. A second confirmatory test is done if the first is reactive. Post-test counselling explains your result and next steps. The entire process takes less than one hour. No fasting needed.',
           'fr':
               "Dans un centre de santé rwandais, le test suit 3 étapes : counseling pré-test, test rapide (résultats en 20 minutes depuis une goutte de sang au bout du doigt), et counseling post-test. L'ensemble prend moins d'une heure. Aucun jeûne requis.",
           'rw':
@@ -648,10 +648,10 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Gusobanukirwa ibisubizo',
         },
         narrationText:
-            'Non-reactive: no HIV detected — retest if last exposure was within 90 days. Reactive: confirmatory test needed. If positive, same-day ART enrolment is possible in Rwanda.',
+            'Non-reactive: no HIV detected   retest if last exposure was within 90 days. Reactive: confirmatory test needed. If positive, same-day ART enrolment is possible in Rwanda.',
         localizedNarration: {
           'en':
-              'A non-reactive result means no HIV was detected. If your last potential exposure was within 90 days — the window period — retest in 3 months. A reactive result triggers a confirmatory test — not a final diagnosis yet. If confirmed positive, same-day enrolment in Rwanda\'s national ART programme is possible. A positive result is not a death sentence — with ART, people with HIV live full, healthy lives.',
+              'A non-reactive result means no HIV was detected. If your last potential exposure was within 90 days   the window period   retest in 3 months. A reactive result triggers a confirmatory test   not a final diagnosis yet. If confirmed positive, same-day enrolment in Rwanda\'s national ART programme is possible. A positive result is not a death sentence   with ART, people with HIV live full, healthy lives.',
           'fr':
               "Non réactif : pas de VIH détecté. Retester dans 3 mois si la dernière exposition remonte à moins de 90 jours. Réactif : test confirmatoire nécessaire. Si positif confirmé, l'inscription au programme ARV le jour même est possible au Rwanda.",
           'rw':
@@ -663,7 +663,7 @@ const Map<String, Lesson> kLessonContent = {
   ),
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Lesson 6 — Puberty & Body Changes (Anatomy)
+  // Lesson 6   Puberty & Body Changes (Anatomy)
   // ─────────────────────────────────────────────────────────────────────────
   'puberty_changes': Lesson(
     id: 'puberty_changes',
@@ -686,7 +686,7 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Ubugimbi n’ubwangavu ni iki?',
         },
         narrationText:
-            'Puberty is the biological transition to adult reproductive capacity. The hypothalamus releases GnRH, triggering FSH and LH. Typically starts age 8–13 (females) or 9–14 (males).',
+            'Puberty is the biological transition to adult reproductive capacity. The hypothalamus releases GnRH, triggering FSH and LH. Typically starts age 8 to 13 (females) or 9 to 14 (males).',
         localizedNarration: {
           'en':
               'Puberty is the stage when a child\'s body develops into an adult body capable of reproduction. The hypothalamus secretes GnRH, which signals the pituitary gland to release FSH and LH. These hormones tell the ovaries to produce oestrogen and the testes to produce testosterone. Puberty starts between ages 8 and 13 for females and 9 and 14 for males. Timing is influenced by genetics, nutrition, and overall health.',
@@ -707,12 +707,12 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Impinduka ku mubiri w’umukobwa',
         },
         narrationText:
-            'First sign: breast development (thelarche) age 8–13. Then pubic hair, growth spurt (8 cm/year), hip widening. First period (menarche) ~2 years after thelarche. Average in Rwanda: age 13.',
+            'First sign: breast development (thelarche) age 8 to 13. Then pubic hair, growth spurt (8 cm/year), hip widening. First period (menarche) about 2 years after thelarche. Average in Rwanda: age 13.',
         localizedNarration: {
           'en':
-              'The first sign of puberty in females is usually breast development — thelarche — beginning between ages 8 and 13. Pubic and underarm hair then grows. A growth spurt of up to 8 centimetres per year occurs. Hips widen. Vaginal discharge — clear or white, mild smell — begins normally. The first period — menarche — usually occurs about 2 years after breast development. In Rwanda, the average age of menarche is around 13.',
+              'The first sign of puberty in females is usually breast development   thelarche   beginning between ages 8 and 13. Pubic and underarm hair then grows. A growth spurt of up to 8 centimetres per year occurs. Hips widen. Vaginal discharge   clear or white, mild smell   begins normally. The first period   menarche   usually occurs about 2 years after breast development. In Rwanda, the average age of menarche is around 13.',
           'fr':
-              "Le premier signe de puberté chez les femmes est le développement des seins — la thélarche — entre 8 et 13 ans. Les poils pubiens poussent ensuite. Poussée de croissance jusqu'à 8 cm/an. Les hanches s'élargissent. Les premières règles surviennent environ 2 ans après les seins. Au Rwanda, l'âge moyen est 13 ans.",
+              "Le premier signe de puberté chez les femmes est le développement des seins   la thélarche   entre 8 et 13 ans. Les poils pubiens poussent ensuite. Poussée de croissance jusqu'à 8 cm/an. Les hanches s'élargissent. Les premières règles surviennent environ 2 ans après les seins. Au Rwanda, l'âge moyen est 13 ans.",
           'rw':
               "Ku bakobwa, akenshi ikimenyetso cya mbere ni gukura kw’amabere hagati y’imyaka 8 na 13. Hanyuma hakaza imisatsi yo ku myanya ndangagitsina no mu kwaha, umubiri ukiyongera mu burebure, n’amatako akaguka. Imihango ya mbere ikunze kuza nyuma y’imyaka nk’ibiri amabere atangiye gukura.",
         },
@@ -728,12 +728,12 @@ const Map<String, Lesson> kLessonContent = {
           'rw': 'Impinduka ku mubiri w’umuhungu',
         },
         narrationText:
-            'First sign: testicular growth age 9–14. Then pubic and facial hair, growth spurt (10 cm/year), voice deepening, penis growth. Spermarche and sperm production begin.',
+            'First sign: testicular growth age 9 to 14. Then pubic and facial hair, growth spurt (10 cm/year), voice deepening, penis growth. Spermarche and sperm production begin.',
         localizedNarration: {
           'en':
-              'The first sign of puberty in males is usually testicular growth, beginning between ages 9 and 14. Pubic and underarm hair grows, followed by facial hair. A growth spurt of up to 10 centimetres per year occurs. The voice deepens as the larynx enlarges. The penis grows. Muscle mass increases. First ejaculation — spermarche — and sperm production begin. Oilier skin, acne, and increased body odour are common.',
+              'The first sign of puberty in males is usually testicular growth, beginning between ages 9 and 14. Pubic and underarm hair grows, followed by facial hair. A growth spurt of up to 10 centimetres per year occurs. The voice deepens as the larynx enlarges. The penis grows. Muscle mass increases. First ejaculation   spermarche   and sperm production begin. Oilier skin, acne, and increased body odour are common.',
           'fr':
-              "Le premier signe de puberté chez les hommes est la croissance testiculaire, entre 9 et 14 ans. Les poils pubiens et faciaux poussent ensuite. Poussée de croissance jusqu'à 10 cm/an. La voix mue. Le pénis se développe. La masse musculaire augmente. La première éjaculation — spémarche — commence.",
+              "Le premier signe de puberté chez les hommes est la croissance testiculaire, entre 9 et 14 ans. Les poils pubiens et faciaux poussent ensuite. Poussée de croissance jusqu'à 10 cm/an. La voix mue. Le pénis se développe. La masse musculaire augmente. La première éjaculation   spémarche   commence.",
           'rw':
               "Ku bahungu, ikimenyetso cya mbere ni ugukura kw’udusabo tw’intanga hagati y’imyaka 9 na 14. Hiyongeraho imisatsi ku myanya ndangagitsina no ku maso, ijwi rikajya hasi, umubiri ukiyongera mu burebure, n’imikaya ikiyongera. Intanga ngabo zitangira gukorwa ndetse no gusohora bwa mbere bikaboneka.",
         },

@@ -5,6 +5,7 @@ import 'package:urungano/l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
 import '../providers/progress_provider.dart';
+import '../providers/settings_provider.dart';
 import 'accessibility_toolbar.dart';
 
 /// Renders a persistent left sidebar on wide screens (≥ 700 px)
@@ -101,7 +102,8 @@ class _Sidebar extends ConsumerWidget {
 
     final username = (progress?.username as String?) ?? l.profileAnonymous;
     final streak = (progress?.dayStreak as int?) ?? 0;
-    final language = (progress?.language as String?) ?? 'rw';
+    final settings = ref.watch(settingsProvider);
+    final language = settings.language;
 
     return SizedBox(
       width: 280,
@@ -198,7 +200,10 @@ class _Sidebar extends ConsumerWidget {
                       child: _LangChip(
                         label: lang.toUpperCase(),
                         active: active,
-                        onTap: () => context.go('/settings'),
+                        onTap: () {
+                          // Import settings provider at the top if not already imported
+                          ref.read(settingsProvider.notifier).setLanguage(lang);
+                        },
                       ),
                     );
                   }).toList(),

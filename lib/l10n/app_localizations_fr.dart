@@ -1055,4 +1055,338 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get communityEmptyChat =>
       'Pas encore de messages. Soyez le premier à dire quelque chose !';
+
+  @override
+  String get cycleDragHint =>
+      'Glissez pour faire pivoter · Pincez pour zoomer · Double-tapez pour réinitialiser';
+
+  @override
+  String get cycleTapWheelHint =>
+      'Appuyez sur n\'importe quelle phase sur la roue';
+
+  @override
+  String get cycleHideLabels => 'Masquer les étiquettes';
+
+  @override
+  String get cycleShowLabels => 'Étiquettes';
+
+  @override
+  String get cyclePhasesBtn => 'Phases';
+
+  @override
+  String get cycleCloseBtn => 'Fermer';
+
+  @override
+  String cycleDayBadge(String day) {
+    return 'Jour $day';
+  }
+
+  @override
+  String get cycleHormonesLabel => 'HORMONES';
+
+  @override
+  String get cycleOestrogen => 'Œstrogène';
+
+  @override
+  String get cycleProgesterone => 'Prog.';
+
+  @override
+  String get cycleLH => 'LH';
+
+  @override
+  String get cycleFSH => 'FSH';
+
+  @override
+  String get cyclePhaseMenstrual => 'Menstruelle';
+
+  @override
+  String get cyclePhaseFollicular => 'Folliculaire';
+
+  @override
+  String get cyclePhaseOvulation => 'Ovulation';
+
+  @override
+  String get cyclePhaseLuteal => 'Lutéale';
+
+  @override
+  String get cyclePhaseMenstrualDays => 'Jours 1–5';
+
+  @override
+  String get cyclePhaseFollicularDays => 'Jours 6–13';
+
+  @override
+  String get cyclePhaseOvulationDay => 'Jour 14';
+
+  @override
+  String get cyclePhaseLutealDays => 'Jours 15–28';
+
+  @override
+  String get cyclePhaseMenstrualDesc =>
+      'La muqueuse endométriale se desquame. Les prostaglandines provoquent des contractions utérines. Les niveaux d\'hormones sont au plus bas.';
+
+  @override
+  String get cyclePhaseFollicularDesc =>
+      'La FSH stimule la croissance des follicules. L\'œstrogène reconstitue l\'endomètre. L\'énergie et l\'humeur atteignent souvent leur pic.';
+
+  @override
+  String get cyclePhaseOvulationDesc =>
+      'Le pic de LH déclenche la libération de l\'ovule. Fertilité maximale. La glaire cervicale devient claire et filante.';
+
+  @override
+  String get cyclePhaseLutealDesc =>
+      'Le corps jaune sécrète la progestérone, maintenant l\'endomètre. Sans fécondation, la progestérone chute et les règles commencent.';
+
+  @override
+  String get cyclePhaseMenstrualDescAlt =>
+      'L\'endomètre se desquame. Les prostaglandines causent des contractions pour expulser la muqueuse. Les hormones atteignent leur point le plus bas.';
+
+  @override
+  String get cyclePhaseFollicularDescAlt =>
+      'La FSH stimule plusieurs follicules. Le follicule dominant produit l\'œstrogène, reconstituant l\'endomètre et supprimant les autres.';
+
+  @override
+  String get cyclePhaseOvulationDescAlt =>
+      'Le pic de LH déclenche la rupture du follicule dominant, libérant l\'ovule dans la trompe de Fallope. Fertilité maximale.';
+
+  @override
+  String get cyclePhaseLutealDescAlt =>
+      'Le corps jaune produit la progestérone, maintenant l\'endomètre. Sans fécondation, il se dégrade et le cycle recommence.';
+
+  @override
+  String get cycleHormoneMenstrualLevel => 'FSH ↓ LH ↓ Œstrogène ↓';
+
+  @override
+  String get cycleHormoneFollicularLevel => 'FSH ↑ Œstrogène ↑';
+
+  @override
+  String get cycleHormoneOvulationLevel => 'Pic LH · Pic Œstrogène';
+
+  @override
+  String get cycleHormoneLutealLevel => 'Progestérone ↑ Œstrogène ↑';
+
+  @override
+  String get cycleAnatomyFallopian => 'Trompe de Fallope';
+
+  @override
+  String get cycleAnatomyUterineFundus => 'Fond utérin';
+
+  @override
+  String get cycleAnatomyOvary => 'Ovaire';
+
+  @override
+  String get cycleAnatomyEndometrium => 'Endomètre';
+
+  @override
+  String get cycleAnatomyMyometrium => 'Myomètre';
+
+  @override
+  String get cycleAnatomyCervix => 'Col de l\'utérus';
+
+  @override
+  String get cycleAnatomyVagina => 'Vagin';
+
+  @override
+  String get cycleAnatomyBroadLig => 'Ligament large';
+
+  @override
+  String get cycleAnatomyOvarianLig => 'Ligament ovarien';
+
+  @override
+  String get cycleAnatomyPerimetrium => 'Périmètre';
+
+  @override
+  String get cycleCh1HsOvaryDesc =>
+      'Chaque ovaire mesure environ 3 cm et contient plus de 300 000 follicules primordiaux. Chaque mois, la FSH en stimule plusieurs, dont un mûrit pour l\'ovulation.';
+
+  @override
+  String get cycleCh1HsFallopianDesc =>
+      'D\'une longueur de ~10 cm, avec des franges captant l\'ovule libéré. La fécondation a le plus souvent lieu dans le tiers externe de la trompe.';
+
+  @override
+  String get cycleCh1HsEndometriumDesc =>
+      'La muqueuse interne. Son épaisseur varie de ~2 mm après les règles à ~12 mm en phase lutéale. S\'évacue si aucune implantation n\'a lieu.';
+
+  @override
+  String get cycleCh1HsCervixDesc =>
+      'La partie inférieure étroite de l\'utérus. Produit du mucus qui change tout au long du cycle : clair à l\'ovulation, épais et opaque le reste du temps.';
+
+  @override
+  String get cycleCh3Title => 'Crampes et douleurs';
+
+  @override
+  String get cycleCh3PainIntensity => 'Intensité de la douleur';
+
+  @override
+  String get cycleCh3Heat => 'Chaleur';
+
+  @override
+  String get cycleCh3HeatDesc =>
+      'Détend les muscles, augmente le flux sanguin. Appliquer 15 à 20 min.';
+
+  @override
+  String get cycleCh3Ibuprofen => 'Ibuprofène';
+
+  @override
+  String get cycleCh3IbuprofenDesc =>
+      'Les AINS inhibent les prostaglandines. Prendre 1 à 2 h avant le pic de douleur.';
+
+  @override
+  String get cycleCh3Exercise => 'Exercice';
+
+  @override
+  String get cycleCh3ExerciseDesc =>
+      'Les endorphines réduisent la douleur d\'environ 50%. Marche ou yoga.';
+
+  @override
+  String get cycleCh3Hydration => 'Hydratation';
+
+  @override
+  String get cycleCh3HydrationDesc =>
+      'Les liquides chauds réduisent l\'inflammation. Le thé au gingembre aide.';
+
+  @override
+  String get cycleCh4Title => 'Calendrier de votre cycle';
+
+  @override
+  String get cycleCh4Subtitle =>
+      'Appuyez sur n\'importe quel jour pour noter vos règles';
+
+  @override
+  String get cycleCh4DayM => 'L';
+
+  @override
+  String get cycleCh4DayT => 'M';
+
+  @override
+  String get cycleCh4DayW => 'M';
+
+  @override
+  String get cycleCh4DayTh => 'J';
+
+  @override
+  String get cycleCh4DayF => 'V';
+
+  @override
+  String get cycleCh4DayS => 'S';
+
+  @override
+  String get cycleCh4DaySu => 'D';
+
+  @override
+  String get cycleCh4NextPeriod => 'Prochaines règles (prévues)';
+
+  @override
+  String cycleCh4InXDays(String days) {
+    return 'dans $days jours';
+  }
+
+  @override
+  String get cycleCh4CycleLen => 'Durée du cycle';
+
+  @override
+  String get cycleCh4CycleLenNorm => '21–35 normal';
+
+  @override
+  String get cycleCh4PeriodLen => 'Durée des règles';
+
+  @override
+  String get cycleCh4PeriodLenNorm => '3–7 normal';
+
+  @override
+  String get cycleCh4OvulationLabel => 'Ovulation';
+
+  @override
+  String get cycleCh4OvulationNorm => '±2 jours';
+
+  @override
+  String get cycleCh4FertileWindow => 'Période fertile';
+
+  @override
+  String get cycleCh4FertileNorm => 'Les spm survivent 5j';
+
+  @override
+  String get cycleCh4LegendPeriod => 'Règles · appuyez pour ajouter';
+
+  @override
+  String get cycleCh4LegendOvulation => 'Jour d\'ovulation (Jour 14)';
+
+  @override
+  String get cycleCh4LegendFertile => 'Période fertile (Jours 11–16)';
+
+  @override
+  String get cycleCh4LegendPredicted => 'Prochaines règles prévues';
+
+  @override
+  String cycleCh4DaysX(String days) {
+    return '$days jours';
+  }
+
+  @override
+  String get cycleCh4DaysRange => 'Jours 11–16';
+
+  @override
+  String get cycleCh5Title => 'Mythes ou Réalités';
+
+  @override
+  String get cycleCh5Subtitle =>
+      'Appuyez sur une carte pour révéler le fait médical';
+
+  @override
+  String get cycleCh5AllBusted => '🎉 Tous démentis !';
+
+  @override
+  String cycleCh5XBusted(String count) {
+    return '$count / 5 démentis';
+  }
+
+  @override
+  String get cycleCh5FactLabel => 'FAIT ✓';
+
+  @override
+  String get cycleCh5MythLabel => 'MYTHE ✗';
+
+  @override
+  String get cycleCh5TapFact => 'Appuyez pour revoir le mythe';
+
+  @override
+  String get cycleCh5TapMyth => 'Appuyez pour révéler le fait';
+
+  @override
+  String get cycleCh5Myth1 =>
+      'On ne peut pas faire d\'exercice pendant ses règles.';
+
+  @override
+  String get cycleCh5Fact1 =>
+      'L\'exercice libère des endorphines, augmente le flux sanguin et réduit la douleur. La marche, le yoga et la natation sont sûrs et bénéfiques.';
+
+  @override
+  String get cycleCh5Myth2 => 'Le sang des règles est sale ou impur.';
+
+  @override
+  String get cycleCh5Fact2 =>
+      'Le fluide menstruel est un mélange sain de sang, de tissu endométrial, de mucus et de sécrétions vaginales — un processus normal sans toxines.';
+
+  @override
+  String get cycleCh5Myth3 =>
+      'On ne peut pas tomber enceinte pendant ses règles.';
+
+  @override
+  String get cycleCh5Fact3 =>
+      'Les spermatozoïdes peuvent survivre 3 à 5 jours. Si l\'ovulation suit peu après la fin des saignements, la grossesse est possible.';
+
+  @override
+  String get cycleCh5Myth4 =>
+      'Des règles irrégulières signalent toujours un problème de santé.';
+
+  @override
+  String get cycleCh5Fact4 =>
+      'Le stress, l\'alimentation, les voyages et l\'exercice affectent le cycle. Une plage de 21 à 35 jours est normale. Seule une irrégularité persistante justifie une consultation.';
+
+  @override
+  String get cycleCh5Myth5 =>
+      'La douleur des règles doit être endurée — rien n\'y fait.';
+
+  @override
+  String get cycleCh5Fact5 =>
+      'Les AINS, la chaleur et l\'exercice léger sont cliniquement prouvés pour réduire considérablement la dysménorrhée.';
 }

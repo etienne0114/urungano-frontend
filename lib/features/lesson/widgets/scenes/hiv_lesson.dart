@@ -13,7 +13,7 @@ class HIVLesson extends StatelessWidget {
   final double t;
 
   String get _caption {
-    if (t < 7)  return 'HIV is a virus. It enters the bloodstream and looks for a specific cell — the CD4 T-cell.';
+    if (t < 7)  return 'HIV is a virus. It enters the bloodstream and looks for a specific cell the CD4 T-cell.';
     if (t < 14) return 'Once inside, the virus uses the cell to make copies of itself, weakening your immune system over time.';
     if (t < 21) return 'Prevention works. Condoms, PrEP, testing, and treatment as prevention all reduce risk to near zero.';
     return 'Undetectable equals untransmittable. With effective treatment, HIV cannot be passed on.';

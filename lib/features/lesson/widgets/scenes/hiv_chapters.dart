@@ -3,15 +3,28 @@ import 'package:flutter/material.dart';
 import '../lesson_animation_primitives.dart';
 
 // ─── Canvas ──────────────────────────────────────────────────────────────────
-const double _cW = 900.0, _cH = 480.0;
+// All scenes are designed at 900×680 logical px and scaled to fit any parent.
+const double _cW = 900.0, _cH = 720.0;
 
 Widget _stage(Widget child) => LayoutBuilder(builder: (_, box) {
       final pw = box.maxWidth.isFinite  ? box.maxWidth  : _cW;
       final ph = box.maxHeight.isFinite ? box.maxHeight : _cH;
       final s  = math.min(pw / _cW, ph / _cH);
-      return SizedBox(width: pw, height: ph,
-        child: ClipRect(child: Transform.scale(scale: s, alignment: Alignment.topLeft,
-          child: SizedBox(width: _cW, height: _cH, child: child))));
+      return SizedBox(
+        width: pw, height: ph,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            const ColoredBox(color: _bgDark),
+            ClipRect(
+              child: Transform.scale(
+                scale: s, alignment: Alignment.center,
+                child: SizedBox(width: _cW, height: _cH, child: child),
+              ),
+            ),
+          ],
+        ),
+      );
     });
 
 // ─── HIV palette ─────────────────────────────────────────────────────────────
@@ -61,7 +74,7 @@ class _HivCh0State extends State<HivCh0WhatIsHIV>
     _Part('gp120 Spikes', _spikeAmb,
         'Surface glycoproteins that bind to CD4 receptors on T-cells. First point of contact between HIV and the immune system.'),
     _Part('RNA Core', kRose,
-        'Two strands of RNA — the virus\'s genetic material — plus reverse transcriptase enzyme that converts RNA into DNA inside the host cell.'),
+        'Two strands of RNA the virus\'s genetic material plus reverse transcriptase enzyme that converts RNA into DNA inside the host cell.'),
     _Part('CD4 T-cell', _cd4Green,
         'A white blood cell critical to the immune response. HIV specifically targets and destroys CD4 cells, gradually weakening immunity.'),
   ];
@@ -521,9 +534,9 @@ class _HivCh2State extends State<HivCh2Prevention>
     _Prevention('🛡', 'Condoms', '>98%\neffective', _cd4Green,
         'Used correctly every time, condoms block HIV transmission during sex. Available free at all Rwanda health centres and pharmacies.'),
     _Prevention('💊', 'PrEP', '>99%\neffective', _artBlue,
-        'Pre-Exposure Prophylaxis — a daily pill for HIV-negative people at substantial risk. Reduces transmission risk by over 99% when taken consistently.'),
+        'Pre-Exposure Prophylaxis a daily pill for HIV-negative people at substantial risk. Reduces transmission risk by over 99% when taken consistently.'),
     _Prevention('🧪', 'Regular testing', 'Know\nyour status', kAmber,
-        'Knowing your HIV status is the foundation of prevention. Rwanda offers free rapid HIV tests at all health centres — result in 20 minutes.'),
+        'Knowing your HIV status is the foundation of prevention. Rwanda offers free rapid HIV tests at all health centres result in 20 minutes.'),
     _Prevention('💉', 'TasP / ART', 'U=U', kRose,
         'Treatment as Prevention: people on effective ART with undetectable viral load cannot sexually transmit HIV (U=U). Free ART at all Rwanda health centres.'),
   ];

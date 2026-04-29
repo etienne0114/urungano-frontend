@@ -14,9 +14,9 @@ class AnatomyLesson extends StatelessWidget {
 
   String get _caption {
     if (t < 7)  return 'Reproductive anatomy is more diverse than the textbook diagrams suggest. Let\'s look at the parts.';
-    if (t < 14) return 'Internal anatomy: ovaries, uterus, fallopian tubes, vagina — each with a specific role.';
+    if (t < 14) return 'Internal anatomy: ovaries, uterus, fallopian tubes, vagina each with a specific role.';
     if (t < 21) return 'External anatomy: vulva includes labia, clitoris, and urethral opening. The clitoris is much larger than what you can see.';
-    return 'Knowing the names is power. You can describe what you feel — to a doctor, to a partner, to yourself.';
+    return 'Knowing the names is power. You can describe what you feel to a doctor, to a partner, to yourself.';
   }
 
   @override

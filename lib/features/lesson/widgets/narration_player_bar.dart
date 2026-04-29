@@ -40,16 +40,23 @@ class NarrationPlayerBar extends ConsumerStatefulWidget {
 
 class _NarrationPlayerBarState extends ConsumerState<NarrationPlayerBar> {
   bool _playing = false;
+  bool _isPaused = false;
   String _highlightedWord = '';
 
-  /// Kinyarwanda uses dual-track: RW captions + EN audio.
-  bool get _isDualTrack => widget.languageCode == 'rw';
+  /// Dual-track: a separate caption text is provided (e.g. RW captions + EN audio).
+  bool get _isDualTrack =>
+      widget.captionText != null && widget.captionText!.isNotEmpty;
 
   @override
   void initState() {
     super.initState();
     NarrationService.onComplete(() {
-      if (mounted) setState(() => _playing = false);
+      if (mounted) {
+        setState(() {
+          _playing = false;
+          _isPaused = false;
+        });
+      }
     });
     NarrationService.onProgress((word, _, __) {
       if (mounted) setState(() => _highlightedWord = word);
@@ -63,6 +70,7 @@ class _NarrationPlayerBarState extends ConsumerState<NarrationPlayerBar> {
     if (old.text != widget.text || old.audioUrl != widget.audioUrl) {
       setState(() {
         _playing = false;
+        _isPaused = false;
         _highlightedWord = '';
       });
       _autoPlay();
@@ -75,7 +83,10 @@ class _NarrationPlayerBarState extends ConsumerState<NarrationPlayerBar> {
   }
 
   Future<void> _play() async {
-    setState(() => _playing = true);
+    setState(() {
+      _playing = true;
+      _isPaused = false;
+    });
     await NarrationService.speak(
       widget.text,
       languageCode: widget.languageCode,
@@ -85,14 +96,31 @@ class _NarrationPlayerBarState extends ConsumerState<NarrationPlayerBar> {
 
   Future<void> _pause() async {
     await NarrationService.pause();
-    setState(() => _playing = false);
+    if (mounted) {
+      setState(() {
+        _playing = false;
+        _isPaused = true;
+      });
+    }
+  }
+
+  Future<void> _resume() async {
+    setState(() {
+      _playing = true;
+      _isPaused = false;
+    });
+    await NarrationService.resume();
   }
 
   Future<void> _toggle() async {
     if (_playing) {
       await _pause();
     } else {
-      await _play();
+      if (_isPaused) {
+        await _resume();
+      } else {
+        await _play();
+      }
     }
   }
 
@@ -106,13 +134,6 @@ class _NarrationPlayerBarState extends ConsumerState<NarrationPlayerBar> {
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
 
-    // Caption line: prefer explicit captionText override, then highlighted word
-    final captionLine = widget.captionText ?? _highlightedWord;
-    final showCaption = settings.captions && captionLine.isNotEmpty;
-
-    // Kinyarwanda dual-track badge
-    final showDualTrackBadge = _isDualTrack;
-
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.darkSurface,
@@ -121,110 +142,86 @@ class _NarrationPlayerBarState extends ConsumerState<NarrationPlayerBar> {
       padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
       child: SafeArea(
         top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
           children: [
-            // ── Kinyarwanda dual-track notice ─────────────────
-            if (showDualTrackBadge)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  children: [
-                    Icon(Icons.subtitles_rounded,
-                        size: 14,
-                        color: AppColors.amber.withValues(alpha: 0.9)),
-                    const SizedBox(width: 5),
-                    Text(
-                      'Ibyo biboneka mu Kinyarwanda · narration mu cyongereza',
-                      style: AppTextStyles.caption().copyWith(
-                        color: AppColors.amber.withValues(alpha: 0.9),
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ],
+            // Play / Pause button
+            GestureDetector(
+              onTap: _toggle,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: _playing
+                      ? AppColors.primary
+                      : AppColors.white.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
                 ),
-              ),
-
-            // ── Caption / highlighted word ────────────────────
-            if (showCaption) ...[
-              Text(
-                captionLine,
-                style: AppTextStyles.body().copyWith(
+                child: Icon(
+                  _playing
+                      ? Icons.pause_rounded
+                      : Icons.play_arrow_rounded,
                   color: AppColors.white,
-                  fontWeight: FontWeight.w600,
+                  size: 22,
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 10),
-            ],
+            ),
 
-            // ── Playback controls ─────────────────────────────
-            Row(
-              children: [
-                // Play / Pause button
-                GestureDetector(
-                  onTap: _toggle,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 180),
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: _playing
-                          ? AppColors.primary
-                          : AppColors.white.withValues(alpha: 0.12),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      _playing
-                          ? Icons.pause_rounded
-                          : Icons.play_arrow_rounded,
-                      color: AppColors.white,
-                      size: 22,
+            const SizedBox(width: 14),
+
+            // Audio narration label
+            Expanded(
+              child: Row(
+                children: [
+                  Icon(Icons.volume_up_rounded,
+                      size: 16,
+                      color: AppColors.white.withValues(alpha: 0.6)),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Audio narration',
+                    style: AppTextStyles.body().copyWith(
+                      color: AppColors.white.withValues(alpha: 0.6),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ),
+                ],
+              ),
+            ),
 
-                const SizedBox(width: 14),
+            const SizedBox(width: 14),
 
-                // Narration preview text
-                Expanded(
-                  child: Text(
-                    widget.text,
-                    style: AppTextStyles.bodySmall().copyWith(
-                      color: AppColors.white.withValues(alpha: 0.55),
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+            // Mute/Unmute toggle
+            GestureDetector(
+              onTap: () => ref
+                  .read(settingsProvider.notifier)
+                  .setVoiceNarration(!settings.voiceNarration),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: settings.voiceNarration
+                      ? Colors.transparent
+                      : AppColors.primary.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: settings.voiceNarration
+                        ? AppColors.white.withValues(alpha: 0.2)
+                        : AppColors.primary.withValues(alpha: 0.4),
+                    width: 1.5,
                   ),
                 ),
-
-                const SizedBox(width: 14),
-
-                // Captions toggle
-                GestureDetector(
-                  onTap: () => ref
-                      .read(settingsProvider.notifier)
-                      .setCaptions(!settings.captions),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 180),
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: settings.captions
-                          ? AppColors.primary
-                          : Colors.transparent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.closed_caption_rounded,
-                      size: 18,
-                      color: settings.captions
-                          ? AppColors.white
-                          : AppColors.textMuted,
-                    ),
-                  ),
+                child: Icon(
+                  settings.voiceNarration
+                      ? Icons.volume_up_rounded
+                      : Icons.volume_off_rounded,
+                  size: 20,
+                  color: settings.voiceNarration
+                      ? AppColors.white.withValues(alpha: 0.8)
+                      : AppColors.primary,
                 ),
-              ],
+              ),
             ),
           ],
         ),

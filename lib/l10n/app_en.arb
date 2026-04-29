@@ -636,5 +636,132 @@
   "communityEmptyChat": "No messages yet. Be the first to say something!",
   "@communityEmptyChat": {
     "description": "Text shown when a community chat thread is empty"
-  }
+  },
+  "cycleDragHint": "Drag to rotate · Pinch to zoom · Double-tap to reset",
+  "cycleTapWheelHint": "Tap any phase on the wheel",
+  "cycleHideLabels": "Hide labels",
+  "cycleShowLabels": "Labels",
+  "cyclePhasesBtn": "Phases",
+  "cycleCloseBtn": "Close",
+  "cycleDayBadge": "Day {day}",
+  "@cycleDayBadge": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "cycleHormonesLabel": "HORMONES",
+  "cycleOestrogen": "Oestrogen",
+  "cycleProgesterone": "Prog.",
+  "cycleLH": "LH",
+  "cycleFSH": "FSH",
+  "cyclePhaseMenstrual": "Menstrual",
+  "cyclePhaseFollicular": "Follicular",
+  "cyclePhaseOvulation": "Ovulation",
+  "cyclePhaseLuteal": "Luteal",
+  "cyclePhaseMenstrualDays": "Days 1–5",
+  "cyclePhaseFollicularDays": "Days 6–13",
+  "cyclePhaseOvulationDay": "Day 14",
+  "cyclePhaseLutealDays": "Days 15–28",
+  "cyclePhaseMenstrualDesc": "The endometrial lining sheds. Prostaglandins cause uterine contractions. Hormone levels are at their lowest point in the cycle.",
+  "cyclePhaseFollicularDesc": "FSH stimulates follicle growth. Rising oestrogen rebuilds the endometrium. Energy and mood often peak in this phase.",
+  "cyclePhaseOvulationDesc": "LH surge triggers egg release from the dominant follicle. Peak fertility. Cervical mucus becomes clear and stretchy.",
+  "cyclePhaseLutealDesc": "Corpus luteum secretes progesterone, maintaining the thickened endometrium. If no fertilisation, progesterone drops and menstruation begins.",
+  "cyclePhaseMenstrualDescAlt": "The endometrium sheds. Prostaglandins cause uterine contractions expelling the lining. Hormone levels reach their lowest point.",
+  "cyclePhaseFollicularDescAlt": "FSH stimulates several follicles. The dominant follicle produces oestrogen, rebuilding the endometrium and suppressing others.",
+  "cyclePhaseOvulationDescAlt": "LH surge triggers rupture of the dominant follicle, releasing the egg into the fallopian tube. Peak fertility.",
+  "cyclePhaseLutealDescAlt": "The corpus luteum produces progesterone, maintaining the endometrium. If no fertilisation, it degrades and the cycle restarts.",
+  "cycleHormoneMenstrualLevel": "FSH ↓ LH ↓ Oestrogen ↓",
+  "cycleHormoneFollicularLevel": "FSH ↑ Oestrogen ↑",
+  "cycleHormoneOvulationLevel": "LH surge · Oestrogen peak",
+  "cycleHormoneLutealLevel": "Progesterone ↑ Oestrogen ↑",
+  "cycleAnatomyFallopian": "Fallopian tube",
+  "cycleAnatomyUterineFundus": "Uterine fundus",
+  "cycleAnatomyOvary": "Ovary",
+  "cycleAnatomyEndometrium": "Endometrium",
+  "cycleAnatomyMyometrium": "Myometrium",
+  "cycleAnatomyCervix": "Cervix",
+  "cycleAnatomyVagina": "Vagina",
+  "cycleAnatomyBroadLig": "Broad ligament",
+  "cycleAnatomyOvarianLig": "Ovarian lig.",
+  "cycleAnatomyPerimetrium": "Perimetrium",
+  "cycleCh1HsOvaryDesc": "Each ovary is ~3 cm and contains 300,000+ primordial follicles. Each month FSH stimulates several to grow — usually one matures and releases an egg at ovulation.",
+  "cycleCh1HsFallopianDesc": "~10 cm long with finger-like fimbriae that sweep the released egg inward. Fertilisation by sperm most often occurs in the outer third of the tube.",
+  "cycleCh1HsEndometriumDesc": "The inner mucosal lining. Thickness ranges from ~2 mm after menstruation to ~12 mm in the luteal phase. Shed as a period if no implantation occurs.",
+  "cycleCh1HsCervixDesc": "Lower narrow neck of the uterus. Produces mucus that changes throughout the cycle — clear and stretchy at ovulation, thick and opaque at other times.",
+  "cycleCh3Title": "Cramps & pain",
+  "cycleCh3PainIntensity": "Pain intensity",
+  "cycleCh3Heat": "Heat",
+  "cycleCh3HeatDesc": "Relaxes muscle spasm, increases blood flow. Apply 15–20 min.",
+  "cycleCh3Ibuprofen": "Ibuprofen",
+  "cycleCh3IbuprofenDesc": "NSAIDs inhibit prostaglandin synthesis. Take 1–2h before peak pain.",
+  "cycleCh3Exercise": "Exercise",
+  "cycleCh3ExerciseDesc": "Endorphins reduce pain by ~50%. Walk, yoga, or light stretching.",
+  "cycleCh3Hydration": "Hydration",
+  "cycleCh3HydrationDesc": "Warm fluids reduce inflammation. Ginger and chamomile teas help.",
+  "cycleCh4Title": "Your cycle calendar",
+  "cycleCh4Subtitle": "Tap any day to log your period",
+  "cycleCh4DayM": "M",
+  "cycleCh4DayT": "T",
+  "cycleCh4DayW": "W",
+  "cycleCh4DayTh": "T",
+  "cycleCh4DayF": "F",
+  "cycleCh4DayS": "S",
+  "cycleCh4DaySu": "S",
+  "cycleCh4NextPeriod": "Next period predicted",
+  "cycleCh4InXDays": "in {days} days",
+  "@cycleCh4InXDays": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "cycleCh4CycleLen": "Cycle length",
+  "cycleCh4CycleLenNorm": "21–35 normal",
+  "cycleCh4PeriodLen": "Period length",
+  "cycleCh4PeriodLenNorm": "3–7 normal",
+  "cycleCh4OvulationLabel": "Ovulation",
+  "cycleCh4OvulationNorm": "±2 days",
+  "cycleCh4FertileWindow": "Fertile window",
+  "cycleCh4FertileNorm": "Sperm survives 5d",
+  "cycleCh4LegendPeriod": "Period · tap to log/remove",
+  "cycleCh4LegendOvulation": "Ovulation day (Day 14)",
+  "cycleCh4LegendFertile": "Fertile window (Days 11–16)",
+  "cycleCh4LegendPredicted": "Predicted next period",
+  "cycleCh4DaysX": "{days} days",
+  "@cycleCh4DaysX": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "cycleCh4DaysRange": "Days 11–16",
+  "cycleCh5Title": "Myth busters",
+  "cycleCh5Subtitle": "Tap a card to reveal the medical fact",
+  "cycleCh5AllBusted": "🎉 All busted!",
+  "cycleCh5XBusted": "{count} / 5 busted",
+  "@cycleCh5XBusted": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "cycleCh5FactLabel": "FACT ✓",
+  "cycleCh5MythLabel": "MYTH ✗",
+  "cycleCh5TapFact": "Tap again to see myth",
+  "cycleCh5TapMyth": "Tap to reveal fact",
+  "cycleCh5Myth1": "You cannot exercise during your period.",
+  "cycleCh5Fact1": "Exercise releases endorphins, increasing blood flow and reducing cramp pain. Walking, yoga, and swimming are all safe and beneficial.",
+  "cycleCh5Myth2": "Period blood is dirty or impure.",
+  "cycleCh5Fact2": "Menstrual fluid is a healthy mix of blood, endometrial tissue, mucus, and vaginal secretions — a normal biological process with no toxins.",
+  "cycleCh5Myth3": "You cannot get pregnant during your period.",
+  "cycleCh5Fact3": "Sperm can survive 3–5 days in the reproductive tract. If ovulation follows soon after bleeding ends, pregnancy is possible.",
+  "cycleCh5Myth4": "Irregular periods always signal a health problem.",
+  "cycleCh5Fact4": "Stress, diet changes, travel, and exercise all affect cycle timing. A range of 21–35 days is entirely normal. Only persistent irregularity warrants investigation.",
+  "cycleCh5Myth5": "Period pain is just something to endure — nothing helps.",
+  "cycleCh5Fact5": "NSAIDs (ibuprofen/naproxen), heat therapy, and light exercise are clinically proven to significantly reduce dysmenorrhoea."
 }

@@ -13,10 +13,10 @@ class MenstrualLesson extends StatelessWidget {
   final double t;
 
   String get _caption {
-    if (t < 7) return 'Day 1 to 14 — estrogen and FSH rise. A follicle in your ovary starts to mature.';
-    if (t < 14) return 'Around day 14 — the mature egg is released. This is ovulation.';
+    if (t < 7) return 'Day 1 to 14 estrogen and FSH rise. A follicle in your ovary starts to mature.';
+    if (t < 14) return 'Around day 14 the mature egg is released. This is ovulation.';
     if (t < 21) return 'The uterine lining thickens, ready to receive an egg if fertilized.';
-    return "If no fertilization, the lining sheds — that's your period. The cycle begins again.";
+    return "If no fertilization, the lining sheds that's your period. The cycle begins again.";
   }
 
   @override

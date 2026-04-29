@@ -1032,4 +1032,333 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get communityEmptyChat =>
       'No messages yet. Be the first to say something!';
+
+  @override
+  String get cycleDragHint =>
+      'Drag to rotate · Pinch to zoom · Double-tap to reset';
+
+  @override
+  String get cycleTapWheelHint => 'Tap any phase on the wheel';
+
+  @override
+  String get cycleHideLabels => 'Hide labels';
+
+  @override
+  String get cycleShowLabels => 'Labels';
+
+  @override
+  String get cyclePhasesBtn => 'Phases';
+
+  @override
+  String get cycleCloseBtn => 'Close';
+
+  @override
+  String cycleDayBadge(String day) {
+    return 'Day $day';
+  }
+
+  @override
+  String get cycleHormonesLabel => 'HORMONES';
+
+  @override
+  String get cycleOestrogen => 'Oestrogen';
+
+  @override
+  String get cycleProgesterone => 'Prog.';
+
+  @override
+  String get cycleLH => 'LH';
+
+  @override
+  String get cycleFSH => 'FSH';
+
+  @override
+  String get cyclePhaseMenstrual => 'Menstrual';
+
+  @override
+  String get cyclePhaseFollicular => 'Follicular';
+
+  @override
+  String get cyclePhaseOvulation => 'Ovulation';
+
+  @override
+  String get cyclePhaseLuteal => 'Luteal';
+
+  @override
+  String get cyclePhaseMenstrualDays => 'Days 1–5';
+
+  @override
+  String get cyclePhaseFollicularDays => 'Days 6–13';
+
+  @override
+  String get cyclePhaseOvulationDay => 'Day 14';
+
+  @override
+  String get cyclePhaseLutealDays => 'Days 15–28';
+
+  @override
+  String get cyclePhaseMenstrualDesc =>
+      'The endometrial lining sheds. Prostaglandins cause uterine contractions. Hormone levels are at their lowest point in the cycle.';
+
+  @override
+  String get cyclePhaseFollicularDesc =>
+      'FSH stimulates follicle growth. Rising oestrogen rebuilds the endometrium. Energy and mood often peak in this phase.';
+
+  @override
+  String get cyclePhaseOvulationDesc =>
+      'LH surge triggers egg release from the dominant follicle. Peak fertility. Cervical mucus becomes clear and stretchy.';
+
+  @override
+  String get cyclePhaseLutealDesc =>
+      'Corpus luteum secretes progesterone, maintaining the thickened endometrium. If no fertilisation, progesterone drops and menstruation begins.';
+
+  @override
+  String get cyclePhaseMenstrualDescAlt =>
+      'The endometrium sheds. Prostaglandins cause uterine contractions expelling the lining. Hormone levels reach their lowest point.';
+
+  @override
+  String get cyclePhaseFollicularDescAlt =>
+      'FSH stimulates several follicles. The dominant follicle produces oestrogen, rebuilding the endometrium and suppressing others.';
+
+  @override
+  String get cyclePhaseOvulationDescAlt =>
+      'LH surge triggers rupture of the dominant follicle, releasing the egg into the fallopian tube. Peak fertility.';
+
+  @override
+  String get cyclePhaseLutealDescAlt =>
+      'The corpus luteum produces progesterone, maintaining the endometrium. If no fertilisation, it degrades and the cycle restarts.';
+
+  @override
+  String get cycleHormoneMenstrualLevel => 'FSH ↓ LH ↓ Oestrogen ↓';
+
+  @override
+  String get cycleHormoneFollicularLevel => 'FSH ↑ Oestrogen ↑';
+
+  @override
+  String get cycleHormoneOvulationLevel => 'LH surge · Oestrogen peak';
+
+  @override
+  String get cycleHormoneLutealLevel => 'Progesterone ↑ Oestrogen ↑';
+
+  @override
+  String get cycleAnatomyFallopian => 'Fallopian tube';
+
+  @override
+  String get cycleAnatomyUterineFundus => 'Uterine fundus';
+
+  @override
+  String get cycleAnatomyOvary => 'Ovary';
+
+  @override
+  String get cycleAnatomyEndometrium => 'Endometrium';
+
+  @override
+  String get cycleAnatomyMyometrium => 'Myometrium';
+
+  @override
+  String get cycleAnatomyCervix => 'Cervix';
+
+  @override
+  String get cycleAnatomyVagina => 'Vagina';
+
+  @override
+  String get cycleAnatomyBroadLig => 'Broad ligament';
+
+  @override
+  String get cycleAnatomyOvarianLig => 'Ovarian lig.';
+
+  @override
+  String get cycleAnatomyPerimetrium => 'Perimetrium';
+
+  @override
+  String get cycleCh1HsOvaryDesc =>
+      'Each ovary is ~3 cm and contains 300,000+ primordial follicles. Each month FSH stimulates several to grow — usually one matures and releases an egg at ovulation.';
+
+  @override
+  String get cycleCh1HsFallopianDesc =>
+      '~10 cm long with finger-like fimbriae that sweep the released egg inward. Fertilisation by sperm most often occurs in the outer third of the tube.';
+
+  @override
+  String get cycleCh1HsEndometriumDesc =>
+      'The inner mucosal lining. Thickness ranges from ~2 mm after menstruation to ~12 mm in the luteal phase. Shed as a period if no implantation occurs.';
+
+  @override
+  String get cycleCh1HsCervixDesc =>
+      'Lower narrow neck of the uterus. Produces mucus that changes throughout the cycle — clear and stretchy at ovulation, thick and opaque at other times.';
+
+  @override
+  String get cycleCh3Title => 'Cramps & pain';
+
+  @override
+  String get cycleCh3PainIntensity => 'Pain intensity';
+
+  @override
+  String get cycleCh3Heat => 'Heat';
+
+  @override
+  String get cycleCh3HeatDesc =>
+      'Relaxes muscle spasm, increases blood flow. Apply 15–20 min.';
+
+  @override
+  String get cycleCh3Ibuprofen => 'Ibuprofen';
+
+  @override
+  String get cycleCh3IbuprofenDesc =>
+      'NSAIDs inhibit prostaglandin synthesis. Take 1–2h before peak pain.';
+
+  @override
+  String get cycleCh3Exercise => 'Exercise';
+
+  @override
+  String get cycleCh3ExerciseDesc =>
+      'Endorphins reduce pain by ~50%. Walk, yoga, or light stretching.';
+
+  @override
+  String get cycleCh3Hydration => 'Hydration';
+
+  @override
+  String get cycleCh3HydrationDesc =>
+      'Warm fluids reduce inflammation. Ginger and chamomile teas help.';
+
+  @override
+  String get cycleCh4Title => 'Your cycle calendar';
+
+  @override
+  String get cycleCh4Subtitle => 'Tap any day to log your period';
+
+  @override
+  String get cycleCh4DayM => 'M';
+
+  @override
+  String get cycleCh4DayT => 'T';
+
+  @override
+  String get cycleCh4DayW => 'W';
+
+  @override
+  String get cycleCh4DayTh => 'T';
+
+  @override
+  String get cycleCh4DayF => 'F';
+
+  @override
+  String get cycleCh4DayS => 'S';
+
+  @override
+  String get cycleCh4DaySu => 'S';
+
+  @override
+  String get cycleCh4NextPeriod => 'Next period predicted';
+
+  @override
+  String cycleCh4InXDays(String days) {
+    return 'in $days days';
+  }
+
+  @override
+  String get cycleCh4CycleLen => 'Cycle length';
+
+  @override
+  String get cycleCh4CycleLenNorm => '21–35 normal';
+
+  @override
+  String get cycleCh4PeriodLen => 'Period length';
+
+  @override
+  String get cycleCh4PeriodLenNorm => '3–7 normal';
+
+  @override
+  String get cycleCh4OvulationLabel => 'Ovulation';
+
+  @override
+  String get cycleCh4OvulationNorm => '±2 days';
+
+  @override
+  String get cycleCh4FertileWindow => 'Fertile window';
+
+  @override
+  String get cycleCh4FertileNorm => 'Sperm survives 5d';
+
+  @override
+  String get cycleCh4LegendPeriod => 'Period · tap to log/remove';
+
+  @override
+  String get cycleCh4LegendOvulation => 'Ovulation day (Day 14)';
+
+  @override
+  String get cycleCh4LegendFertile => 'Fertile window (Days 11–16)';
+
+  @override
+  String get cycleCh4LegendPredicted => 'Predicted next period';
+
+  @override
+  String cycleCh4DaysX(String days) {
+    return '$days days';
+  }
+
+  @override
+  String get cycleCh4DaysRange => 'Days 11–16';
+
+  @override
+  String get cycleCh5Title => 'Myth busters';
+
+  @override
+  String get cycleCh5Subtitle => 'Tap a card to reveal the medical fact';
+
+  @override
+  String get cycleCh5AllBusted => '🎉 All busted!';
+
+  @override
+  String cycleCh5XBusted(String count) {
+    return '$count / 5 busted';
+  }
+
+  @override
+  String get cycleCh5FactLabel => 'FACT ✓';
+
+  @override
+  String get cycleCh5MythLabel => 'MYTH ✗';
+
+  @override
+  String get cycleCh5TapFact => 'Tap again to see myth';
+
+  @override
+  String get cycleCh5TapMyth => 'Tap to reveal fact';
+
+  @override
+  String get cycleCh5Myth1 => 'You cannot exercise during your period.';
+
+  @override
+  String get cycleCh5Fact1 =>
+      'Exercise releases endorphins, increasing blood flow and reducing cramp pain. Walking, yoga, and swimming are all safe and beneficial.';
+
+  @override
+  String get cycleCh5Myth2 => 'Period blood is dirty or impure.';
+
+  @override
+  String get cycleCh5Fact2 =>
+      'Menstrual fluid is a healthy mix of blood, endometrial tissue, mucus, and vaginal secretions — a normal biological process with no toxins.';
+
+  @override
+  String get cycleCh5Myth3 => 'You cannot get pregnant during your period.';
+
+  @override
+  String get cycleCh5Fact3 =>
+      'Sperm can survive 3–5 days in the reproductive tract. If ovulation follows soon after bleeding ends, pregnancy is possible.';
+
+  @override
+  String get cycleCh5Myth4 =>
+      'Irregular periods always signal a health problem.';
+
+  @override
+  String get cycleCh5Fact4 =>
+      'Stress, diet changes, travel, and exercise all affect cycle timing. A range of 21–35 days is entirely normal. Only persistent irregularity warrants investigation.';
+
+  @override
+  String get cycleCh5Myth5 =>
+      'Period pain is just something to endure — nothing helps.';
+
+  @override
+  String get cycleCh5Fact5 =>
+      'NSAIDs (ibuprofen/naproxen), heat therapy, and light exercise are clinically proven to significantly reduce dysmenorrhoea.';
 }

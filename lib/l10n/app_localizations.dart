@@ -1971,6 +1971,600 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No messages yet. Be the first to say something!'**
   String get communityEmptyChat;
+
+  /// No description provided for @cycleDragHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to rotate · Pinch to zoom · Double-tap to reset'**
+  String get cycleDragHint;
+
+  /// No description provided for @cycleTapWheelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap any phase on the wheel'**
+  String get cycleTapWheelHint;
+
+  /// No description provided for @cycleHideLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide labels'**
+  String get cycleHideLabels;
+
+  /// No description provided for @cycleShowLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'Labels'**
+  String get cycleShowLabels;
+
+  /// No description provided for @cyclePhasesBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Phases'**
+  String get cyclePhasesBtn;
+
+  /// No description provided for @cycleCloseBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get cycleCloseBtn;
+
+  /// No description provided for @cycleDayBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day}'**
+  String cycleDayBadge(String day);
+
+  /// No description provided for @cycleHormonesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'HORMONES'**
+  String get cycleHormonesLabel;
+
+  /// No description provided for @cycleOestrogen.
+  ///
+  /// In en, this message translates to:
+  /// **'Oestrogen'**
+  String get cycleOestrogen;
+
+  /// No description provided for @cycleProgesterone.
+  ///
+  /// In en, this message translates to:
+  /// **'Prog.'**
+  String get cycleProgesterone;
+
+  /// No description provided for @cycleLH.
+  ///
+  /// In en, this message translates to:
+  /// **'LH'**
+  String get cycleLH;
+
+  /// No description provided for @cycleFSH.
+  ///
+  /// In en, this message translates to:
+  /// **'FSH'**
+  String get cycleFSH;
+
+  /// No description provided for @cyclePhaseMenstrual.
+  ///
+  /// In en, this message translates to:
+  /// **'Menstrual'**
+  String get cyclePhaseMenstrual;
+
+  /// No description provided for @cyclePhaseFollicular.
+  ///
+  /// In en, this message translates to:
+  /// **'Follicular'**
+  String get cyclePhaseFollicular;
+
+  /// No description provided for @cyclePhaseOvulation.
+  ///
+  /// In en, this message translates to:
+  /// **'Ovulation'**
+  String get cyclePhaseOvulation;
+
+  /// No description provided for @cyclePhaseLuteal.
+  ///
+  /// In en, this message translates to:
+  /// **'Luteal'**
+  String get cyclePhaseLuteal;
+
+  /// No description provided for @cyclePhaseMenstrualDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days 1–5'**
+  String get cyclePhaseMenstrualDays;
+
+  /// No description provided for @cyclePhaseFollicularDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days 6–13'**
+  String get cyclePhaseFollicularDays;
+
+  /// No description provided for @cyclePhaseOvulationDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day 14'**
+  String get cyclePhaseOvulationDay;
+
+  /// No description provided for @cyclePhaseLutealDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days 15–28'**
+  String get cyclePhaseLutealDays;
+
+  /// No description provided for @cyclePhaseMenstrualDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'The endometrial lining sheds. Prostaglandins cause uterine contractions. Hormone levels are at their lowest point in the cycle.'**
+  String get cyclePhaseMenstrualDesc;
+
+  /// No description provided for @cyclePhaseFollicularDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'FSH stimulates follicle growth. Rising oestrogen rebuilds the endometrium. Energy and mood often peak in this phase.'**
+  String get cyclePhaseFollicularDesc;
+
+  /// No description provided for @cyclePhaseOvulationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'LH surge triggers egg release from the dominant follicle. Peak fertility. Cervical mucus becomes clear and stretchy.'**
+  String get cyclePhaseOvulationDesc;
+
+  /// No description provided for @cyclePhaseLutealDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Corpus luteum secretes progesterone, maintaining the thickened endometrium. If no fertilisation, progesterone drops and menstruation begins.'**
+  String get cyclePhaseLutealDesc;
+
+  /// No description provided for @cyclePhaseMenstrualDescAlt.
+  ///
+  /// In en, this message translates to:
+  /// **'The endometrium sheds. Prostaglandins cause uterine contractions expelling the lining. Hormone levels reach their lowest point.'**
+  String get cyclePhaseMenstrualDescAlt;
+
+  /// No description provided for @cyclePhaseFollicularDescAlt.
+  ///
+  /// In en, this message translates to:
+  /// **'FSH stimulates several follicles. The dominant follicle produces oestrogen, rebuilding the endometrium and suppressing others.'**
+  String get cyclePhaseFollicularDescAlt;
+
+  /// No description provided for @cyclePhaseOvulationDescAlt.
+  ///
+  /// In en, this message translates to:
+  /// **'LH surge triggers rupture of the dominant follicle, releasing the egg into the fallopian tube. Peak fertility.'**
+  String get cyclePhaseOvulationDescAlt;
+
+  /// No description provided for @cyclePhaseLutealDescAlt.
+  ///
+  /// In en, this message translates to:
+  /// **'The corpus luteum produces progesterone, maintaining the endometrium. If no fertilisation, it degrades and the cycle restarts.'**
+  String get cyclePhaseLutealDescAlt;
+
+  /// No description provided for @cycleHormoneMenstrualLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'FSH ↓ LH ↓ Oestrogen ↓'**
+  String get cycleHormoneMenstrualLevel;
+
+  /// No description provided for @cycleHormoneFollicularLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'FSH ↑ Oestrogen ↑'**
+  String get cycleHormoneFollicularLevel;
+
+  /// No description provided for @cycleHormoneOvulationLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'LH surge · Oestrogen peak'**
+  String get cycleHormoneOvulationLevel;
+
+  /// No description provided for @cycleHormoneLutealLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Progesterone ↑ Oestrogen ↑'**
+  String get cycleHormoneLutealLevel;
+
+  /// No description provided for @cycleAnatomyFallopian.
+  ///
+  /// In en, this message translates to:
+  /// **'Fallopian tube'**
+  String get cycleAnatomyFallopian;
+
+  /// No description provided for @cycleAnatomyUterineFundus.
+  ///
+  /// In en, this message translates to:
+  /// **'Uterine fundus'**
+  String get cycleAnatomyUterineFundus;
+
+  /// No description provided for @cycleAnatomyOvary.
+  ///
+  /// In en, this message translates to:
+  /// **'Ovary'**
+  String get cycleAnatomyOvary;
+
+  /// No description provided for @cycleAnatomyEndometrium.
+  ///
+  /// In en, this message translates to:
+  /// **'Endometrium'**
+  String get cycleAnatomyEndometrium;
+
+  /// No description provided for @cycleAnatomyMyometrium.
+  ///
+  /// In en, this message translates to:
+  /// **'Myometrium'**
+  String get cycleAnatomyMyometrium;
+
+  /// No description provided for @cycleAnatomyCervix.
+  ///
+  /// In en, this message translates to:
+  /// **'Cervix'**
+  String get cycleAnatomyCervix;
+
+  /// No description provided for @cycleAnatomyVagina.
+  ///
+  /// In en, this message translates to:
+  /// **'Vagina'**
+  String get cycleAnatomyVagina;
+
+  /// No description provided for @cycleAnatomyBroadLig.
+  ///
+  /// In en, this message translates to:
+  /// **'Broad ligament'**
+  String get cycleAnatomyBroadLig;
+
+  /// No description provided for @cycleAnatomyOvarianLig.
+  ///
+  /// In en, this message translates to:
+  /// **'Ovarian lig.'**
+  String get cycleAnatomyOvarianLig;
+
+  /// No description provided for @cycleAnatomyPerimetrium.
+  ///
+  /// In en, this message translates to:
+  /// **'Perimetrium'**
+  String get cycleAnatomyPerimetrium;
+
+  /// No description provided for @cycleCh1HsOvaryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Each ovary is ~3 cm and contains 300,000+ primordial follicles. Each month FSH stimulates several to grow — usually one matures and releases an egg at ovulation.'**
+  String get cycleCh1HsOvaryDesc;
+
+  /// No description provided for @cycleCh1HsFallopianDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'~10 cm long with finger-like fimbriae that sweep the released egg inward. Fertilisation by sperm most often occurs in the outer third of the tube.'**
+  String get cycleCh1HsFallopianDesc;
+
+  /// No description provided for @cycleCh1HsEndometriumDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'The inner mucosal lining. Thickness ranges from ~2 mm after menstruation to ~12 mm in the luteal phase. Shed as a period if no implantation occurs.'**
+  String get cycleCh1HsEndometriumDesc;
+
+  /// No description provided for @cycleCh1HsCervixDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower narrow neck of the uterus. Produces mucus that changes throughout the cycle — clear and stretchy at ovulation, thick and opaque at other times.'**
+  String get cycleCh1HsCervixDesc;
+
+  /// No description provided for @cycleCh3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Cramps & pain'**
+  String get cycleCh3Title;
+
+  /// No description provided for @cycleCh3PainIntensity.
+  ///
+  /// In en, this message translates to:
+  /// **'Pain intensity'**
+  String get cycleCh3PainIntensity;
+
+  /// No description provided for @cycleCh3Heat.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat'**
+  String get cycleCh3Heat;
+
+  /// No description provided for @cycleCh3HeatDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Relaxes muscle spasm, increases blood flow. Apply 15–20 min.'**
+  String get cycleCh3HeatDesc;
+
+  /// No description provided for @cycleCh3Ibuprofen.
+  ///
+  /// In en, this message translates to:
+  /// **'Ibuprofen'**
+  String get cycleCh3Ibuprofen;
+
+  /// No description provided for @cycleCh3IbuprofenDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'NSAIDs inhibit prostaglandin synthesis. Take 1–2h before peak pain.'**
+  String get cycleCh3IbuprofenDesc;
+
+  /// No description provided for @cycleCh3Exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise'**
+  String get cycleCh3Exercise;
+
+  /// No description provided for @cycleCh3ExerciseDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Endorphins reduce pain by ~50%. Walk, yoga, or light stretching.'**
+  String get cycleCh3ExerciseDesc;
+
+  /// No description provided for @cycleCh3Hydration.
+  ///
+  /// In en, this message translates to:
+  /// **'Hydration'**
+  String get cycleCh3Hydration;
+
+  /// No description provided for @cycleCh3HydrationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm fluids reduce inflammation. Ginger and chamomile teas help.'**
+  String get cycleCh3HydrationDesc;
+
+  /// No description provided for @cycleCh4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cycle calendar'**
+  String get cycleCh4Title;
+
+  /// No description provided for @cycleCh4Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap any day to log your period'**
+  String get cycleCh4Subtitle;
+
+  /// No description provided for @cycleCh4DayM.
+  ///
+  /// In en, this message translates to:
+  /// **'M'**
+  String get cycleCh4DayM;
+
+  /// No description provided for @cycleCh4DayT.
+  ///
+  /// In en, this message translates to:
+  /// **'T'**
+  String get cycleCh4DayT;
+
+  /// No description provided for @cycleCh4DayW.
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get cycleCh4DayW;
+
+  /// No description provided for @cycleCh4DayTh.
+  ///
+  /// In en, this message translates to:
+  /// **'T'**
+  String get cycleCh4DayTh;
+
+  /// No description provided for @cycleCh4DayF.
+  ///
+  /// In en, this message translates to:
+  /// **'F'**
+  String get cycleCh4DayF;
+
+  /// No description provided for @cycleCh4DayS.
+  ///
+  /// In en, this message translates to:
+  /// **'S'**
+  String get cycleCh4DayS;
+
+  /// No description provided for @cycleCh4DaySu.
+  ///
+  /// In en, this message translates to:
+  /// **'S'**
+  String get cycleCh4DaySu;
+
+  /// No description provided for @cycleCh4NextPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Next period predicted'**
+  String get cycleCh4NextPeriod;
+
+  /// No description provided for @cycleCh4InXDays.
+  ///
+  /// In en, this message translates to:
+  /// **'in {days} days'**
+  String cycleCh4InXDays(String days);
+
+  /// No description provided for @cycleCh4CycleLen.
+  ///
+  /// In en, this message translates to:
+  /// **'Cycle length'**
+  String get cycleCh4CycleLen;
+
+  /// No description provided for @cycleCh4CycleLenNorm.
+  ///
+  /// In en, this message translates to:
+  /// **'21–35 normal'**
+  String get cycleCh4CycleLenNorm;
+
+  /// No description provided for @cycleCh4PeriodLen.
+  ///
+  /// In en, this message translates to:
+  /// **'Period length'**
+  String get cycleCh4PeriodLen;
+
+  /// No description provided for @cycleCh4PeriodLenNorm.
+  ///
+  /// In en, this message translates to:
+  /// **'3–7 normal'**
+  String get cycleCh4PeriodLenNorm;
+
+  /// No description provided for @cycleCh4OvulationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ovulation'**
+  String get cycleCh4OvulationLabel;
+
+  /// No description provided for @cycleCh4OvulationNorm.
+  ///
+  /// In en, this message translates to:
+  /// **'±2 days'**
+  String get cycleCh4OvulationNorm;
+
+  /// No description provided for @cycleCh4FertileWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Fertile window'**
+  String get cycleCh4FertileWindow;
+
+  /// No description provided for @cycleCh4FertileNorm.
+  ///
+  /// In en, this message translates to:
+  /// **'Sperm survives 5d'**
+  String get cycleCh4FertileNorm;
+
+  /// No description provided for @cycleCh4LegendPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Period · tap to log/remove'**
+  String get cycleCh4LegendPeriod;
+
+  /// No description provided for @cycleCh4LegendOvulation.
+  ///
+  /// In en, this message translates to:
+  /// **'Ovulation day (Day 14)'**
+  String get cycleCh4LegendOvulation;
+
+  /// No description provided for @cycleCh4LegendFertile.
+  ///
+  /// In en, this message translates to:
+  /// **'Fertile window (Days 11–16)'**
+  String get cycleCh4LegendFertile;
+
+  /// No description provided for @cycleCh4LegendPredicted.
+  ///
+  /// In en, this message translates to:
+  /// **'Predicted next period'**
+  String get cycleCh4LegendPredicted;
+
+  /// No description provided for @cycleCh4DaysX.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String cycleCh4DaysX(String days);
+
+  /// No description provided for @cycleCh4DaysRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Days 11–16'**
+  String get cycleCh4DaysRange;
+
+  /// No description provided for @cycleCh5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Myth busters'**
+  String get cycleCh5Title;
+
+  /// No description provided for @cycleCh5Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a card to reveal the medical fact'**
+  String get cycleCh5Subtitle;
+
+  /// No description provided for @cycleCh5AllBusted.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉 All busted!'**
+  String get cycleCh5AllBusted;
+
+  /// No description provided for @cycleCh5XBusted.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} / 5 busted'**
+  String cycleCh5XBusted(String count);
+
+  /// No description provided for @cycleCh5FactLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'FACT ✓'**
+  String get cycleCh5FactLabel;
+
+  /// No description provided for @cycleCh5MythLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'MYTH ✗'**
+  String get cycleCh5MythLabel;
+
+  /// No description provided for @cycleCh5TapFact.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap again to see myth'**
+  String get cycleCh5TapFact;
+
+  /// No description provided for @cycleCh5TapMyth.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to reveal fact'**
+  String get cycleCh5TapMyth;
+
+  /// No description provided for @cycleCh5Myth1.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot exercise during your period.'**
+  String get cycleCh5Myth1;
+
+  /// No description provided for @cycleCh5Fact1.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise releases endorphins, increasing blood flow and reducing cramp pain. Walking, yoga, and swimming are all safe and beneficial.'**
+  String get cycleCh5Fact1;
+
+  /// No description provided for @cycleCh5Myth2.
+  ///
+  /// In en, this message translates to:
+  /// **'Period blood is dirty or impure.'**
+  String get cycleCh5Myth2;
+
+  /// No description provided for @cycleCh5Fact2.
+  ///
+  /// In en, this message translates to:
+  /// **'Menstrual fluid is a healthy mix of blood, endometrial tissue, mucus, and vaginal secretions — a normal biological process with no toxins.'**
+  String get cycleCh5Fact2;
+
+  /// No description provided for @cycleCh5Myth3.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot get pregnant during your period.'**
+  String get cycleCh5Myth3;
+
+  /// No description provided for @cycleCh5Fact3.
+  ///
+  /// In en, this message translates to:
+  /// **'Sperm can survive 3–5 days in the reproductive tract. If ovulation follows soon after bleeding ends, pregnancy is possible.'**
+  String get cycleCh5Fact3;
+
+  /// No description provided for @cycleCh5Myth4.
+  ///
+  /// In en, this message translates to:
+  /// **'Irregular periods always signal a health problem.'**
+  String get cycleCh5Myth4;
+
+  /// No description provided for @cycleCh5Fact4.
+  ///
+  /// In en, this message translates to:
+  /// **'Stress, diet changes, travel, and exercise all affect cycle timing. A range of 21–35 days is entirely normal. Only persistent irregularity warrants investigation.'**
+  String get cycleCh5Fact4;
+
+  /// No description provided for @cycleCh5Myth5.
+  ///
+  /// In en, this message translates to:
+  /// **'Period pain is just something to endure — nothing helps.'**
+  String get cycleCh5Myth5;
+
+  /// No description provided for @cycleCh5Fact5.
+  ///
+  /// In en, this message translates to:
+  /// **'NSAIDs (ibuprofen/naproxen), heat therapy, and light exercise are clinically proven to significantly reduce dysmenorrhoea.'**
+  String get cycleCh5Fact5;
 }
 
 class _AppLocalizationsDelegate

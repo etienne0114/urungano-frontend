@@ -403,7 +403,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get gestureTitle => 'Ugenzura na nkono';
 
   @override
-  String get gestureSubtitle => 'Yungurura na nkono — ntukeneye gukoraho.';
+  String get gestureSubtitle => 'Yungurura na nkono, ntukeneye gukoraho.';
 
   @override
   String get gestureCalibration => 'UBUFASHA · KUPIMA';
@@ -424,7 +424,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get gesturePrivacyBody =>
-      'MediaPipe ikorera ku gikoresho — amashusho ntabwo arenga igikoresho cyawe. Hagarika igihe cyose mu Igenamiterere.';
+      'MediaPipe ikorera ku gikoresho, amashusho ntabwo arenga igikoresho cyawe. Hagarika igihe cyose mu Igenamiterere.';
 
   @override
   String get gestureRecalibrate => 'Ongera upime';
@@ -455,25 +455,25 @@ class AppLocalizationsRw extends AppLocalizations {
   String get gestureConfidence => 'Icyizere';
 
   @override
-  String get gestureOpen => 'Nkono ifunguye — yungurura ibisozo';
+  String get gestureOpen => 'Nkono ifunguye, yungurura ibisozo';
 
   @override
   String get gestureOpenSub => 'Yungurura icyitegererezo cya 3D';
 
   @override
-  String get gesturePinch => 'Gufata — gukuza';
+  String get gesturePinch => 'Gufata, gukuza';
 
   @override
   String get gesturePinchSub => 'Kuzamura ibinyuranye';
 
   @override
-  String get gesturePoint => 'Gukora — hitamo hotspot';
+  String get gesturePoint => 'Gukora, hitamo hotspot';
 
   @override
   String get gesturePointSub => 'Hitamo hotspot';
 
   @override
-  String get gestureFist => 'Ikiganza gifunze — hagarika ibisobanuro';
+  String get gestureFist => 'Ikiganza gifunze, hagarika ibisobanuro';
 
   @override
   String get gestureFistSub => 'Hagarika ibisobanuro';
@@ -527,7 +527,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get communityAskHint =>
-      'Baza ikibazo icyo aricyo cyose — nta mazina ashyirwaho';
+      'Baza ikibazo icyo aricyo cyose, nta mazina ashyirwaho';
 
   @override
   String get communityAskPrivacy => 'Baza nta mazina · Byoherezwa ku baganga';
@@ -552,11 +552,10 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get communityVoteError =>
-      'Itora ntiryas\'ibitswe — reba umuyoboro wawe.';
+      'Itora ntiryas\'ibitswe, reba umuyoboro wawe.';
 
   @override
-  String get communityMsgError =>
-      'Ubutumwa ntibwaturiye — reba umuyoboro wawe.';
+  String get communityMsgError => 'Ubutumwa ntibwaturiye, reba umuyoboro wawe.';
 
   @override
   String get communityQuestionMin =>
@@ -564,7 +563,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get communitySubmitError =>
-      'Ntibyakunze kohereza — reba umuyoboro wawe.';
+      'Ntibyakunze kohereza, reba umuyoboro wawe.';
 
   @override
   String get communityLoadErrorCircles => 'Ntibyakunze gufungura amatsinda';
@@ -1014,7 +1013,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get sttKinyarwandaNote =>
-      'Kumenya ururimi rw\'Ikinyarwanda bihari — porogaramu izagerageza';
+      'Kumenya ururimi rw\'Ikinyarwanda bihari, porogaramu izagerageza';
 
   @override
   String get sttVoiceInput => 'Injira y\'ijwi';
@@ -1035,17 +1034,350 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get communityOfflineQueued =>
-      'Ubutumwa buragumye — buzajya iyo ufite interineti';
+      'Ubutumwa buragumye, buzajya iyo ufite interineti';
 
   @override
   String get communityVoteOffline =>
-      'Nta interineti — tora iyo wasubiye kumurongo';
+      'Nta interineti, tora iyo wasubiye kumurongo';
 
   @override
   String get communityQuestionQueued =>
-      'Ikibazo kiragumye — kizajya iyo ufite interineti';
+      'Ikibazo kiragumye, kizajya iyo ufite interineti';
 
   @override
   String get communityEmptyChat =>
       'Nta butumwa burimo. Ba uwa mbere mu kugira icyo uvuga!';
+
+  @override
+  String get cycleDragHint =>
+      'Kanda ukurure · Pina kugira ngo wongere · Kanda kabiri';
+
+  @override
+  String get cycleTapWheelHint =>
+      'Kanda ku cyiciro icyo ari cyo cyose ku ruziga';
+
+  @override
+  String get cycleHideLabels => 'Hisha amazina';
+
+  @override
+  String get cycleShowLabels => 'Amazina';
+
+  @override
+  String get cyclePhasesBtn => 'Ibyiciro';
+
+  @override
+  String get cycleCloseBtn => 'Funga';
+
+  @override
+  String cycleDayBadge(String day) {
+    return 'Umunsi wa $day';
+  }
+
+  @override
+  String get cycleHormonesLabel => 'IMISEMBURO';
+
+  @override
+  String get cycleOestrogen => 'Oestrogen';
+
+  @override
+  String get cycleProgesterone => 'Progesterone';
+
+  @override
+  String get cycleLH => 'LH';
+
+  @override
+  String get cycleFSH => 'FSH';
+
+  @override
+  String get cyclePhaseMenstrual => 'Imihango';
+
+  @override
+  String get cyclePhaseFollicular => 'Gukura kw\'igi';
+
+  @override
+  String get cyclePhaseOvulation => 'Kurekura igi';
+
+  @override
+  String get cyclePhaseLuteal => 'Mbere y\'imihango';
+
+  @override
+  String get cyclePhaseMenstrualDays => 'Iminsi 1 kugeza kuri 5';
+
+  @override
+  String get cyclePhaseFollicularDays => 'Iminsi 6 kugeza kuri 13';
+
+  @override
+  String get cyclePhaseOvulationDay => 'Umunsi 14';
+
+  @override
+  String get cyclePhaseLutealDays => 'Iminsi 15 kugeza kuri 28';
+
+  @override
+  String get cyclePhaseMenstrualDesc =>
+      'Ururenda rwa nyababyeyi ruravaho. Prostaglandine zitera kwinyagambura kwa nyababyeyi. Imisemburo iri hasi cyane.';
+
+  @override
+  String get cyclePhaseFollicularDesc =>
+      'FSH ituma udufuka tw\'amagi dukura. Oestrogen yongera kubaka ururenda rwa nyababyeyi. Imbaraga n\'akanyamuneza biriyongera.';
+
+  @override
+  String get cyclePhaseOvulationDesc =>
+      'Ubwiyongere bwa LH butuma igi rirekurwa. Igihe cy\'uburumbuke bwo hejuru. Urukonda ruba rwiza kandi rukweduka.';
+
+  @override
+  String get cyclePhaseLutealDesc =>
+      'Korupusi luteumu (Corpus luteum) ivubura progesterone. Iyo igi ridahuye n\'intanga ngabo, progesterone iragabanyuka imihango igatangira.';
+
+  @override
+  String get cyclePhaseMenstrualDescAlt =>
+      'Ururenda ruravaho. Prostaglandine zituma nyababyeyi yikanya kugira ngo ivaneho ururenda. Imisemburo igera hasi.';
+
+  @override
+  String get cyclePhaseFollicularDescAlt =>
+      'FSH itera gukura kw\'amagi menshi. Igi rikuru rivubura oestrogen rikaba ari naryo rihagarika andi.';
+
+  @override
+  String get cyclePhaseOvulationDescAlt =>
+      'LH itera guturika kw\'agafuka karimo igi, rikinjira mu muheha w\'intanga. Uburumbuke bugeze hejuru.';
+
+  @override
+  String get cyclePhaseLutealDescAlt =>
+      'Korupusi luteumu yongera progesterone kugira ngo ikomeze kubaka ururenda. Iyo nta gusama byabaye, imihango iragaruka.';
+
+  @override
+  String get cycleHormoneMenstrualLevel => 'FSH ↓ LH ↓ Oestrogen ↓';
+
+  @override
+  String get cycleHormoneFollicularLevel => 'FSH ↑ Oestrogen ↑';
+
+  @override
+  String get cycleHormoneOvulationLevel =>
+      'Ubwiyongere bwa LH · Oestrogen ihagaze hejuru';
+
+  @override
+  String get cycleHormoneLutealLevel => 'Progesterone ↑ Oestrogen ↑';
+
+  @override
+  String get cycleAnatomyFallopian => 'Umuheha w\'intanga';
+
+  @override
+  String get cycleAnatomyUterineFundus => 'Igisenge cya nyababyeyi';
+
+  @override
+  String get cycleAnatomyOvary => 'Intangangore';
+
+  @override
+  String get cycleAnatomyEndometrium => 'Ururenda rwa nyababyeyi';
+
+  @override
+  String get cycleAnatomyMyometrium => 'Miyometri';
+
+  @override
+  String get cycleAnatomyCervix => 'Inkondo y\'umura';
+
+  @override
+  String get cycleAnatomyVagina => 'Igituba';
+
+  @override
+  String get cycleAnatomyBroadLig => 'Umuzi mugari';
+
+  @override
+  String get cycleAnatomyOvarianLig => 'Umuzi w\'intangangore';
+
+  @override
+  String get cycleAnatomyPerimetrium => 'Perimetri';
+
+  @override
+  String get cycleCh1HsOvaryDesc =>
+      'Buri ntangangore ireshya na cm ~3 kandi ibonekamo udufuka (follicles) turenga 300,000. Buri kwezi, FSH ikura tumwe muri two, ariko kamwe niko gasohora igi.';
+
+  @override
+  String get cycleCh1HsFallopianDesc =>
+      'Umuheha ureshya na cm ~10 ufite udusonga dukurura igi. Gusama bikunda kubera mu gice cy\'inyuma cy\'uyu muheha.';
+
+  @override
+  String get cycleCh1HsEndometriumDesc =>
+      'Ururenda rw\'imbere. Umubyimba warwo uva kuri mm ~2 nyuma y\'imihango ukagera kuri mm ~12 mbere yayo. Ruvaho mu gihe cy\'imihango iyo gusama bitabaye.';
+
+  @override
+  String get cycleCh1HsCervixDesc =>
+      'Igice cyo hasi kifunganye cya nyababyeyi. Kivubura urukonda ruhinduka bitewe n\'igihe cy\'ukwezi, rurakweduka mu gihe cy\'uburumbuke.';
+
+  @override
+  String get cycleCh3Title => 'Ibinya n\'ububabare';
+
+  @override
+  String get cycleCh3PainIntensity => 'Urubarure rw\'ububabare';
+
+  @override
+  String get cycleCh3Heat => 'Ubushyuhe';
+
+  @override
+  String get cycleCh3HeatDesc =>
+      'Bworoshya imikaya, byongera amaraso. Koresha min 15-20.';
+
+  @override
+  String get cycleCh3Ibuprofen => 'Ibuprofen';
+
+  @override
+  String get cycleCh3IbuprofenDesc =>
+      'Ifasha kugabanya ububabare. Fata amasaha 1-2 mbere y\'ububabare bukomeye.';
+
+  @override
+  String get cycleCh3Exercise => 'Imyitozo';
+
+  @override
+  String get cycleCh3ExerciseDesc =>
+      'Kugenda cyangwa yoga bigabanya ububabare kugeza kuri 50%.';
+
+  @override
+  String get cycleCh3Hydration => 'Kunywa amazi';
+
+  @override
+  String get cycleCh3HydrationDesc =>
+      'Ibyo kunywa bishyushye, nk\'icyayi cy\'icyinzari bifasha.';
+
+  @override
+  String get cycleCh4Title => 'Kalendari y\'ukwezi kwawe';
+
+  @override
+  String get cycleCh4Subtitle =>
+      'Kanda ku munsi uwo ari wo wose wibuke imihango';
+
+  @override
+  String get cycleCh4DayM => 'L';
+
+  @override
+  String get cycleCh4DayT => 'K';
+
+  @override
+  String get cycleCh4DayW => 'K';
+
+  @override
+  String get cycleCh4DayTh => 'K';
+
+  @override
+  String get cycleCh4DayF => 'G';
+
+  @override
+  String get cycleCh4DayS => 'G';
+
+  @override
+  String get cycleCh4DaySu => 'K';
+
+  @override
+  String get cycleCh4NextPeriod => 'Imihango itaha iteganijwe';
+
+  @override
+  String cycleCh4InXDays(String days) {
+    return 'Mu minsi $days';
+  }
+
+  @override
+  String get cycleCh4CycleLen => 'Uburebure bw\'ukwezi';
+
+  @override
+  String get cycleCh4CycleLenNorm => 'Iminsi 21 kugeza kuri 35 ni ibisanzwe';
+
+  @override
+  String get cycleCh4PeriodLen => 'Uburebure bw\'imihango';
+
+  @override
+  String get cycleCh4PeriodLenNorm => 'Iminsi 3 kugeza kuri 7 ni ibisanzwe';
+
+  @override
+  String get cycleCh4OvulationLabel => 'Kurekura igi';
+
+  @override
+  String get cycleCh4OvulationNorm => 'Iminsi ±2';
+
+  @override
+  String get cycleCh4FertileWindow => 'Igihe cy\'uburumbuke';
+
+  @override
+  String get cycleCh4FertileNorm => 'Intanga ibaho iminsi 5';
+
+  @override
+  String get cycleCh4LegendPeriod => 'Imihango · kanda ngo wongere/ukureho';
+
+  @override
+  String get cycleCh4LegendOvulation => 'Umunsi wo kurekura igi (Umunsi 14)';
+
+  @override
+  String get cycleCh4LegendFertile =>
+      'Igihe cy\'uburumbuke (Iminsi 11 kugeza kuri 16)';
+
+  @override
+  String get cycleCh4LegendPredicted => 'Imihango itaha iteganijwe';
+
+  @override
+  String cycleCh4DaysX(String days) {
+    return 'Iminsi $days';
+  }
+
+  @override
+  String get cycleCh4DaysRange => 'Iminsi 11 kugeza kuri 16';
+
+  @override
+  String get cycleCh5Title => 'Ukuri cyangwa Ikinyoma';
+
+  @override
+  String get cycleCh5Subtitle => 'Kanda ku ikarita urebe ukuri kwa muganga';
+
+  @override
+  String get cycleCh5AllBusted => '🎉 Byose byasobanuwe!';
+
+  @override
+  String cycleCh5XBusted(String count) {
+    return '$count / 5 byasobanuwe';
+  }
+
+  @override
+  String get cycleCh5FactLabel => 'UKURI ✓';
+
+  @override
+  String get cycleCh5MythLabel => 'IKINYOMA ✗';
+
+  @override
+  String get cycleCh5TapFact => 'Kanda wongere urebe ikinyoma';
+
+  @override
+  String get cycleCh5TapMyth => 'Kanda urebe ukuri';
+
+  @override
+  String get cycleCh5Myth1 =>
+      'Ntushobora gukora imyitozo ngororamubiri uri mu mihango.';
+
+  @override
+  String get cycleCh5Fact1 =>
+      'Imyitozo izamura ibyishimo n\'amaraso, bigabanya ibinya. Kugenda, yoga no koga ni byiza cyane.';
+
+  @override
+  String get cycleCh5Myth2 => 'Amaraso y\'imihango ni mabi cyangwa yanduye.';
+
+  @override
+  String get cycleCh5Fact2 =>
+      'Amaraso y\'imihango aba agizwe n\'amaraso meza, inyama z\'ururenda n\'amazi yo mu gitsina — nta myanda y\'uburozi ibamo.';
+
+  @override
+  String get cycleCh5Myth3 => 'Ntushobora gusama uri mu mihango.';
+
+  @override
+  String get cycleCh5Fact3 =>
+      'Intanga ngabo ishobora kubaho iminsi 3–5. Iyo igi rirekuwe vuba nyuma y\'imihango, ushobora gusama.';
+
+  @override
+  String get cycleCh5Myth4 => 'Imihango idahoraho yerekana uburwayi bubi.';
+
+  @override
+  String get cycleCh5Fact4 =>
+      'Umunaniro, imirire, n\'ingendo bishobora guhindura ukwezi. Kuba hagati y\'iminsi 21 na 35 ni ibisanzwe. Iyo bikabije nibwo ugomba kwivuza.';
+
+  @override
+  String get cycleCh5Myth5 =>
+      'Ububabare bw\'imihango ugomba kwihangana ntakindi nta muti wabwo.';
+
+  @override
+  String get cycleCh5Fact5 =>
+      'Imiti nka Ibuprofen, ubushyuhe, n\'imyitozo byaragaragaye ko bigabanya cyane ububabare bw\'imihango.';
 }
