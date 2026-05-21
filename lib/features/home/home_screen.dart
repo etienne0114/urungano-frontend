@@ -354,8 +354,6 @@ class _StatsHeader extends StatelessWidget {
             color: Color(0xFFD97B3A)),
         SizedBox(width: 8),
         _StatIcon(icon: Icons.menu_book_rounded, color: AppColors.primary),
-        SizedBox(width: 8),
-        _StatIcon(icon: Icons.stars_rounded, color: AppColors.sun),
       ],
     );
   }

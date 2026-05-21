@@ -18,7 +18,7 @@ class OfflineSyncService {
   static OfflineSyncService get instance => _instance;
 
   final SyncQueue _syncQueue = SyncQueue();
-  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
   Timer? _periodicSyncTimer;
   bool _isInitialized = false;
   bool _isSyncing = false;
@@ -133,7 +133,8 @@ class OfflineSyncService {
   /// Start monitoring connectivity changes
   void _startConnectivityMonitoring() {
     _connectivitySubscription = Connectivity().onConnectivityChanged.listen(
-      (ConnectivityResult result) async {
+      (List<ConnectivityResult> results) async {
+        final result = results.isNotEmpty ? results.first : ConnectivityResult.none;
         if (result != ConnectivityResult.none) {
           // Connectivity restored, verify with backend
           final isOnline = await ConnectivityService.check();

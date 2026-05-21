@@ -31,7 +31,7 @@ class AppError {
   final bool isRetryable;
   final Duration? retryAfter;
 
-  const AppError({
+  AppError({
     required this.category,
     required this.code,
     required this.message,
@@ -41,9 +41,7 @@ class AppError {
     this.requestId,
     this.isRetryable = false,
     this.retryAfter,
-  }) : timestamp = timestamp ?? const Duration().inMilliseconds != 0 
-         ? DateTime.now() 
-         : DateTime.now();
+  }) : timestamp = timestamp ?? DateTime.now();
 
   /// Create error from API response
   factory AppError.fromApiResponse(Map<String, dynamic> response) {
@@ -96,7 +94,7 @@ class AppError {
 
   /// Create offline error
   factory AppError.offline() {
-    return const AppError(
+    return AppError(
       category: ErrorCategory.offline,
       code: 'OFFLINE_ERROR',
       message: 'No internet connection',

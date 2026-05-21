@@ -2220,23 +2220,28 @@ class Ch0SidebarPanel extends StatelessWidget {
                     decoration: BoxDecoration(color: pd.color, shape: BoxShape.circle),
                   ),
                   const SizedBox(width: 10),
-                  Flexible(
+                  Expanded(
                     child: Text(
                       pd.name,
-                      style: TextStyle(fontFamily: 'Fraunces', fontSize: 20, fontWeight: FontWeight.w800, color: pd.color),
+                      style: TextStyle(fontFamily: 'Fraunces', fontSize: 18, fontWeight: FontWeight.w800, color: pd.color),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: pd.color.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Text(
-                      pd.days,
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: pd.color),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    flex: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: pd.color.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Text(
+                        pd.days,
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: pd.color),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     ),
                   ),
                 ],
@@ -2257,9 +2262,9 @@ class Ch0SidebarPanel extends StatelessWidget {
                     const SizedBox(height: 8),
                     Expanded(child: CustomPaint(painter: _HormoneChart(day: state.day, t: state.t))),
                     const SizedBox(height: 4),
-                    Row(children: [
-                      _Leg(kRose, AppLocalizations.of(context)!.cycleOestrogen), const SizedBox(width: 12),
-                      _Leg(kSage, AppLocalizations.of(context)!.cycleProgesterone), const SizedBox(width: 12),
+                    Wrap(spacing: 10, runSpacing: 4, children: [
+                      _Leg(kRose, AppLocalizations.of(context)!.cycleOestrogen),
+                      _Leg(kSage, AppLocalizations.of(context)!.cycleProgesterone),
                       _Leg(kAmber, AppLocalizations.of(context)!.cycleLH),
                     ]),
                   ],

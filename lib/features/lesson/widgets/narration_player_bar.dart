@@ -133,6 +133,11 @@ class _NarrationPlayerBarState extends ConsumerState<NarrationPlayerBar> {
   @override
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
+    // Caption: explicit captionText (RW mode) or word-highlight from on-device TTS
+    final captionLine = widget.captionText?.isNotEmpty == true
+        ? widget.captionText!
+        : _highlightedWord;
+    final showCaption = captionLine.isNotEmpty;
 
     return Container(
       decoration: const BoxDecoration(
@@ -142,87 +147,123 @@ class _NarrationPlayerBarState extends ConsumerState<NarrationPlayerBar> {
       padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
       child: SafeArea(
         top: false,
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Play / Pause button
-            GestureDetector(
-              onTap: _toggle,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 180),
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: _playing
-                      ? AppColors.primary
-                      : AppColors.white.withValues(alpha: 0.12),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  _playing
-                      ? Icons.pause_rounded
-                      : Icons.play_arrow_rounded,
-                  color: AppColors.white,
-                  size: 22,
-                ),
-              ),
-            ),
-
-            const SizedBox(width: 14),
-
-            // Audio narration label
-            Expanded(
-              child: Row(
-                children: [
-                  Icon(Icons.volume_up_rounded,
-                      size: 16,
-                      color: AppColors.white.withValues(alpha: 0.6)),
-                  const SizedBox(width: 8),
+            // ── Dual-track badge (RW captions + EN audio) ──────
+            if (_isDualTrack)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(children: [
+                  Icon(Icons.subtitles_rounded,
+                      size: 13,
+                      color: AppColors.amber.withValues(alpha: 0.85)),
+                  const SizedBox(width: 5),
                   Text(
-                    'Audio narration',
-                    style: AppTextStyles.body().copyWith(
-                      color: AppColors.white.withValues(alpha: 0.6),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                    'Ibyo biboneka mu Kinyarwanda · narration mu cyongereza',
+                    style: AppTextStyles.caption().copyWith(
+                      color: AppColors.amber.withValues(alpha: 0.85),
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
-                ],
+                ]),
               ),
-            ),
 
-            const SizedBox(width: 14),
+            // ── Caption text — NOT bold, readable weight ────────
+            if (showCaption)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  captionLine,
+                  style: AppTextStyles.body().copyWith(
+                    color: AppColors.white,
+                    fontWeight: FontWeight.w400, // intentionally normal weight
+                    fontSize: 14,
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
 
-            // Mute/Unmute toggle
-            GestureDetector(
-              onTap: () => ref
-                  .read(settingsProvider.notifier)
-                  .setVoiceNarration(!settings.voiceNarration),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 180),
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: settings.voiceNarration
-                      ? Colors.transparent
-                      : AppColors.primary.withValues(alpha: 0.2),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: settings.voiceNarration
-                        ? AppColors.white.withValues(alpha: 0.2)
-                        : AppColors.primary.withValues(alpha: 0.4),
-                    width: 1.5,
+            // ── Playback controls row ───────────────────────────
+            Row(children: [
+              // Play / Pause button
+              GestureDetector(
+                onTap: _toggle,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  width: 44, height: 44,
+                  decoration: BoxDecoration(
+                    color: _playing
+                        ? AppColors.primary
+                        : AppColors.white.withValues(alpha: 0.12),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    _playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                    color: AppColors.white, size: 22,
                   ),
                 ),
-                child: Icon(
-                  settings.voiceNarration
-                      ? Icons.volume_up_rounded
-                      : Icons.volume_off_rounded,
-                  size: 20,
-                  color: settings.voiceNarration
-                      ? AppColors.white.withValues(alpha: 0.8)
-                      : AppColors.primary,
+              ),
+
+              const SizedBox(width: 14),
+
+              // Label — shows "Narration mu cyongereza" in dual-track,
+              // or a generic audio label otherwise.
+              Expanded(
+                child: Row(children: [
+                  Icon(Icons.volume_up_rounded,
+                      size: 15,
+                      color: AppColors.white.withValues(alpha: 0.5)),
+                  const SizedBox(width: 7),
+                  Text(
+                    _isDualTrack ? 'Narration mu cyongereza' : 'Audio narration',
+                    style: AppTextStyles.caption().copyWith(
+                      color: AppColors.white.withValues(alpha: 0.5),
+                      fontSize: 12,
+                      fontStyle: _isDualTrack
+                          ? FontStyle.italic
+                          : FontStyle.normal,
+                    ),
+                  ),
+                ]),
+              ),
+
+              const SizedBox(width: 14),
+
+              // Mute / Unmute toggle
+              GestureDetector(
+                onTap: () => ref
+                    .read(settingsProvider.notifier)
+                    .setVoiceNarration(!settings.voiceNarration),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  width: 40, height: 40,
+                  decoration: BoxDecoration(
+                    color: settings.voiceNarration
+                        ? Colors.transparent
+                        : AppColors.primary.withValues(alpha: 0.2),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: settings.voiceNarration
+                          ? AppColors.white.withValues(alpha: 0.2)
+                          : AppColors.primary.withValues(alpha: 0.4),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Icon(
+                    settings.voiceNarration
+                        ? Icons.volume_up_rounded
+                        : Icons.volume_off_rounded,
+                    size: 20,
+                    color: settings.voiceNarration
+                        ? AppColors.white.withValues(alpha: 0.8)
+                        : AppColors.primary,
+                  ),
                 ),
               ),
-            ),
+            ]),
           ],
         ),
       ),

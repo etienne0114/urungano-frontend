@@ -292,17 +292,17 @@ class _WideChapterView extends StatelessWidget {
         chapter.localizedNarration[languageCode] ?? chapter.narrationText;
 
     return LayoutBuilder(builder: (_, constraints) {
-      // Media height is derived from the canvas aspect ratio (900×680) so the
+      // Media height is derived from the canvas aspect ratio (900×480) so the
       // animation fills its container with zero blank margins.
-      const canvasW = 900.0, canvasH = 720.0;
+      const canvasW = 900.0, canvasH = 480.0;
       const hPad = 36.0, vPad = 36.0; // left24+right12, top12+bottom24
       final availW = constraints.maxWidth;
       final availH = constraints.maxHeight;
 
-      // Give media ~72% of available width; height follows canvas ratio.
-      final mediaInnerW = (availW * 0.72 - hPad).clamp(320.0, availW * 0.85);
+      // Give media ~62% of available width; height follows canvas ratio.
+      final mediaInnerW = (availW * 0.62 - hPad).clamp(280.0, availW * 0.70);
       final mediaInnerH =
-          (mediaInnerW * canvasH / canvasW).clamp(250.0, availH - (vPad * 0.5));
+          (mediaInnerW * canvasH / canvasW).clamp(200.0, availH - vPad);
 
       Widget mediaChild = lesson.slug == 'your_cycle'
           ? YourCycleChapterAnimation(chapterIndex: chapter.orderIndex)
