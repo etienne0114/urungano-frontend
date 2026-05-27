@@ -108,7 +108,8 @@ class ApiClient implements ApiClientInterface {
 
             if (!isPinVerify && !_isHandlingUnauth) {
               _isHandlingUnauth = true;
-              HiveStorage.clearAuth();
+              // Do NOT clear auth here — let onUnauthorized decide based on
+              // whether the session is currently unlocked (PIN app-lock case).
               onUnauthorized?.call();
               // Auto-reset after 15 s so future 401s are handled if re-auth never
               // completed (e.g. network went fully offline mid-handler).

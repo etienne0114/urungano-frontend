@@ -49,7 +49,29 @@ final routerProvider = Provider<GoRouter>((ref) {
     final progress = HiveStorage.loadProgress();
 
     if (progress?.hasPIN == true) {
-      // App lock is active → redirect to PIN screen.
+      final isCurrentlyUnlocked = ref.read(sessionUnlockedProvider);
+
+      if (isCurrentlyUnlocked) {
+        // Token expired while the user is actively using the app (session was
+        // already unlocked via PIN). Attempt a silent re-auth so the user is
+        // not thrown back to the PIN screen unexpectedly.
+        final result = await ref.read(progressProvider.notifier).signIn(
+          progress!.username,
+          isRegistration: true,
+        );
+        ApiClient.instance.resetUnauthorizedFlag();
+        if (result.error != null) {
+          // Silent re-auth failed → clear stale credentials and lock.
+          debugPrint('onUnauthorized: silent re-auth failed: ${result.error}');
+          HiveStorage.clearAuth();
+          ref.read(sessionUnlockedProvider.notifier).state = false;
+        }
+        return;
+      }
+
+      // Session is already locked → just clean up and let the redirect guard
+      // keep the user on /pin-verify.
+      HiveStorage.clearAuth();
       ref.read(sessionUnlockedProvider.notifier).state = false;
       ApiClient.instance.resetUnauthorizedFlag();
       return;
@@ -57,24 +79,22 @@ final routerProvider = Provider<GoRouter>((ref) {
 
     if (progress == null) {
       // No session at all → nothing to recover, release the guard.
+      HiveStorage.clearAuth();
       ApiClient.instance.resetUnauthorizedFlag();
       return;
     }
 
-    // Re-authenticate. isRegistration:true means:
-    //   • user exists in DB  → authenticates normally (no conflict)
-    //   • user was deleted   → re-creates the account transparently
+    // No PIN — re-authenticate transparently.
+    // isRegistration:true: if user was deleted from DB it is re-created.
+    HiveStorage.clearAuth();
     final result = await ref.read(progressProvider.notifier).signIn(
       progress.username,
       isRegistration: true,
     );
 
-    // Release the guard so future 401s (after successful re-auth) are handled.
     ApiClient.instance.resetUnauthorizedFlag();
 
     if (result.error != null) {
-      // Re-auth failed entirely (server down, bad network, etc.).
-      // Force the user back to onboarding so they can retry manually.
       debugPrint('onUnauthorized: re-auth failed: ${result.error}');
       ref.read(settingsProvider.notifier).resetOnboarding();
     }

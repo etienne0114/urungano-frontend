@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'api/api_client.dart';
 
 /// Lightweight connectivity checker — works on all platforms including web.
 ///
@@ -8,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ConnectivityService {
   ConnectivityService._();
 
-  static const String _baseUrl = 'http://localhost:4000/api/v1';
   static const Duration _timeout = Duration(seconds: 4);
 
   static bool _online = false;
@@ -19,15 +19,16 @@ class ConnectivityService {
   /// Probes the backend with a lightweight GET request.
   /// Updates and returns [isOnline].
   static Future<bool> check() async {
+    // Always read the live base URL from ApiClient so this works in every
+    // environment (dev → localhost, prod → Vercel, etc.)
+    final baseUrl = ApiClient.instance.baseUrl;
     try {
       final dio = Dio(BaseOptions(
         connectTimeout: _timeout,
         receiveTimeout: _timeout,
         validateStatus: (_) => true, // accept any HTTP status as "reachable"
       ));
-      // Hit the auth endpoint with an empty body — returns 400 (bad request)
-      // but that still means the server is up.
-      await dio.get<void>('$_baseUrl/auth/anonymous');
+      await dio.get<void>('$baseUrl/health');
       _online = true;
     } catch (_) {
       _online = false;

@@ -161,6 +161,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
   io.Socket? _socket;
 
   void _init() {
+    // Always pre-load messages (static fallback if DB empty / not seeded).
+    _loadInitialMessages();
+
     final token = HiveStorage.accessToken;
     if (token == null) return;
 
@@ -222,10 +225,10 @@ class ChatNotifier extends StateNotifier<ChatState> {
   }
 
   Future<void> _loadInitialMessages() async {
-    try {
-      final initial = await CommunityService.getMessages(circleSlug);
-      state = state.copyWith(messages: initial);
-    } catch (_) {}
+    // getMessages() already falls back to static seed data when API returns
+    // empty or fails, so messages are always populated even unseeded DB.
+    final initial = await CommunityService.getMessages(circleSlug);
+    state = state.copyWith(messages: initial);
   }
 
   void sendMessage(String text, String lang) {

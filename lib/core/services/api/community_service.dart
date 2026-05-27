@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../../data/community_data.dart';
 import '../connectivity_service.dart';
 import '../storage/hive_storage.dart';
 import 'api_client.dart';
@@ -195,17 +196,21 @@ class CommunityService {
 
   static Future<List<CircleDto>> getCircles() async {
     final online = await ConnectivityService.check();
-    if (!online) return _cachedCircles();
+    if (!online) {
+      final cached = _cachedCircles();
+      return cached.isNotEmpty ? cached : _staticCircles();
+    }
 
     try {
       final res = await ApiClient.instance.get<Map<String, dynamic>>('$_base/circles');
       final list = (ApiClient.staticUnwrap<List<dynamic>>(res)).cast<Map<String, dynamic>>();
       final circles = list.map(CircleDto.fromJson).toList();
-      // Cache for offline
+      if (circles.isEmpty) return _staticCircles();
       HiveStorage.saveCommunityCircles(list);
       return circles;
     } on DioException {
-      return _cachedCircles();
+      final cached = _cachedCircles();
+      return cached.isNotEmpty ? cached : _staticCircles();
     }
   }
 
@@ -214,12 +219,30 @@ class CommunityService {
     return raw.map(CircleDto.fromJson).toList();
   }
 
+  static List<CircleDto> _staticCircles() => kCircles
+      .map((c) => CircleDto(
+            id: c.id,
+            slug: c.slug,
+            name: c.name,
+            topic: c.topic,
+            emoji: c.emoji,
+            color: c.color,
+            bgColor: c.bgColor,
+            moderator: c.moderator,
+            onlineCount: c.onlineCount,
+            messageCount: c.messageCount,
+          ))
+      .toList();
+
   // ── Messages ───────────────────────────────────────────────────────────────
 
   static Future<List<MessageDto>> getMessages(String circleSlug,
       {int limit = 50}) async {
     final online = await ConnectivityService.check();
-    if (!online) return _cachedMessages(circleSlug);
+    if (!online) {
+      final cached = _cachedMessages(circleSlug);
+      return cached.isNotEmpty ? cached : _staticMessages(circleSlug);
+    }
 
     try {
       final res = await ApiClient.instance.get<Map<String, dynamic>>(
@@ -229,10 +252,12 @@ class CommunityService {
       final list =
           (ApiClient.staticUnwrap<List<dynamic>>(res)).cast<Map<String, dynamic>>();
       final messages = list.map(MessageDto.fromJson).toList();
+      if (messages.isEmpty) return _staticMessages(circleSlug);
       HiveStorage.saveCommunityMessages(circleSlug, list);
       return messages;
     } on DioException {
-      return _cachedMessages(circleSlug);
+      final cached = _cachedMessages(circleSlug);
+      return cached.isNotEmpty ? cached : _staticMessages(circleSlug);
     }
   }
 
@@ -240,6 +265,20 @@ class CommunityService {
     final raw = HiveStorage.loadCommunityMessages(circleSlug);
     return raw.map(MessageDto.fromJson).toList();
   }
+
+  static List<MessageDto> _staticMessages(String circleSlug) =>
+      (kCircleMessages[circleSlug] ?? [])
+          .map((m) => MessageDto(
+                id: m.id,
+                who: m.who,
+                avatarSeed: m.avatarSeed,
+                text: m.text,
+                isYou: m.isYou,
+                isEducator: m.isEducator,
+                lang: m.lang,
+                createdAt: m.createdAt,
+              ))
+          .toList();
 
   static Future<MessageDto> sendMessage(
       String circleSlug, String text, String lang) async {
@@ -293,7 +332,10 @@ class CommunityService {
 
   static Future<List<DebateDto>> getDebates() async {
     final online = await ConnectivityService.check();
-    if (!online) return _cachedDebates();
+    if (!online) {
+      final cached = _cachedDebates();
+      return cached.isNotEmpty ? cached : _staticDebates();
+    }
 
     try {
       final res =
@@ -301,10 +343,12 @@ class CommunityService {
       final list =
           (ApiClient.staticUnwrap<List<dynamic>>(res)).cast<Map<String, dynamic>>();
       final debates = list.map(DebateDto.fromJson).toList();
+      if (debates.isEmpty) return _staticDebates();
       HiveStorage.saveCommunityDebates(list);
       return debates;
     } on DioException {
-      return _cachedDebates();
+      final cached = _cachedDebates();
+      return cached.isNotEmpty ? cached : _staticDebates();
     }
   }
 
@@ -312,6 +356,19 @@ class CommunityService {
     final raw = HiveStorage.loadCommunityDebates();
     return raw.map(DebateDto.fromJson).toList();
   }
+
+  static List<DebateDto> _staticDebates() => kDebates
+      .map((d) => DebateDto(
+            id: d.id,
+            question: d.question,
+            tag: d.tag,
+            heatColor: d.heatColor,
+            yesPercent: d.yesPercent,
+            noPercent: d.noPercent,
+            totalVotes: d.totalVotes,
+            myVote: d.myVote,
+          ))
+      .toList();
 
   static Future<DebateDto> castVote(String debateId, bool vote) async {
     final online = await ConnectivityService.check();
@@ -335,7 +392,10 @@ class CommunityService {
 
   static Future<List<AnonQuestionDto>> getQuestions() async {
     final online = await ConnectivityService.check();
-    if (!online) return _cachedQuestions();
+    if (!online) {
+      final cached = _cachedQuestions();
+      return cached.isNotEmpty ? cached : _staticQuestions();
+    }
 
     try {
       final res = await ApiClient.instance
@@ -343,10 +403,12 @@ class CommunityService {
       final list =
           (ApiClient.staticUnwrap<List<dynamic>>(res)).cast<Map<String, dynamic>>();
       final questions = list.map(AnonQuestionDto.fromJson).toList();
+      if (questions.isEmpty) return _staticQuestions();
       HiveStorage.saveCommunityQuestions(list);
       return questions;
     } on DioException {
-      return _cachedQuestions();
+      final cached = _cachedQuestions();
+      return cached.isNotEmpty ? cached : _staticQuestions();
     }
   }
 
@@ -354,6 +416,17 @@ class CommunityService {
     final raw = HiveStorage.loadCommunityQuestions();
     return raw.map(AnonQuestionDto.fromJson).toList();
   }
+
+  static List<AnonQuestionDto> _staticQuestions() => kAnonQuestions
+      .map((q) => AnonQuestionDto(
+            id: q.id,
+            text: q.text,
+            answered: q.answered,
+            reply: q.reply,
+            answeredBy: q.answeredBy,
+            createdAt: q.createdAt,
+          ))
+      .toList();
 
   static Future<AnonQuestionDto> submitQuestion(String text) async {
     final online = await ConnectivityService.check();
