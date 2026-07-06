@@ -390,7 +390,10 @@ class _HeroCopy extends StatelessWidget {
           alignment: wide ? WrapAlignment.start : WrapAlignment.center,
           children: [
             _PrimaryCta(label: "Start learning — it's free", onTap: onStart),
-            _GhostCta(label: '▸  Watch a lesson', onTap: onStart),
+            _GhostCta(
+                label: 'Watch a lesson',
+                icon: Icons.play_circle_outline_rounded,
+                onTap: onStart),
           ],
         ),
         const SizedBox(height: 28),
@@ -491,29 +494,39 @@ class _PrimaryCta extends StatelessWidget {
 }
 
 class _GhostCta extends StatelessWidget {
-  const _GhostCta({required this.label, required this.onTap});
+  const _GhostCta({required this.label, required this.onTap, this.icon});
   final String label;
   final VoidCallback onTap;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
+    final style = OutlinedButton.styleFrom(
+      foregroundColor: AppColors.textPrimary,
+      minimumSize: Size.zero,
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 17),
+      side: const BorderSide(color: AppColors.divider2, width: 1.5),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(100),
+      ),
+    );
+    final textStyle = AppTextStyles.button().copyWith(
+      fontWeight: FontWeight.w600,
+      fontSize: 15,
+    );
+    if (icon != null) {
+      return OutlinedButton.icon(
+        onPressed: onTap,
+        style: style,
+        icon: Icon(icon, size: 18),
+        label: Text(label, style: textStyle),
+      );
+    }
     return OutlinedButton(
       onPressed: onTap,
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.textPrimary,
-        minimumSize: Size.zero,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 17),
-        side: const BorderSide(color: AppColors.divider2, width: 1.5),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100),
-        ),
-      ),
-      child: Text(label,
-          style: AppTextStyles.button().copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 15,
-          )),
+      style: style,
+      child: Text(label, style: textStyle),
     );
   }
 }
@@ -611,7 +624,7 @@ class _PhoneMock extends StatelessWidget {
             left: -6,
             child: _FloatCard(
               bg: AppColors.sage,
-              emoji: '🔊',
+              icon: Icons.volume_up_rounded,
               title: 'Voice narration',
               sub: 'Kinyarwanda',
             ),
@@ -621,7 +634,7 @@ class _PhoneMock extends StatelessWidget {
             right: -8,
             child: _FloatCard(
               bg: AppColors.primary,
-              emoji: '✋',
+              icon: Icons.back_hand_outlined,
               title: 'Gesture control',
               sub: 'MediaPipe',
             ),
@@ -631,7 +644,7 @@ class _PhoneMock extends StatelessWidget {
             left: 0,
             child: _FloatCard(
               bg: AppColors.sun,
-              emoji: '✓',
+              icon: Icons.check_rounded,
               title: '86% accuracy',
               sub: 'Quiz streak',
             ),
@@ -645,12 +658,12 @@ class _PhoneMock extends StatelessWidget {
 class _FloatCard extends StatelessWidget {
   const _FloatCard({
     required this.bg,
-    required this.emoji,
+    required this.icon,
     required this.title,
     required this.sub,
   });
   final Color bg;
-  final String emoji;
+  final IconData icon;
   final String title;
   final String sub;
 
@@ -679,8 +692,7 @@ class _FloatCard extends StatelessWidget {
               color: bg,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Center(
-                child: Text(emoji, style: const TextStyle(fontSize: 16))),
+            child: Icon(icon, color: AppColors.white, size: 18),
           ),
           const SizedBox(width: 11),
           Column(
@@ -739,7 +751,7 @@ class _PhoneScreen extends StatelessWidget {
                 child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Muraho 👋',
+                  Text('Muraho',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.bodySmall()
@@ -803,7 +815,8 @@ class _PhoneScreen extends StatelessWidget {
               Expanded(
                 child: _MiniTile(
                   bg: AppColors.sageSoft,
-                  emoji: '🔥',
+                  icon: Icons.local_fire_department_rounded,
+                  iconColor: AppColors.primary,
                   big: '4',
                   small: 'day streak',
                 ),
@@ -812,7 +825,8 @@ class _PhoneScreen extends StatelessWidget {
               Expanded(
                 child: _MiniTile(
                   bg: AppColors.white,
-                  emoji: '✋',
+                  icon: Icons.back_hand_outlined,
+                  iconColor: AppColors.textPrimary,
                   big: 'Gestures',
                   small: 'Try it',
                   bordered: true,
@@ -824,7 +838,7 @@ class _PhoneScreen extends StatelessWidget {
           const _RowCard(
             bg: AppColors.primaryLight,
             leadColor: AppColors.primary,
-            leadEmoji: '💬',
+            leadIcon: Icons.forum_rounded,
             overline: 'COMMUNITY · 127 ONLINE',
             overlineColor: AppColors.primary,
             title: 'Talk with peers',
@@ -833,7 +847,7 @@ class _PhoneScreen extends StatelessWidget {
           const _RowCard(
             bg: AppColors.surface,
             leadColor: AppColors.amber,
-            leadEmoji: '🩸',
+            leadIcon: Icons.water_drop_rounded,
             overline: 'MENSTRUAL · 8 MIN',
             overlineColor: AppColors.ink60,
             title: 'Your cycle, explained',
@@ -847,13 +861,15 @@ class _PhoneScreen extends StatelessWidget {
 class _MiniTile extends StatelessWidget {
   const _MiniTile({
     required this.bg,
-    required this.emoji,
+    required this.icon,
+    required this.iconColor,
     required this.big,
     required this.small,
     this.bordered = false,
   });
   final Color bg;
-  final String emoji;
+  final IconData icon;
+  final Color iconColor;
   final String big;
   final String small;
   final bool bordered;
@@ -871,7 +887,7 @@ class _MiniTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 18)),
+          Icon(icon, size: 18, color: iconColor),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -909,14 +925,14 @@ class _RowCard extends StatelessWidget {
   const _RowCard({
     required this.bg,
     required this.leadColor,
-    required this.leadEmoji,
+    required this.leadIcon,
     required this.overline,
     required this.overlineColor,
     required this.title,
   });
   final Color bg;
   final Color leadColor;
-  final String leadEmoji;
+  final IconData leadIcon;
   final String overline;
   final Color overlineColor;
   final String title;
@@ -938,8 +954,7 @@ class _RowCard extends StatelessWidget {
               color: leadColor.withValues(alpha: 0.9),
               borderRadius: BorderRadius.circular(11),
             ),
-            child: Center(
-                child: Text(leadEmoji, style: const TextStyle(fontSize: 15))),
+            child: Icon(leadIcon, color: AppColors.white, size: 18),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -1283,12 +1298,19 @@ class _LessonCard extends StatelessWidget {
                         color: AppColors.ink60,
                       )),
                   const SizedBox(height: 14),
-                  Text('▸ 28s · 4 chapters',
-                      style: AppTextStyles.bodySmall().copyWith(
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textSecondary,
-                      )),
+                  Row(
+                    children: [
+                      const Icon(Icons.play_arrow_rounded,
+                          size: 16, color: AppColors.textSecondary),
+                      const SizedBox(width: 4),
+                      Text('28s · 4 chapters',
+                          style: AppTextStyles.bodySmall().copyWith(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textSecondary,
+                          )),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -1557,11 +1579,14 @@ class _CommunitySection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 22),
-        const _CommItem('💬', AppColors.primary, 'Chat circles by topic'),
+        const _CommItem(
+            Icons.forum_rounded, AppColors.primary, 'Chat circles by topic'),
         const SizedBox(height: 12),
-        const _CommItem('⚖️', AppColors.sun, 'Open debates & polls'),
+        const _CommItem(
+            Icons.balance_rounded, AppColors.sun, 'Open debates & polls'),
         const SizedBox(height: 12),
-        const _CommItem('🔒', AppColors.sage, 'Anonymous questions'),
+        const _CommItem(
+            Icons.lock_rounded, AppColors.sage, 'Anonymous questions'),
       ],
     );
 
@@ -1580,8 +1605,8 @@ class _CommunitySection extends StatelessWidget {
 }
 
 class _CommItem extends StatelessWidget {
-  const _CommItem(this.emoji, this.color, this.label);
-  final String emoji;
+  const _CommItem(this.icon, this.color, this.label);
+  final IconData icon;
   final Color color;
   final String label;
 
@@ -1596,7 +1621,7 @@ class _CommItem extends StatelessWidget {
             color: color,
             borderRadius: BorderRadius.circular(9),
           ),
-          child: Center(child: Text(emoji, style: const TextStyle(fontSize: 14))),
+          child: Icon(icon, color: AppColors.white, size: 16),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -1647,8 +1672,8 @@ class _ChatMock extends StatelessWidget {
                     color: AppColors.primaryLight,
                     borderRadius: BorderRadius.circular(11),
                   ),
-                  child: const Center(
-                      child: Text('🌸', style: TextStyle(fontSize: 18))),
+                  child: const Icon(Icons.spa_rounded,
+                      color: AppColors.primary, size: 20),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
