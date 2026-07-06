@@ -32,7 +32,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     final progress = ref.read(progressProvider);
 
     if (!settings.onboardingComplete) {
-      context.go('/language');
+      context.go('/welcome');
       return;
     }
 

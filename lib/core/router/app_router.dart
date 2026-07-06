@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/splash/splash_screen.dart';
+import '../../features/onboarding/welcome_screen.dart';
 import '../../features/onboarding/language_screen.dart';
 import '../../features/onboarding/accessibility_setup_screen.dart';
 import '../../features/onboarding/privacy_consent_screen.dart';
@@ -111,13 +112,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       final onboarded = settings.onboardingComplete;
 
       final isOnboardingPath =
+          path == '/welcome' ||
           path == '/language' ||
           path == '/accessibility-setup' ||
           path == '/privacy-consent' ||
           path == '/pin-setup' ||
           path == '/pin-verify';
 
-      if (!onboarded && !isOnboardingPath) return '/language';
+      if (!onboarded && !isOnboardingPath) return '/welcome';
 
       if (onboarded && isOnboardingPath && path != '/pin-verify') {
         return '/home';
@@ -143,6 +145,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       // ── Onboarding ────────────────────────────────────────
+      GoRoute(
+        path: '/welcome',
+        builder: (_, __) => const WelcomeScreen(),
+      ),
       GoRoute(
         path: '/language',
         builder: (_, __) => const LanguageScreen(),
